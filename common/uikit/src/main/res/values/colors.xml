@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="main_light">#f2f0e0</color>
+    <color name="main_light_2">#D5D2C1</color>
+    <color name="main_extra_light">#FBFBF5</color>
+    <color name="beige">#F8EBDA</color>
+    <color name="beige_light">#77F8EBDA</color>
+    <color name="main_dark">#BD9973</color>
+</resources>

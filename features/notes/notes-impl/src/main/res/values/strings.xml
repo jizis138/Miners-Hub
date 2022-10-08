@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes_title">Заголовок</string>
+    <string name="note">Заметка</string>
+    <string name="notes_create_note">Создание заметки</string>
+</resources>

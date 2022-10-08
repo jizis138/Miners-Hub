@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="notes" tools:ignore="ExtraTranslation">Заметки</string>
+    <string name="settings" tools:ignore="ExtraTranslation">Настройки</string>
+    <string name="create" tools:ignore="ExtraTranslation">Создать</string>
+    <string name="common_create" tools:ignore="ExtraTranslation">Создать</string>
+    <string name="app_name">Momento</string>
+</resources>

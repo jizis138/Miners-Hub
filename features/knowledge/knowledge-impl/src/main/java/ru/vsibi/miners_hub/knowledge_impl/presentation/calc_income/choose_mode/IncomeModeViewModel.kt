@@ -29,13 +29,23 @@ class IncomeModeViewModel(
                     title = PrintableText.Raw("Расчет доходности"),
                     description = PrintableText.Raw("на примере существующих майнеров, с учетом стоимости электричества, текущего курса и сложности"),
                     onClicked = {
-                        incomePropertiesLauncher.launch()
+                        incomePropertiesLauncher.launch(
+                            IncomePropertiesNavigationContract.Params(
+                                calculationMode = IncomePropertiesNavigationContract.CalculationMode.Normal
+                            )
+                        )
                     }
                 ),
                 IncomeModeViewItem(
                     title = PrintableText.Raw("Универсальные расчеты"),
-                    description = PrintableText.Raw("с любой мощностью майнеров, любым курсом валюты и сложностью"),
-                    onClicked = {}
+                    description = PrintableText.Raw("с любой мощностью и потреблением майнеров"),
+                    onClicked = {
+                        incomePropertiesLauncher.launch(
+                            IncomePropertiesNavigationContract.Params(
+                                calculationMode = IncomePropertiesNavigationContract.CalculationMode.Universal
+                            )
+                        )
+                    }
                 ),
                 IncomeModeViewItem(
                     title = PrintableText.Raw("История расчетов"),

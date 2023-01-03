@@ -10,4 +10,9 @@
     <string name="rouble_kilowat">₽ за 1 кВт * час</string>
     <string name="calculation">Рассчитать</string>
     <string name="total">Результаты</string>
+    <string name="calc_income_details">Подробности расчёта</string>
+    <string name="count">Количество</string>
+    <string name="power_th">Мощность TH</string>
+    <string name="power_kwt">Потребление кВт</string>
+    <string name="share_calculation">Поделиться результатами</string>
 </resources>

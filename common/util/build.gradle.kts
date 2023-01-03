@@ -1,5 +1,6 @@
 plugins {
     `android-common`
+    `kotlinx-serialization`
 }
 
 
@@ -12,4 +13,5 @@ dependencies {
     implementation(Deps.Android.material)
     api(Deps.adapterDelegates)
     implementation(Deps.Coroutines.core)
+    implementation(Deps.serializationJson)
 }

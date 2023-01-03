@@ -18,11 +18,15 @@ import ru.vsibi.miners_hub.util.onClick
 
 class IncomePropertiesFragment : BaseFragment<IncomePropertiesState, IncomePropertiesEvent>(R.layout.fragment_income_properties) {
 
-    override val vm : IncomePropertiesViewModel by viewModel()
+    override val vm : IncomePropertiesViewModel by viewModel(
+        getParamsInterface = IncomePropertiesNavigationContract.getParams
+    )
 
     private val binding by fragmentViewBinding (FragmentIncomePropertiesBinding::bind)
 
-    private val adapter = IncomePropertiesAdapter()
+    private val adapter = IncomePropertiesAdapter(onRemoveClicked = {
+        vm.onRemoveUniversalItemClicked(it)
+    })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +45,7 @@ class IncomePropertiesFragment : BaseFragment<IncomePropertiesState, IncomePrope
                 12.dp,
             )
         })
+        list.itemAnimator = null
         cancel.onClick {
             requireActivity().onBackPressed()
         }

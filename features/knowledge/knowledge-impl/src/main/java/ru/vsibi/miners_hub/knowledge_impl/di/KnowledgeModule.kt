@@ -12,10 +12,17 @@ import ru.vsibi.miners_hub.di.bindSafe
 import ru.vsibi.miners_hub.di.factory
 import ru.vsibi.miners_hub.di.single
 import ru.vsibi.miners_hub.di.viewModel
+import ru.vsibi.miners_hub.knowledge_impl.data.repo_impl.DifficultyRepoImpl
+import ru.vsibi.miners_hub.knowledge_impl.data.repo_impl.ExchangeRateRepoImpl
 import ru.vsibi.miners_hub.knowledge_impl.data.repo_impl.MinerRepoImpl
+import ru.vsibi.miners_hub.knowledge_impl.data.service.DifficultyService
+import ru.vsibi.miners_hub.knowledge_impl.data.service.ExchangeRateService
 import ru.vsibi.miners_hub.knowledge_impl.data.service.MinerService
 import ru.vsibi.miners_hub.knowledge_impl.data.storage.MinerStorage
+import ru.vsibi.miners_hub.knowledge_impl.domain.logic.CalculationInteractor
 import ru.vsibi.miners_hub.knowledge_impl.domain.logic.MinerInteractor
+import ru.vsibi.miners_hub.knowledge_impl.domain.repo.DifficultyRepository
+import ru.vsibi.miners_hub.knowledge_impl.domain.repo.ExchangeRateRepository
 import ru.vsibi.miners_hub.knowledge_impl.domain.repo.MinerRepository
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.MinerSelectionViewModel
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode.IncomeModeViewModel
@@ -40,7 +47,12 @@ object KnowledgeModule {
 
     private fun createDataModule() = module {
         single(::MinerRepoImpl) bindSafe MinerRepository::class
+        single(::DifficultyRepoImpl) bindSafe DifficultyRepository::class
+        single(::ExchangeRateRepoImpl) bindSafe ExchangeRateRepository::class
+
         single { MinerService(get(named(NetworkClientFactoryQualifier.Unauthorized))) }
+        single { DifficultyService(get(named(NetworkClientFactoryQualifier.Unauthorized))) }
+        single { ExchangeRateService(get(named(NetworkClientFactoryQualifier.Unauthorized))) }
         single {
             MinerStorage(
                 databaseFactory = get(named(StorageQualifier.Simple)),
@@ -50,6 +62,7 @@ object KnowledgeModule {
 
     private fun createDomainModule() = module {
         single(::MinerInteractor)
+        single(::CalculationInteractor)
     }
 
     private fun createPresentationModule() = module {

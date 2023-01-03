@@ -6,12 +6,18 @@ package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_prope
 import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
 import ru.vsibi.miners_hub.util.PrintableText
 
-sealed class IncomePropertiesViewItem{
+sealed class IncomePropertiesViewItem {
 
     data class MinerSelection(
         val title: PrintableText,
         val items: List<MinerViewItem>,
-        val onClicked : () -> Unit
+        val onClicked: () -> Unit
+    ) : IncomePropertiesViewItem()
+
+    data class UniversalSelection(
+        val title: PrintableText,
+        val items: List<UniversalMinerViewItem>,
+        val onClicked: () -> Unit
     ) : IncomePropertiesViewItem()
 
     data class ElectricitySelection(

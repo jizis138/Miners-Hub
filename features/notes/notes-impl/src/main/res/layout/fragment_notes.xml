@@ -5,11 +5,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <ru.vsibi.momento.uikit.MomentoToolbar
-        android:id="@+id/momentoToolbar"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/drawer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:title="@string/app_name"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_drawer_menu"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,7 +21,7 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/momentoToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/drawer" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/add_new_note"

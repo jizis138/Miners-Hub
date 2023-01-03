@@ -1,7 +1,7 @@
 plugins {
     `android-common`
     `kotlin-kapt`
-    `kotlinx-serialization`
+//    `kotlinx-serialization`
 }
 
 android {

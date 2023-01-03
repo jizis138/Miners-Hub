@@ -1,0 +1,89 @@
+/**
+ * Created by Dmitry Popov on 01.10.2022.
+ */
+package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.adapter
+
+import androidx.core.widget.doAfterTextChanged
+import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
+import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderElectricityBinding
+import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderMinerPropertyBinding
+import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderMinerSelectionBinding
+import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderPropertiesChooseMinerBinding
+import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model.IncomePropertiesViewItem
+import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model.MinerViewItem
+import ru.vsibi.miners_hub.util.*
+
+class IncomePropertiesAdapter : AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
+    AdapterUtil.diffUtilItemCallbackEquals(),
+    AdapterUtil.adapterDelegatesManager(
+        createChooseMinerDelegate(),
+        createElectricityDelegate()
+    )
+)
+
+fun createChooseMinerDelegate() =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.MinerSelection,
+            HolderPropertiesChooseMinerBinding>(
+        HolderPropertiesChooseMinerBinding::inflate,
+    ) {
+        bindWithBinding {
+            title.setPrintableText(item.title)
+
+            root.onClick {
+                item.onClicked()
+            }
+
+            val adapter = MinersAdapter()
+            minersList.adapter = adapter
+
+            adapter.items = item.items
+        }
+    }
+
+fun createElectricityDelegate() =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.ElectricitySelection,
+            HolderElectricityBinding>(
+        HolderElectricityBinding::inflate,
+    ) {
+        bindWithBinding {
+            title.setPrintableText(item.title)
+        }
+    }
+
+class MinersAdapter : AsyncListDifferDelegationAdapter<MinerViewItem>(
+    AdapterUtil.diffUtilItemCallbackEquals(),
+    AdapterUtil.adapterDelegatesManager(
+        createMinerDelegate()
+    )
+)
+
+fun createMinerDelegate() =
+    adapterDelegateViewBinding<MinerViewItem,
+            HolderMinerPropertyBinding>(
+        HolderMinerPropertyBinding::inflate,
+    ) {
+        bindWithBinding {
+            title.setPrintableText(item.name)
+            description.setPrintableText(item.hashrate)
+
+            plus.onClick {
+                item.count += 1
+                count.setText(item.count.toString())
+            }
+
+            minus.onClick {
+                if (item.count == 0) return@onClick
+                item.count -= 1
+                count.setText(item.count.toString())
+            }
+
+            count.setText(item.count.toString())
+            count.doAfterTextChanged {
+                if (!it.isNullOrEmpty()) {
+                    item.count = it.toString().toInt()
+                }else{
+                    item.count = 1
+                }
+            }
+        }
+    }

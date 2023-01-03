@@ -11,6 +11,7 @@ object Modules {
         const val navigation = ":common:presentation:navigation"
         const val mvi = ":common:presentation:mvi"
         const val uikit = ":common:uikit"
+        const val network = ":common:network"
     }
 
     class FeatureTemplate(name: String) {
@@ -22,5 +23,6 @@ object Modules {
         val main = FeatureTemplate("main")
         val notes = FeatureTemplate("notes")
         val settings = FeatureTemplate("settings")
+        val knowledge = FeatureTemplate("knowledge")
     }
 }

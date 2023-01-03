@@ -3,57 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true">
 
-    <ru.vsibi.momento.uikit.MomentoToolbar
+    <ru.vsibi.miners_hub.uikit.MomentoToolbar
         android:id="@+id/momentoToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/notes_create_note"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/notes_create_note" />
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_title_container"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_style"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="32dp"
-        android:hint="@string/notes_title"
+        android:layout_margin="7dp"
+        android:padding="16dp"
+        android:text="Aa"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/momentoToolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_description_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp"
-        android:hint="@string/note"
-        app:layout_constraintHeight_min="300dp"
         app:layout_constraintBottom_toTopOf="@+id/create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_title_container"
+        app:layout_constraintTop_toBottomOf="@+id/momentoToolbar"
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="300dp"
-            android:gravity="top" />
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:imeOptions=""
+            android:inputType="textCapSentences|textMultiLine"
+            android:singleLine="false" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,11 +51,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:text="@string/common_create"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/main_dark"
+        android:text="@string/common_create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/bottom_sheet_styles"
+            layout="@layout/bottom_sheet_text_styles" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

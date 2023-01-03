@@ -6,7 +6,7 @@ dependencyResolutionManagement {
         maven(url = "https://jitpack.io")
     }
 }
-rootProject.name = "Momento"
+rootProject.name = "Miners Hub"
 include(":app")
 include(":common:core")
 include(":common:util")
@@ -22,3 +22,6 @@ include(":features:settings:settings-api")
 include(":features:settings:settings-impl")
 include(":common:data")
 include(":common:uikit")
+include(":features:knowledge:knowledge-api")
+include(":features:knowledge:knowledge-impl")
+include(":common:network")

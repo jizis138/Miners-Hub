@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="knowledge">Знания</string>
+    <string name="calc_income">Расчет доходности</string>
+    <string name="add_miner">Добавить позицию</string>
+    <string name="search">Поиск</string>
+    <string name="select_miner">Выберите майнер</string>
+    <string name="ready">Готово</string>
+    <string name="piece">шт.</string>
+    <string name="rouble_kilowat">₽ за 1 кВт * час</string>
+    <string name="calculation">Рассчитать</string>
+    <string name="total">Результаты</string>
+</resources>

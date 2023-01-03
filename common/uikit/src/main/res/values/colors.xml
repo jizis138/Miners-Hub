@@ -2,9 +2,14 @@
 <resources>
     
     <color name="main_light">#f2f0e0</color>
+    <color name="main_dark">#1C1C1C</color>
+    <color name="dark_light">#292929</color>
+    <color name="light">#FEFEFE</color>
+    <color name="accent">#83D2FF</color>
     <color name="main_light_2">#D5D2C1</color>
     <color name="main_extra_light">#FBFBF5</color>
     <color name="beige">#F8EBDA</color>
     <color name="beige_light">#77F8EBDA</color>
-    <color name="main_dark">#BD9973</color>
+    <color name="beige_2">#F1DFD7</color>
+    <color name="brown">#927467</color>
 </resources>

@@ -1,0 +1,7 @@
+package ru.vsibi.miners_hub.main_impl.presentation.main
+
+import ru.vsibi.miners_hub.navigation.contract.NavigationContract
+import ru.vsibi.miners_hub.navigation.model.NoParams
+import ru.vsibi.miners_hub.navigation.model.NoResult
+
+object MainNavigationContract : NavigationContract<NoParams, NoResult>(MainFragment::class)

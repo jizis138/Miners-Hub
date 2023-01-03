@@ -1,4 +1,4 @@
 #KotlinX Serialization
--keepclassmembers class ru.vsibi.momento.settings_impl.data.service.model.** {
+-keepclassmembers class ru.vsibi.miners_hub.settings_impl.data.service.model.** {
     *** Companion;
 }

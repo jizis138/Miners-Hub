@@ -33,7 +33,7 @@ android {
         getByName(BuildType.debug) {
             booleanBuildConfigField("IS_DEBUG", true)
 
-            stringBuildConfigField("MAIN_API_BASE_URL_DEV", "http://176.99.12.176/")
+            stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
             stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
             isDebuggable = true
             isMinifyEnabled = obfuscationEnabled
@@ -65,7 +65,7 @@ dependencies {
     implementation(project(Modules.Common.util))
     implementation(project(Modules.Common.uikit))
 //    implementation(project(Modules.Common.component))
-//    implementation(project(Modules.Common.network))
+    implementation(project(Modules.Common.network))
 
     implementation(project(Modules.Feature.main.api))
     implementation(project(Modules.Feature.main.impl))
@@ -75,6 +75,9 @@ dependencies {
 
     implementation(project(Modules.Feature.settings.api))
     implementation(project(Modules.Feature.settings.impl))
+
+    implementation(project(Modules.Feature.knowledge.api))
+    implementation(project(Modules.Feature.knowledge.impl))
 
     implementation(Deps.AndroidX.core)
     implementation(Deps.AndroidX.appcompat)

@@ -30,6 +30,7 @@
                     android:src="@drawable/ic_baseline_arrow_back_24" />
 
                 <TextView
+                    android:id="@+id/toolbar_title"
                     style="@style/Text.White.24sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

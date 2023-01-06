@@ -3,7 +3,7 @@ package ru.vsibi.miners_hub.knowledge_impl.data.storage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.vsibi.miners_hub.data.db.DatabaseFactory
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 
 class MinerStorage(
     databaseFactory: DatabaseFactory,

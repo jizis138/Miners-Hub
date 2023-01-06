@@ -19,6 +19,7 @@ object EnvironmentModule {
                     refreshTokenUrl = refreshTokenUrl,
                 ),
                 isDebug = BuildConfig.IS_DEBUG,
+                appVersion = BuildConfig.VERSION_NAME
             )
         }
     }

@@ -3,6 +3,7 @@
  */
 package ru.vsibi.miners_hub.knowledge_impl.presentation.main.adapter
 
+import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderKnowledgeBinding
 import ru.vsibi.miners_hub.knowledge_impl.presentation.main.model.KnowledgeViewItem
@@ -25,6 +26,9 @@ fun createSearchDeviceDelegate() =
                 icon.setImageResource(iconRes)
                 title.setPrintableText(titleText)
                 root.onClick(onClicked)
+
+                lock.isVisible = item.isLocked
+
             }
         }
     }

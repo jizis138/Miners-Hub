@@ -4,7 +4,7 @@
 package ru.vsibi.miners_hub.knowledge_impl.domain.logic
 
 import kotlinx.coroutines.flow.Flow
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 import ru.vsibi.miners_hub.knowledge_impl.domain.repo.MinerRepository
 
 class MinerInteractor(

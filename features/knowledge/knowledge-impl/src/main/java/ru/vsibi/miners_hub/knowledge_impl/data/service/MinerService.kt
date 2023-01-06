@@ -4,15 +4,11 @@
 package ru.vsibi.miners_hub.knowledge_impl.data.service
 
 import android.util.Log
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
 import ru.vsibi.miners_hub.knowledge_impl.data.service.model.miner_response.MinerResponseItem
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Schema
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Schema
 import ru.vsibi.miners_hub.network.client.NetworkClientFactory
-import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class MinerService(
@@ -41,7 +37,9 @@ class MinerService(
             Miner(
                 id = 0,
                 name = it.name,
-                schemas = itemSchemas
+                schemas = itemSchemas,
+                count = 0,
+                tag = "Asic"
             )
         }
     }

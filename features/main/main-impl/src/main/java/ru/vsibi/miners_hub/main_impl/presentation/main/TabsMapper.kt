@@ -6,16 +6,16 @@ import ru.vsibi.miners_hub.main_impl.R
 
 object TabsMapper {
     fun mapItemIdToTab(item: MenuItem) = when (item.itemId) {
-        R.id.feed -> MainFeature.TabType.Notes
-        R.id.rates -> MainFeature.TabType.Settings
-        R.id.chats -> MainFeature.TabType.Settings
+        R.id.rates -> MainFeature.TabType.Rates
+        R.id.mining -> MainFeature.TabType.Mining
         R.id.knowledge -> MainFeature.TabType.Knowledge
         R.id.settings -> MainFeature.TabType.Settings
         else -> null
     }
 
     fun mapTabToItemId(tab: MainFeature.TabType): Int = when (tab) {
-        MainFeature.TabType.Notes -> R.id.feed
+        MainFeature.TabType.Rates -> R.id.rates
+        MainFeature.TabType.Mining -> R.id.mining
         MainFeature.TabType.Settings -> R.id.settings
         MainFeature.TabType.Knowledge -> R.id.knowledge
     }

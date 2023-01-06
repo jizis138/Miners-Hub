@@ -56,6 +56,10 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
         cancel.onClick {
             requireActivity().onBackPressed()
         }
+
+        done.onClick {
+            vm.doneClicked()
+        }
     }
 
     override fun onUpdateState(state: TotalState) = with(binding){

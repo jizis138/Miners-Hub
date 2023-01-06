@@ -2,8 +2,8 @@ package ru.vsibi.miners_hub.knowledge_impl.data.storage
 
 import ru.vsibi.miners_hub.knowledge_impl.data.storage.model.MinerTable
 import ru.vsibi.miners_hub.knowledge_impl.data.storage.model.SchemaTable
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Schema
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Schema
 
 
 object MinerDbMapper {
@@ -16,9 +16,11 @@ object MinerDbMapper {
                 Schema(
                     algorithmName = it.algorithmName,
                     hashrate = it.hashrate,
-                    power = it.power
+                    power = it.power,
                 )
-            }
+            },
+            count = minerTable.count,
+            tag = minerTable.tag
         )
     }
 
@@ -30,9 +32,11 @@ object MinerDbMapper {
                 SchemaTable(
                     algorithmName = it.algorithmName,
                     hashrate = it.hashrate,
-                    power = it.power
+                    power = it.power,
                 )
-            }
+            },
+            count = miner.count,
+            tag = miner.tag
         )
     }
 }

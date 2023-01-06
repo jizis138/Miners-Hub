@@ -2,8 +2,7 @@ package ru.vsibi.miners_hub.knowledge_impl.data.service
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Difficulty
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.ExchangeRate
+import ru.vsibi.miners_hub.knowledge_api.model.ExchangeRate
 import ru.vsibi.miners_hub.network.client.NetworkClientFactory
 
 class ExchangeRateService (
@@ -21,6 +20,7 @@ class ExchangeRateService (
         return response.toMap().entries.map {
             ExchangeRate(
                 coin = "BTC",
+                coinFullName = "Bitcoin",
                 currency = it.key,
                 value = it.value.jsonObject["buy"].toString().toDouble()
             )

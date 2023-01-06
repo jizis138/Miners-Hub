@@ -2,32 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/feed"
-        android:title="@string/feed"
-        android:icon="@drawable/ic_feed"
-        android:visible="false"
+        android:id="@+id/knowledge"
+        android:title="@string/knowledge"
+        android:icon="@drawable/ic_resource_public"
         />
 
     <item
         android:id="@+id/rates"
         android:title="@string/rates"
         android:icon="@drawable/ic_chart"
-        android:visible="false"
         />
 
 
     <item
-        android:id="@+id/chats"
-        android:title="@string/chats"
-        android:icon="@drawable/ic_forum"
-        android:visible="false"
-        />
-
-
-    <item
-        android:id="@+id/knowledge"
-        android:title="@string/knowledge"
-        android:icon="@drawable/ic_resource_public"
+        android:id="@+id/mining"
+        android:title="@string/mining"
+        android:icon="@drawable/ic_farm_machine_tractor_vehicle_svgrepo_com"
         />
 
 

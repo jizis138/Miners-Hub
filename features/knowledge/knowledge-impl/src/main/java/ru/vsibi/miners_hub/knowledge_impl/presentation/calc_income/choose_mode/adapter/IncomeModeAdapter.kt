@@ -3,6 +3,7 @@
  */
 package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode.adapter
 
+import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderIncomeModeBinding
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderKnowledgeBinding
@@ -29,6 +30,7 @@ fun createSearchDeviceDelegate() =
             root.onClick{
                 item.onClicked()
             }
+            lock.isVisible = item.isLocked
         }
     }
 

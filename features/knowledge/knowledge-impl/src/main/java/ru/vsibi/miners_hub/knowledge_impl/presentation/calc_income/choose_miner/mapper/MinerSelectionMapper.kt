@@ -3,18 +3,31 @@
  */
 package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.mapper
 
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import android.content.Context
+import android.content.res.Resources
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.model.MinerSelectionViewItem
 import ru.vsibi.miners_hub.util.PrintableText
+import ru.vsibi.miners_hub.util.getPrintableText
 
-object MinerSelectionMapper {
-    fun mapMinersToViewItem(miners: List<Miner>) = miners.map {
-        val schema = it.schemas.firstOrNull()
+class MinerSelectionMapper(
+    private val context : Context
+) {
+    fun mapMinersToViewItem(
+        miners: List<Miner>,
+        addedMiners: List<MinerSelectionViewItem>
+    ) = miners.map { miner ->
+        val schema = miner.schemas.firstOrNull()
         val hashrate = schema?.hashrate?.div(1000000000000f) ?: ""
+
         MinerSelectionViewItem(
-            id = it.id,
-            name = PrintableText.Raw(it.name),
+            id = miner.id,
+            name = PrintableText.Raw(miner.name),
             hashrate = PrintableText.Raw("$hashrate TH")
-        )
+        ).also {
+            it.count = addedMiners.find { minerSelectionViewItem ->
+                minerSelectionViewItem.id == miner.id || miner.name == context.getPrintableText(minerSelectionViewItem.name)
+            }?.count ?: miner.count
+        }
     }
 }

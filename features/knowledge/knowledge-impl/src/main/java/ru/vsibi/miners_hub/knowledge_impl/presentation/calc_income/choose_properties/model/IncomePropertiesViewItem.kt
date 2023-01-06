@@ -3,7 +3,6 @@
  */
 package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model
 
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
 import ru.vsibi.miners_hub.util.PrintableText
 
 sealed class IncomePropertiesViewItem {

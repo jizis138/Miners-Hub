@@ -12,7 +12,8 @@ interface MainFeature {
     val mainNavigationContract: NavigationContractApi<NoParams, NoResult>
 
     enum class TabType {
-        Notes,
+        Rates,
+        Mining,
         Settings,
         Knowledge
     }

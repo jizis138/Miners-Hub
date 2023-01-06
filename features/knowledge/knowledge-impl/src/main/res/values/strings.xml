@@ -15,4 +15,9 @@
     <string name="power_th">Мощность TH</string>
     <string name="power_kwt">Потребление кВт</string>
     <string name="share_calculation">Поделиться результатами</string>
+    <string name="add_normal_miner">Добавить стандартный майнер</string>
+    <string name="add_universal_miner">Добавить майнер с универсальными параметрами</string>
+    <string name="create_farm">Создание фермы</string>
+    <string name="edit_farm">Редактирование фермы</string>
+    <string name="locked">Раздел пока не доступен. Следите за обновлениями</string>
 </resources>

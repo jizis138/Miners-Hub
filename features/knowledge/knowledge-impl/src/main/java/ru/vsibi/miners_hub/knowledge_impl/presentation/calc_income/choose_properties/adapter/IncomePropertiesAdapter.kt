@@ -5,27 +5,36 @@ package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_prope
 
 import androidx.core.widget.doAfterTextChanged
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderElectricityBinding
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderMinerPropertyBinding
-import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderMinerSelectionBinding
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderMinerUniversalPropertyBinding
 import ru.vsibi.miners_hub.knowledge_impl.databinding.HolderPropertiesChooseMinerBinding
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model.IncomePropertiesViewItem
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model.MinerViewItem
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.model.UniversalMinerViewItem
+import ru.vsibi.miners_hub.uikit.animation.AddableItemAnimator
+import ru.vsibi.miners_hub.uikit.animation.SimpleCommonAnimator
+import ru.vsibi.miners_hub.uikit.animation.SlideInDownAnimator
 import ru.vsibi.miners_hub.util.*
 
-class IncomePropertiesAdapter(onRemoveClicked: (UniversalMinerViewItem) -> Unit) :
+
+class IncomePropertiesAdapter(
+    minersAdapter: MinersAdapter,
+    onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit
+) :
     AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
         AdapterUtil.adapterDelegatesManager(
-            createChooseMinerDelegate(),
-            createUniversalDelegate(onRemoveClicked),
-            createElectricityDelegate()
+            createChooseMinerDelegate(minersAdapter),
+            createElectricityDelegate(onElectricityPriceChanged)
         )
     )
 
-fun createChooseMinerDelegate() =
+fun createChooseMinerDelegate(minersAdapter: MinersAdapter) =
     adapterDelegateViewBinding<IncomePropertiesViewItem.MinerSelection,
             HolderPropertiesChooseMinerBinding>(
         HolderPropertiesChooseMinerBinding::inflate,
@@ -36,11 +45,8 @@ fun createChooseMinerDelegate() =
             root.onClick {
                 item.onClicked()
             }
-
-            val adapter = MinersAdapter()
-            minersList.adapter = adapter
-
-            adapter.items = item.items
+            minersList.adapter = minersAdapter
+            minersAdapter.items = item.items
         }
     }
 
@@ -63,7 +69,7 @@ fun createUniversalDelegate(onRemoveClicked: (UniversalMinerViewItem) -> Unit) =
         }
     }
 
-fun createElectricityDelegate() =
+fun createElectricityDelegate(onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit) =
     adapterDelegateViewBinding<IncomePropertiesViewItem.ElectricitySelection,
             HolderElectricityBinding>(
         HolderElectricityBinding::inflate,
@@ -71,47 +77,64 @@ fun createElectricityDelegate() =
         bindWithBinding {
             title.setPrintableText(item.title)
 
+            if (item.electricityPrice != 0.0) {
+                count.setText(item.electricityPrice.toString())
+            }
             count.doAfterTextChanged {
-                item.electricityPrice = it.toString().toDouble()
+                if (!it.isNullOrEmpty()) {
+                    item.electricityPrice = it.toString().toDouble()
+                } else {
+                    item.electricityPrice = 0.0
+                }
+                onElectricityPriceChanged(item)
             }
         }
     }
 
-class MinersAdapter : AsyncListDifferDelegationAdapter<MinerViewItem>(
-    AdapterUtil.diffUtilItemCallbackEquals(),
-    AdapterUtil.adapterDelegatesManager(
-        createMinerDelegate()
-    )
-)
+class MinersAdapter(
+    onRemoveViewClicked: (MinerViewItem) -> Unit,
+    onItemCountChanged: (MinerViewItem) -> Unit
+) :
+    AsyncListDifferDelegationAdapter<MinerViewItem>(
+        AdapterUtil.diffUtilItemCallbackEquals(),
+        AdapterUtil.adapterDelegatesManager(
+            createMinerDelegate(onRemoveViewClicked, onItemCountChanged)
+        )
+    ) {
 
-fun createMinerDelegate() =
+}
+
+fun createMinerDelegate(
+    onRemoveClicked: (MinerViewItem) -> Unit,
+    onItemCountChanged: (MinerViewItem) -> Unit
+) =
     adapterDelegateViewBinding<MinerViewItem,
             HolderMinerPropertyBinding>(
         HolderMinerPropertyBinding::inflate,
     ) {
+        binding.remove.onClick {
+            onRemoveClicked(item)
+        }
+
         bindWithBinding {
+            remove.increaseHitArea(16.dp)
             title.setPrintableText(item.name)
-            description.setPrintableText(item.hashrate)
+            description.setPrintableText(item.description)
 
             plus.onClick {
                 item.count += 1
                 count.setText(item.count.toString())
+                onItemCountChanged(item)
             }
 
             minus.onClick {
                 if (item.count == 0) return@onClick
                 item.count -= 1
                 count.setText(item.count.toString())
+                onItemCountChanged(item)
             }
 
             count.setText(item.count.toString())
-            count.doAfterTextChanged {
-                if (!it.isNullOrEmpty()) {
-                    item.count = it.toString().toInt()
-                } else {
-                    item.count = 1
-                }
-            }
         }
     }
 
@@ -135,7 +158,7 @@ fun createUniversalMinerDelegate(
             onRemoveClicked(item)
         }
         bindWithBinding {
-            minerTitle.setPrintableText(item.name)
+            minerTitle.text = item.name
 
             plus.onClick {
                 item.count += 1

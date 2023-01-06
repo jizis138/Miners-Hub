@@ -24,5 +24,7 @@ object Modules {
         val notes = FeatureTemplate("notes")
         val settings = FeatureTemplate("settings")
         val knowledge = FeatureTemplate("knowledge")
+        val mining = FeatureTemplate("mining")
+        val exchangeRate = FeatureTemplate("exchange-rate")
     }
 }

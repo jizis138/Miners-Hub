@@ -25,9 +25,11 @@ import ru.vsibi.miners_hub.knowledge_impl.domain.repo.DifficultyRepository
 import ru.vsibi.miners_hub.knowledge_impl.domain.repo.ExchangeRateRepository
 import ru.vsibi.miners_hub.knowledge_impl.domain.repo.MinerRepository
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.MinerSelectionViewModel
+import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.mapper.MinerSelectionMapper
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode.IncomeModeViewModel
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesViewModel
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.mapper.MinerMapper
+import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.create_universal_miner.CreateUniversalMinerViewModel
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.total.TotalViewModel
 import ru.vsibi.miners_hub.knowledge_impl.presentation.main.KnowledgeViewModel
 import ru.vsibi.miners_hub.network.di.NetworkClientFactoryQualifier
@@ -71,7 +73,8 @@ object KnowledgeModule {
         viewModel(::IncomeModeViewModel)
         viewModel(::MinerSelectionViewModel)
         viewModel(::TotalViewModel)
-
+        viewModel(::CreateUniversalMinerViewModel)
         factory(::MinerMapper)
+        factory(::MinerSelectionMapper)
     }
 }

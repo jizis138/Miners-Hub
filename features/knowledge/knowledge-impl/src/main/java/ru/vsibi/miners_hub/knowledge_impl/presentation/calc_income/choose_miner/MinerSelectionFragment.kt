@@ -56,13 +56,10 @@ class MinerSelectionFragment :
     }
 
     override fun onUpdateState(state: MinerSelectionState) {
-        adapter.items = state.miners.map { item ->
-            item.isSelected =
-                state.addedMiners.find { it.id == item.id
-                        || getPrintableText(it.name) == getPrintableText(item.name) } != null
-            item
+        adapter.items = state.miners
+        binding.list.post {
+            adapter.notifyDataSetChanged()
         }
-        adapter.notifyDataSetChanged()
 
         binding.progress.isVisible = state.isLoad
     }

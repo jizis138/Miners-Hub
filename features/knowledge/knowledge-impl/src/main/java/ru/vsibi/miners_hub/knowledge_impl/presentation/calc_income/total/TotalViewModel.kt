@@ -224,7 +224,7 @@ class TotalViewModel(
                     ),
                     DetailViewItem(
                         title = PrintableText.Raw("Суммарное потребление"),
-                        description = PrintableText.Raw("$totalPower кВт")
+                        description = PrintableText.Raw("$totalPower Вт")
                     ),
                     DetailViewItem(
                         title = PrintableText.Raw("Грязный доход за месяц"),

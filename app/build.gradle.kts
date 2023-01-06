@@ -79,6 +79,12 @@ dependencies {
     implementation(project(Modules.Feature.knowledge.api))
     implementation(project(Modules.Feature.knowledge.impl))
 
+    implementation(project(Modules.Feature.mining.api))
+    implementation(project(Modules.Feature.mining.impl))
+
+    implementation(project(Modules.Feature.exchangeRate.api))
+    implementation(project(Modules.Feature.exchangeRate.impl))
+
     implementation(Deps.AndroidX.core)
     implementation(Deps.AndroidX.appcompat)
     implementation(Deps.AndroidX.fragment)

@@ -27,5 +27,18 @@
             android:textStyle="bold"
             tools:text="Расчет доходности фермы" />
 
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/lock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_baseline_lock_24" />
+        </FrameLayout>
     </LinearLayout>
 </FrameLayout>

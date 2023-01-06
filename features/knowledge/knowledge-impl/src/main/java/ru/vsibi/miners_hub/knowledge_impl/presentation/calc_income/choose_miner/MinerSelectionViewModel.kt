@@ -7,7 +7,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 import ru.vsibi.miners_hub.knowledge_impl.domain.logic.MinerInteractor
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.mapper.MinerSelectionMapper
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner.model.MinerSelectionViewItem
@@ -20,8 +20,9 @@ class MinerSelectionViewModel(
     router: RootRouter,
     requestParams: RequestParams,
     private val minerInteractor: MinerInteractor,
-    private val params : MinerSelectionNavigationContract.Params
-    ) : BaseViewModel<MinerSelectionState, MinerSelectionEvent>(
+    private val params: MinerSelectionNavigationContract.Params,
+    private val minerSelectionMapper : MinerSelectionMapper
+) : BaseViewModel<MinerSelectionState, MinerSelectionEvent>(
     router, requestParams
 ) {
 
@@ -35,7 +36,14 @@ class MinerSelectionViewModel(
     private var selectionMiners = mutableListOf<MinerSelectionViewItem>()
 
     override fun firstState(): MinerSelectionState {
-        return MinerSelectionState(miners = listOf(), isLoad = true, addedMiners = MinerSelectionMapper.mapMinersToViewItem(params.addedMiners))
+        return MinerSelectionState(
+            miners = listOf(),
+            isLoad = true,
+            addedMiners = minerSelectionMapper.mapMinersToViewItem(
+                params.addedMiners.distinct(),
+                listOf()
+            )
+        )
     }
 
     private suspend fun fetchMiners() {
@@ -45,7 +53,9 @@ class MinerSelectionViewModel(
             miners = response.toMutableList()
             selectionMiners = response.filter {
                 it.schemas.find { it.algorithmName == "SHA-256" } != null
-            }.let(MinerSelectionMapper::mapMinersToViewItem).toMutableList()
+            }.let {
+                minerSelectionMapper.mapMinersToViewItem(it, currentViewState.addedMiners).toMutableList()
+            }
             updateState {
                 it.copy(
                     miners = selectionMiners
@@ -72,9 +82,32 @@ class MinerSelectionViewModel(
     fun onMinerClicked(minerSelectionViewItem: MinerSelectionViewItem, context: Context) {
         updateState { state ->
             val newList = if (minerSelectionViewItem.isSelected) {
-                state.addedMiners.filter { context.getPrintableText(it.name) != context.getPrintableText(minerSelectionViewItem.name)}
+                val addedList = state.addedMiners
+                val minerToChangeCount = addedList.find {
+                    /***
+                     * TODO Заменить проверку на id
+                     */
+                    context.getPrintableText(it.name) == context.getPrintableText(minerSelectionViewItem.name)
+                }
+                if (minerToChangeCount == null) {
+                    state.addedMiners.plus(minerSelectionViewItem)
+                }else{
+                    addedList.map {
+                        //TODO Заменить проверку на id
+                        if(context.getPrintableText(it.name) == context.getPrintableText(minerSelectionViewItem.name)){
+                            minerSelectionViewItem
+                        }else{
+                            it
+                        }
+                    }
+                }
             } else {
-                state.addedMiners.plus(minerSelectionViewItem)
+                state.addedMiners.filter {
+                    //TODO Заменить проверку на id
+                    context.getPrintableText(it.name) != context.getPrintableText(
+                        minerSelectionViewItem.name
+                    )
+                }
             }
             state.copy(addedMiners = newList)
         }
@@ -82,7 +115,9 @@ class MinerSelectionViewModel(
 
     fun onSelectReady(context: Context) {
         val addedMiners = currentViewState.addedMiners.mapNotNull { selectionItem ->
-            miners.find { selectionItem.id == it.id ||  context.getPrintableText(selectionItem.name) == it.name}
+            miners.find { selectionItem.id == it.id || context.getPrintableText(selectionItem.name) == it.name }?.copy(
+                count = selectionItem.count
+            )
         }
         exitWithResult(
             MinerSelectionNavigationContract.createResult(

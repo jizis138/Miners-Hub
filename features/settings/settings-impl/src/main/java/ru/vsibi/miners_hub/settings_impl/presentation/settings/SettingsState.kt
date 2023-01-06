@@ -3,5 +3,8 @@
  */
 package ru.vsibi.miners_hub.settings_impl.presentation.settings
 
-class SettingsState {
-}
+import ru.vsibi.miners_hub.util.PrintableText
+
+data class SettingsState(
+    val appVersion : PrintableText
+)

@@ -10,9 +10,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import ru.vsibi.miners_hub.core.environment.Environment
+import ru.vsibi.miners_hub.exchange_rate_api.ExchangeRateFeature
 import ru.vsibi.miners_hub.knowledge_api.KnowledgeFeature
 import ru.vsibi.miners_hub.main_api.MainFeature
 import ru.vsibi.miners_hub.main_impl.domain.logic.OuterTabNavigator
+import ru.vsibi.miners_hub.mining_api.MiningFeature
 import ru.vsibi.miners_hub.mvi.BaseViewModel
 import ru.vsibi.miners_hub.mvi.provideSavedState
 import ru.vsibi.miners_hub.navigation.RootRouter
@@ -29,13 +31,15 @@ class MainViewModel(
     savedStateHandle: SavedStateHandle,
     private val outerTabNavigator: OuterTabNavigator,
     private val environment: Environment,
-    private val features : Features
+    private val features: Features
 ) : BaseViewModel<MainState, MainEvent>(router, requestParams) {
 
     class Features(
         val notesFeature: NotesFeature,
         val settingsFeature: SettingsFeature,
         val knowledgeFeature: KnowledgeFeature,
+        val exchangeRateFeature: ExchangeRateFeature,
+        val miningFeature: MiningFeature,
     )
 
     private val fragmentsStack = Stack<MainFeature.TabType>()
@@ -43,7 +47,8 @@ class MainViewModel(
 //    private val debugLauncher = registerScreen(features.debugFeature.navigationContract)
 
     init {
-        val savedState = savedStateHandle.provideSavedState { SavedState(tabsStack = fragmentsStack) }
+        val savedState =
+            savedStateHandle.provideSavedState { SavedState(tabsStack = fragmentsStack) }
         val tabsStack = savedState?.tabsStack ?: Stack()
 
         if (tabsStack.isNotEmpty()) {
@@ -101,11 +106,13 @@ class MainViewModel(
 
     fun buildFragment(type: MainFeature.TabType): Fragment {
         return when (type) {
-            MainFeature.TabType.Notes -> features.notesFeature.navigationContract.createParams()
-                .createFragment()
             MainFeature.TabType.Settings -> features.settingsFeature.navigationContract.createParams()
                 .createFragment()
             MainFeature.TabType.Knowledge -> features.knowledgeFeature.navigationContract.createParams()
+                .createFragment()
+            MainFeature.TabType.Rates -> features.exchangeRateFeature.navigationContract.createParams()
+                .createFragment()
+            MainFeature.TabType.Mining -> features.miningFeature.navigationContract.createParams()
                 .createFragment()
         }.apply {
             this.requestParams = RequestParams.createWithIgnoreResult()

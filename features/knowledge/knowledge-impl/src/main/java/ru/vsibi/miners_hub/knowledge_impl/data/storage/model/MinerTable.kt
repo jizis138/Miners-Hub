@@ -9,12 +9,14 @@ class MinerTable(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
-    val schemas: List<SchemaTable>
+    val schemas: List<SchemaTable>,
+    val count : Int,
+    val tag : String
 )
 
 @Serializable
 data class SchemaTable(
-    val algorithmName: String?,
+    val algorithmName: String,
     val hashrate: Long,
     val power: Long
 )

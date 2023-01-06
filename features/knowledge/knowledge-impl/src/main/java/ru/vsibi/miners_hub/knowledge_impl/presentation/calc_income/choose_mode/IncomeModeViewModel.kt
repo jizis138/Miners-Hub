@@ -3,6 +3,8 @@
  */
 package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode
 
+import ru.vsibi.miners_hub.knowledge_api.KnowledgeFeature
+import ru.vsibi.miners_hub.knowledge_impl.R
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode.model.IncomeModeViewItem
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesEvent
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesNavigationContract
@@ -20,27 +22,30 @@ class IncomeModeViewModel(
     router, requestParams
 ) {
 
-    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract)
+    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract){}
 
     override fun firstState(): IncomeModeState {
         return IncomeModeState(
             items = listOf(
                 IncomeModeViewItem(
                     title = PrintableText.Raw("Расчет доходности"),
-                    description = PrintableText.Raw("на примере существующих майнеров, с учетом стоимости электричества, текущего курса и сложности"),
+                    description = PrintableText.Raw("с учетом хэшрейта фермы, стоимости электричества, текущего курса, сложности сети и награды за блок"),
                     onClicked = {
-                        incomePropertiesLauncher.launch()
-                    }
-                ),
-                IncomeModeViewItem(
-                    title = PrintableText.Raw("Универсальные расчеты"),
-                    description = PrintableText.Raw("с любой мощностью майнеров, любым курсом валюты и сложностью"),
-                    onClicked = {}
+                        incomePropertiesLauncher.launch(KnowledgeFeature.IncomePropertiesParams(
+                            mode = KnowledgeFeature.Mode.Normal
+                        ))
+                    },
+                    isLocked = false
                 ),
                 IncomeModeViewItem(
                     title = PrintableText.Raw("История расчетов"),
                     description = null,
-                    onClicked = {}
+                    onClicked = {
+                        showPopup(PrintableText.StringResource(
+                            R.string.locked
+                        ))
+                    },
+                    isLocked = true
                 ),
             )
         )

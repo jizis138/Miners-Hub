@@ -2,10 +2,8 @@ package ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_miner
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 import ru.vsibi.miners_hub.navigation.contract.NavigationContract
-import ru.vsibi.miners_hub.navigation.model.NoParams
-import ru.vsibi.miners_hub.navigation.model.NoResult
 
 object MinerSelectionNavigationContract :
     NavigationContract<MinerSelectionNavigationContract.Params, MinerSelectionNavigationContract.Result>(MinerSelectionFragment::class) {

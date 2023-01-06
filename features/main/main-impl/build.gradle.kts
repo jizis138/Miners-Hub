@@ -11,6 +11,8 @@ dependencies {
     implementation(project(Modules.Feature.notes.api))
     implementation(project(Modules.Feature.settings.api))
     implementation(project(Modules.Feature.knowledge.api))
+    implementation(project(Modules.Feature.mining.api))
+    implementation(project(Modules.Feature.exchangeRate.api))
 
     implementation(project(Modules.Common.core))
     implementation(project(Modules.Common.di))

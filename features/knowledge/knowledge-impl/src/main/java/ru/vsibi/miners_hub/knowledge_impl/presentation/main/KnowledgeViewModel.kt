@@ -5,7 +5,6 @@ package ru.vsibi.miners_hub.knowledge_impl.presentation.main
 
 import ru.vsibi.miners_hub.knowledge_impl.R
 import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_mode.IncomeModeNavigationContract
-import ru.vsibi.miners_hub.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesNavigationContract
 import ru.vsibi.miners_hub.knowledge_impl.presentation.main.model.KnowledgeViewItem
 import ru.vsibi.miners_hub.mvi.BaseViewModel
 import ru.vsibi.miners_hub.navigation.RootRouter
@@ -31,8 +30,21 @@ class KnowledgeViewModel(
                     ),
                     onClicked = {
                         incomeCalculationLauncher.launch()
-                    }
-                )
+                    },
+                    isLocked = false
+                ),
+                KnowledgeViewItem(
+                    iconRes = R.drawable.ic_baseline_help_24,
+                    titleText = PrintableText.Raw(
+                        "Обучение"
+                    ),
+                    onClicked = {
+                        showPopup(PrintableText.StringResource(
+                            R.string.locked
+                        ))
+                    },
+                    isLocked = true
+                ),
             )
         )
     }

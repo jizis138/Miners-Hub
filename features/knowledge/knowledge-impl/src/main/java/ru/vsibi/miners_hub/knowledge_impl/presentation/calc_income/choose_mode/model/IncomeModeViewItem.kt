@@ -8,5 +8,6 @@ import ru.vsibi.miners_hub.util.PrintableText
 data class IncomeModeViewItem(
     val title: PrintableText,
     val description: PrintableText?,
-    val onClicked : () -> Unit
+    val onClicked : () -> Unit,
+    val isLocked : Boolean
 )

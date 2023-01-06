@@ -11,7 +11,7 @@ import ru.vsibi.miners_hub.knowledge_impl.data.storage.model.MinerTable
     entities = [
         MinerTable::class
     ],
-    version = 2
+    version = 4
 )
 @TypeConverters(
     LocalDateConverter::class,

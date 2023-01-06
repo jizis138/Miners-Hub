@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 import ru.vsibi.miners_hub.core.coroutines.DispatchersProvider
 import ru.vsibi.miners_hub.knowledge_impl.data.service.MinerService
 import ru.vsibi.miners_hub.knowledge_impl.data.storage.MinerStorage
-import ru.vsibi.miners_hub.knowledge_impl.domain.entity.Miner
+import ru.vsibi.miners_hub.knowledge_api.model.Miner
 import ru.vsibi.miners_hub.knowledge_impl.domain.repo.MinerRepository
 import ru.vsibi.miners_hub.util.callForResult
 import ru.vsibi.miners_hub.util.onSuccess

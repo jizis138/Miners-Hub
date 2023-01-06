@@ -15,6 +15,8 @@ import ru.vsibi.miners_hub.presentation.base.util.noEventsExpected
 import ru.vsibi.miners_hub.presentation.base.util.viewModel
 import ru.vsibi.miners_hub.uikit.SpacingItemDecoration
 import ru.vsibi.miners_hub.util.dp
+import ru.vsibi.miners_hub.util.onClick
+import ru.vsibi.miners_hub.util.setPrintableTextOrGone
 
 class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_total) {
 
@@ -22,7 +24,14 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
         getParamsInterface = TotalNavigationContract.getParams
     )
 
-    private val adapter = TotalAdapter()
+    private val adapter = TotalAdapter(
+        onExpandClicked = {
+            vm.expandClicked()
+        },
+        onShareClicked = {
+            vm.shareClicked()
+        }
+    )
 
     private val binding by fragmentViewBinding(FragmentTotalBinding::bind)
 
@@ -43,12 +52,27 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
                 12.dp,
             )
         })
+
+        cancel.onClick {
+            requireActivity().onBackPressed()
+        }
+
+        done.onClick {
+            vm.doneClicked()
+        }
     }
 
-    override fun onUpdateState(state: TotalState) {
+    override fun onUpdateState(state: TotalState) = with(binding){
+        calculationState.setPrintableTextOrGone(state.calculationText)
         adapter.items = state.items
     }
 
-    override fun onRecieveEvent(event: TotalEvent) = noEventsExpected()
+    override fun onRecieveEvent(event: TotalEvent){
+        when(event){
+            is TotalEvent.ExpandClicked -> {
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
 
 }

@@ -39,7 +39,6 @@ object Deps {
     const val inputMask = "com.redmadrobot:input-mask-android:${Versions.inputMask}"
 
     const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0"
-    const val androidEmbedded = "com.journeyapps:zxing-android-embedded:4.3.0"
 
     object Firebase {
         const val crashlitycs = "com.google.firebase:firebase-crashlytics:18.2.7"

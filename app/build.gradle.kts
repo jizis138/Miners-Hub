@@ -27,6 +27,9 @@ android {
         getByName(BuildType.release) {
             booleanBuildConfigField("IS_DEBUG", false)
 
+            stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
+            stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
+
             isMinifyEnabled = obfuscationEnabled
             isShrinkResources = obfuscationEnabled
         }
@@ -99,7 +102,6 @@ dependencies {
     implementation(Deps.Android.material)
 
     implementation(Deps.adapterDelegates)
-    implementation(Deps.androidEmbedded)
 
     implementation(Deps.Koin.core)
 

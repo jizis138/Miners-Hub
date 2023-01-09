@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ru.vsibi.miners_hub.view.ProvideInsetsCoordinatorLayout
+<ru.vsibi.btc_mathematic.view.ProvideInsetsCoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"

@@ -6,7 +6,7 @@ dependencyResolutionManagement {
         maven(url = "https://jitpack.io")
     }
 }
-rootProject.name = "Miners Hub"
+rootProject.name = "BTC Mathematic"
 include(":app")
 include(":common:core")
 include(":common:util")

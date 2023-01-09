@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <ru.vsibi.miners_hub.uikit.MomentoToolbar
+    <ru.vsibi.btc_mathematic.uikit.MomentoToolbar
         android:id="@+id/momentoToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

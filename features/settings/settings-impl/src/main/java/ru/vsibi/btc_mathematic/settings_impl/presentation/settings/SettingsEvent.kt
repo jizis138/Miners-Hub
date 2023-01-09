@@ -1,0 +1,3 @@
+package ru.vsibi.btc_mathematic.settings_impl.presentation.settings
+
+sealed interface SettingsEvent

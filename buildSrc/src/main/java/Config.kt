@@ -1,5 +1,5 @@
 object Config {
-    const val applicationId = "ru.vsibi.miners_hub"
+    const val applicationId = "ru.vsibi.btc_mathematic"
     const val compileSdk = 31
     const val targetSdk = 31
     const val minSdk = "23"

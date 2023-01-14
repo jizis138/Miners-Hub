@@ -9,7 +9,10 @@ import ru.vsibi.btc_mathematic.navigation.contract.NavigationContract
 import ru.vsibi.btc_mathematic.navigation.model.*
 import ru.vsibi.btc_mathematic.util.kotlin.getAndSet
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.vsibi.btc_mathematic.settings_api.SettingsFeature
 
 /**
  * ViewModel для [MainActivity].
@@ -29,10 +32,11 @@ class MainActivityViewModel(
     router: RootRouter,
     private val features: Features,
     private val deepLinkNavigator: DeepLinkNavigator,
-) : BaseViewModel<MainActivityState, Nothing>(requestParams = REQUEST_PARAMS, router = router) {
+) : BaseViewModel<MainActivityState, MainActivityEvent>(requestParams = REQUEST_PARAMS, router = router) {
 
     class Features(
         val mainFeature: MainFeature,
+        val settingsFeature: SettingsFeature
     )
 
 //    private val authLauncher =
@@ -69,6 +73,12 @@ class MainActivityViewModel(
 //            }
 //            .launchIn(viewModelScope)
         openAuthedRootScreen()
+
+        features.settingsFeature.localeFlow.onEach {
+            when(it){
+                is SettingsFeature.LocaleEvent.LocaleChanged -> changeLocale(it.locale)
+            }
+        }.launchIn(viewModelScope)
     }
 
     override fun firstState(): MainActivityState {
@@ -187,5 +197,9 @@ class MainActivityViewModel(
 
         object GuestModeRootNavigationContract :
             NavigationContract<NoParams, NoResult>(Fragment::class)
+    }
+
+    private fun changeLocale(locale: String) {
+        sendEvent(MainActivityEvent.OnLocaleChanged(locale))
     }
 }

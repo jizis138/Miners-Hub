@@ -100,6 +100,7 @@ fun createDetailsItemsDelegate() =
     ) {
         bindWithBinding {
             title.setPrintableText(item.title)
+            val text = root.context.getPrintableText(item.description)
             description.setPrintableText(item.description)
         }
     }

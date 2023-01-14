@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feed">Новости</string>
+    <string name="exchange_rates">Курс валют</string>
+    <string name="rates">Курс</string>
+    <string name="chats">Чаты</string>
+    <string name="knowledge">Знания</string>
+    <string name="mining">Добыча</string>
+</resources>

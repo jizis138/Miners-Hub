@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="version_description">Version %1$s from %2$s</string>
+    <string name="language">Language</string>
+    <string name="lang_en" tools:ignore="ExtraTranslation">English</string>
+    <string name="lang_ru" tools:ignore="ExtraTranslation">Русский</string>
+</resources>

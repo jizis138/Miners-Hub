@@ -1,5 +1,6 @@
 package ru.vsibi.btc_mathematic.mining_impl.presentation.main.mapper
 
+import ru.vsibi.btc_mathematic.core.exceptions.NothingToFoundResponseException
 import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_api.model.CalculationState
 import ru.vsibi.btc_mathematic.knowledge_api.model.Farm
@@ -36,7 +37,7 @@ class MiningMapper(
                         totalPower = PrintableText.Raw("${totalHashrate.div(TH)} TH"),
                         incomePerDay = PrintableText.Raw("Ошибка"),
                         incomePerMonth = PrintableText.Raw("Ошибка"),
-                        calculationState = CalculationState.Error()
+                        calculationState = CalculationState.Error(NothingToFoundResponseException())
                     )
                 }
                 is CallResult.Success -> {

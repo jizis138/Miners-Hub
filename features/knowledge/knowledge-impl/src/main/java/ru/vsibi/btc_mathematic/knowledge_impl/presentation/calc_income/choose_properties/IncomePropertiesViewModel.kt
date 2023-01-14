@@ -66,7 +66,7 @@ class IncomePropertiesViewModel(
         }
         val minerViewItems: List<MinerViewItem>
         val electricitySelection = IncomePropertiesViewItem.ElectricitySelection(
-            title = PrintableText.Raw("Стоимость электричества"),
+            title = PrintableText.StringResource(R.string.electricity_host),
         )
         if (params.mode is KnowledgeFeature.Mode.EditFarm) {
             val farm = (params.mode as KnowledgeFeature.Mode.EditFarm).farm
@@ -81,7 +81,7 @@ class IncomePropertiesViewModel(
         }
         val items = listOf(
             IncomePropertiesViewItem.MinerSelection(
-                title = PrintableText.Raw("Выберите майнеры"),
+                title = PrintableText.StringResource(R.string.select_miner),
                 onClicked = {
                     sendEvent(IncomePropertiesEvent.ShowChooseMinerDialog)
                 },
@@ -124,7 +124,7 @@ class IncomePropertiesViewModel(
         }
     }
 
-    fun onCalculationClicked() {
+    fun onCalculationClicked(farmTitle : String) {
         val electricitySelection =
             currentViewState.items.filterIsInstance<IncomePropertiesViewItem.ElectricitySelection>()
 
@@ -137,7 +137,7 @@ class IncomePropertiesViewModel(
                         KnowledgeFeature.IncomePropertiesResult.FarmResult(
                             farm = Farm(
                                 id = System.currentTimeMillis(),
-                                title = "Моя Ферма",
+                                title = farmTitle,
                                 miners = addedMiners.plus(addedUniversalMiners),
                                 electricityPrice = Price(
                                     value = electricityPrice,
@@ -153,7 +153,7 @@ class IncomePropertiesViewModel(
                     IncomePropertiesNavigationContract.createResult(
                         KnowledgeFeature.IncomePropertiesResult.FarmResult(
                             farm = editingFarm?.copy(
-                                title = "Моя Ферма",
+                                title = farmTitle,
                                 miners = addedMiners.plus(addedUniversalMiners),
                                 electricityPrice = Price(
                                     value = electricityPrice,

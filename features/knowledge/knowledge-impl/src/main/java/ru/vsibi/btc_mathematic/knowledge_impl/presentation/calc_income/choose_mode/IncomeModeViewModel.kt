@@ -25,8 +25,8 @@ class IncomeModeViewModel(
         return IncomeModeState(
             items = listOf(
                 IncomeModeViewItem(
-                    title = PrintableText.Raw("Расчет доходности"),
-                    description = PrintableText.Raw("с учетом хэшрейта фермы, стоимости электричества, текущего курса, сложности сети и награды за блок"),
+                    title = PrintableText.StringResource(R.string.calc_income),
+                    description = PrintableText.StringResource(R.string.calc_income_desc),
                     onClicked = {
                         incomePropertiesLauncher.launch(KnowledgeFeature.IncomePropertiesParams(
                             mode = KnowledgeFeature.Mode.Normal
@@ -35,7 +35,7 @@ class IncomeModeViewModel(
                     isLocked = false
                 ),
                 IncomeModeViewItem(
-                    title = PrintableText.Raw("История расчетов"),
+                    title = PrintableText.StringResource(R.string.calc_history),
                     description = null,
                     onClicked = {
                         showPopup(PrintableText.StringResource(

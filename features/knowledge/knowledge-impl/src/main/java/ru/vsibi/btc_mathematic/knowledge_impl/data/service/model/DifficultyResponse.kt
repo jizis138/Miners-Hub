@@ -1,8 +1,10 @@
 package ru.vsibi.btc_mathematic.knowledge_impl.data.service.model
 
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class DifficultyResponse(
@@ -11,7 +13,8 @@ data class DifficultyResponse(
     @SerialName("coin")
     val coin: String,
     @SerialName("difficulty")
-    val difficulty: Double,
+    @Contextual
+    val difficulty: JsonElement,
     @SerialName("id")
     val id: String,
     @SerialName("name")

@@ -28,7 +28,7 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
             vm.expandClicked()
         },
         onShareClicked = {
-            vm.shareClicked()
+            vm.shareClicked(requireContext())
         }
     )
 
@@ -72,6 +72,11 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
                 adapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        vm.onStop()
     }
 
 }

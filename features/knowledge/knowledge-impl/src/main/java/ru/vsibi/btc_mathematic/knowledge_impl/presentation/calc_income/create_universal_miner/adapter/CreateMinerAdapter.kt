@@ -17,7 +17,7 @@ fun createUniversalDelegate() = adapterDelegateViewBinding<UniversalMinerViewIte
     HolderCreateMinerBinding::inflate
 ){
     bindWithBinding {
-        minerTitle.setText(item.name)
+        minerTitle.setPrintableText(item.name)
 
         plus.onClick {
             item.count += 1
@@ -52,7 +52,7 @@ fun createUniversalDelegate() = adapterDelegateViewBinding<UniversalMinerViewIte
 
         minerTitle.doAfterTextChanged {
             it?.let {
-                item.name = it.toString()
+                item.name = PrintableText.Raw(it.toString())
             }
         }
     }

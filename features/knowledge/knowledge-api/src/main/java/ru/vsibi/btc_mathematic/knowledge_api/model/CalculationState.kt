@@ -33,5 +33,7 @@ sealed class CalculationState : Parcelable {
     ) : CalculationState(), Parcelable
 
     @Parcelize
-    class Error() : CalculationState(), Parcelable
+    class Error(
+        val throwable: Throwable
+    ) : CalculationState(), Parcelable
 }

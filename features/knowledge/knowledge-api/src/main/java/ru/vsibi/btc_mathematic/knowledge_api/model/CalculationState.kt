@@ -28,6 +28,7 @@ sealed class CalculationState : Parcelable {
         val difficulty: Difficulty,
         val blockIncome: Double = BLOCK_INCOME,
         val powerPerMonth: Double,
+        val btcIncomePerMonth : Double,
         val incomePerMonth: Int,
         val pricePowerPerMonth: Int
     ) : CalculationState(), Parcelable

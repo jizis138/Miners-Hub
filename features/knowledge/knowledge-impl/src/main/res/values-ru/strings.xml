@@ -8,7 +8,7 @@
     <string name="select_miner">Выберите майнер</string>
     <string name="ready">Готово</string>
     <string name="piece">шт.</string>
-    <string name="rouble_kilowat">₽ за 1 кВт * час</string>
+    <string name="currency_per_kilowat">%1$s за 1 кВт * час</string>
     <string name="calculation">Рассчитать</string>
     <string name="total">Результаты</string>
     <string name="calc_income_details">Подробности расчёта</string>
@@ -41,10 +41,13 @@
     <string name="electricity_consumption_per_month">Потребление электричества за месяц</string>
     <string name="electricity_cost_per_month">Стоимость электричества за месяц</string>
     <string name="btc_cost">Стоимость 1 BTC</string>
-    <string name="block_reward">Block Reward</string>
+    <string name="block_reward">Награда за блок</string>
     <string name="network_complexity">Сложность сети</string>
-    <string name="calc_innacuracy">Calculation inaccuracy</string>
+    <string name="calc_innacuracy">Погрешность расчёта</string>
     <string name="relewante">Актуальность</string>
-    <string name="up_to_five_percent">Up to 5%</string>
-    <string name="farm_composition">Farm Composition</string>
+    <string name="up_to_five_percent">До 5\%%</string>
+    <string name="farm_composition">Состав фермы</string>
+    <string name="select_currency">Выберите валюту</string>
+    <string name="custom_btc_rate">Стоимость 1 BTC</string>
+    <string name="btc_income_per_month">Добыто монет за месяц</string>
 </resources>

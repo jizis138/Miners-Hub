@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(project(Modules.Feature.knowledge.api))
+    implementation(project(Modules.Feature.settings.api))
 
     implementation(project(Modules.Common.core))
     implementation(project(Modules.Common.di))
@@ -18,7 +19,6 @@ dependencies {
     implementation(project(Modules.Common.uikit))
     implementation(project(Modules.Common.data))
     implementation(project(Modules.Common.network))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.JetBrains.kotlin}")
 
     implementation(Deps.serializationJson)
 

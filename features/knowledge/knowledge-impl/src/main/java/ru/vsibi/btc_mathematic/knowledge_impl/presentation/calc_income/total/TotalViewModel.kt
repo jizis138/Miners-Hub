@@ -22,7 +22,7 @@ import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.presentation.base.navigation.ShareTextNavigationContract
 import ru.vsibi.btc_mathematic.util.PrintableText
-import ru.vsibi.btc_mathematic.util.getPrintableRawText
+import ru.vsibi.btc_mathematic.util.getCurrencySymbol
 import ru.vsibi.btc_mathematic.util.getPrintableText
 import ru.vsibi.btc_mathematic.util.kotlin.switchJob
 import java.text.SimpleDateFormat
@@ -79,7 +79,7 @@ class TotalViewModel(
                 miners.forEach {
                     minersSb.append("${it.name} ${it.schemas.first().hashrate.div(TH)}TH x${it.count}\n\n")
                 }
-                electricityPrice = Price(params.electricityPrice, "RUB")
+                electricityPrice = Price(params.electricityPrice, params.currency)
 
                 calculateJob = viewModelScope.launch {
                     calculationInteractor
@@ -87,7 +87,8 @@ class TotalViewModel(
                             hashrate = totalHashrate,
                             power = totalPower,
                             electricityPrice = electricityPrice,
-                            miners = miners
+                            miners = miners,
+                            manualExchangeRate = params.exchangeRate
                         )
                         .collectLatest { calculationState ->
                             when (calculationState) {
@@ -136,6 +137,7 @@ class TotalViewModel(
                                                 calculationState.perMonth.roundToInt(),
                                                 electricityPrice,
                                                 totalPower,
+                                                btcIncomePerMonth = calculationState.btcIncomePerMonth,
                                                 calculationState.incomePerMonth,
                                                 calculationState.powerPerMonth,
                                                 calculationState.pricePowerPerMonth,
@@ -175,6 +177,7 @@ class TotalViewModel(
                             params.calculationResult.perMonth.roundToInt(),
                             electricityPrice,
                             totalPower,
+                            btcIncomePerMonth = params.calculationResult.btcIncomePerMonth,
                             params.calculationResult.incomePerMonth,
                             params.calculationResult.powerPerMonth,
                             params.calculationResult.pricePowerPerMonth,
@@ -195,6 +198,7 @@ class TotalViewModel(
         perMonth: Int,
         electricityPrice: Price,
         totalPower: Any,
+        btcIncomePerMonth: Double,
         incomePerMonth: Int,
         powerPerMonth: Double,
         pricePowerPerMonth: Int,
@@ -214,11 +218,11 @@ class TotalViewModel(
                     ),
                     ResultViewItem(
                         title = PrintableText.StringResource(ru.vsibi.btc_mathematic.core.R.string.farm_income_per_day),
-                        totalValue = PrintableText.Raw("$perDay ₽")
+                        totalValue = PrintableText.Raw("$perDay ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                     ResultViewItem(
                         title = PrintableText.StringResource(ru.vsibi.btc_mathematic.core.R.string.farm_income_per_month),
-                        totalValue = PrintableText.Raw("$perMonth ₽")
+                        totalValue = PrintableText.Raw("$perMonth ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                 )
             ),
@@ -226,7 +230,7 @@ class TotalViewModel(
                 items = listOf(
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.electricity_host),
-                        description = PrintableText.Raw("${electricityPrice.value} ${electricityPrice.currency}")
+                        description = PrintableText.Raw("${electricityPrice.value} ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.total_consumption),
@@ -234,19 +238,23 @@ class TotalViewModel(
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.gross_income),
-                        description = PrintableText.Raw("${incomePerMonth} ₽")
+                        description = PrintableText.Raw("${incomePerMonth} ${getCurrencySymbol(electricityPrice.currency)}")
+                    ),
+                    DetailViewItem(
+                        title = PrintableText.StringResource(R.string.btc_income_per_month),
+                        description = PrintableText.Raw("$btcIncomePerMonth BTC")
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.electricity_consumption_per_month),
-                        description = PrintableText.StringResource(R.string.kwt, "$powerPerMonth")
+                        description = PrintableText.StringResource(R.string.kwt, "${powerPerMonth.roundToInt()}")
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.electricity_cost_per_month),
-                        description = PrintableText.Raw("${pricePowerPerMonth} ₽")
+                        description = PrintableText.Raw("${pricePowerPerMonth} ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.btc_cost),
-                        description = PrintableText.Raw("${exchangeRate} ₽")
+                        description = PrintableText.Raw("${exchangeRate} ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.block_reward),
@@ -268,8 +276,7 @@ class TotalViewModel(
                         title = PrintableText.StringResource(R.string.farm_composition),
                         description = PrintableText.Raw("$miners")
                     ),
-
-                    )
+                )
             ),
             TotalViewItem.ShareCalculation
         )
@@ -279,7 +286,7 @@ class TotalViewModel(
         sendEvent(TotalEvent.ExpandClicked)
     }
 
-    fun shareClicked(context : Context) {
+    fun shareClicked(context: Context) {
         val sharedText = StringBuilder()
         val details = currentViewState.items.filterIsInstance<TotalViewItem.Details>().last()
         val results = currentViewState.items.filterIsInstance<TotalViewItem.Results>().last()

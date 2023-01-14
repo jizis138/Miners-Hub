@@ -7,4 +7,5 @@
     <string name="create_farm">Create a farm</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="error">Error</string>
 </resources>

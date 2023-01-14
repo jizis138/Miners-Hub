@@ -12,6 +12,8 @@ import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.uikit.LoadingState
 import ru.vsibi.btc_mathematic.util.ErrorInfo
 import ru.vsibi.btc_mathematic.util.PrintableText
+import ru.vsibi.btc_mathematic.util.getCurrencySymbol
+import kotlin.math.roundToInt
 
 class ExchangeRateViewModel(
     rootRouter: RootRouter,
@@ -36,14 +38,19 @@ class ExchangeRateViewModel(
             updateState { state ->
                 state.copy(loadingState = LoadingState.Loading)
             }
-            val exchangeRateResult = knowledgeFeature.getExchangeRateBTCtoRouble()
-            exchangeRateResult?.let { exchangeRate ->
+            val exchangeRateResult = knowledgeFeature.getExchangeRateBTCtoCurrency(
+                "RUB", "USD", "EUR"
+            )
+
+            exchangeRateResult?.let { exchangeRates ->
                 val viewItem = ExchangeRateViewItem(
-                    abbreviation = PrintableText.Raw(exchangeRate.coin),
-                    fullCoinName = PrintableText.Raw(exchangeRate.coinFullName),
+                    abbreviation = PrintableText.Raw(exchangeRates.first().coin),
+                    fullCoinName = PrintableText.Raw(exchangeRates.first().coinFullName),
                     iconRes = R.drawable.ic_btc,
                     exchangeRates = ExchangeRate(
-                        toRouble = PrintableText.Raw("${exchangeRate.value} ${exchangeRate.currency}")
+                        toRouble = PrintableText.Raw("${exchangeRates[0].value.roundToInt().formatNumber()} ${getCurrencySymbol(exchangeRates[0].currency)}"),
+                        toUSD = PrintableText.Raw("${exchangeRates[1].value.roundToInt().formatNumber()} ${getCurrencySymbol(exchangeRates[1].currency)}"),
+                        toEUR = PrintableText.Raw("${exchangeRates[2].value.roundToInt().formatNumber()} ${getCurrencySymbol(exchangeRates[2].currency)}")
                     )
                 )
                 updateState { state ->
@@ -55,5 +62,10 @@ class ExchangeRateViewModel(
                 state.copy(loadingState = LoadingState.Error(ErrorInfo.createEmpty()))
             }
         }
+    }
+
+    private fun Int.formatNumber() : String{
+        val number = this.toString()
+        return number.reversed().chunked(3).joinToString(separator = " ").reversed()
     }
 }

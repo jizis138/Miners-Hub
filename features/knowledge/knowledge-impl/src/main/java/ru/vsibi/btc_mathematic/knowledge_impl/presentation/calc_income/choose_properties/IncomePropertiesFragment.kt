@@ -46,6 +46,12 @@ class IncomePropertiesFragment :
         minersAdapter,
         onElectricityPriceChanged = {
             vm.onElectricityPriceChanged(it)
+        },
+        onExchangeRateChanged = {
+            vm.onExchangeRateChanged(it)
+        },
+        onRefreshClicked = {
+            vm.onExchangeRefreshClicked(it)
         }
     )
 

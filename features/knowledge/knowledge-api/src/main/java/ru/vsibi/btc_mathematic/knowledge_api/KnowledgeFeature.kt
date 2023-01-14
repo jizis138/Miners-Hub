@@ -35,11 +35,12 @@ interface KnowledgeFeature {
         data class ParamsForCalculation(
             val electricityPrice: Double,
             val currency: String,
-            val miners: List<Miner>
+            val miners: List<Miner>,
+            val exchangeRate: ExchangeRate?
         ) : TotalCalculationMode(), Parcelable
     }
 
-    suspend fun getExchangeRateBTCtoRouble(): ExchangeRate?
+    suspend fun getExchangeRateBTCtoCurrency(vararg currency : String): List<ExchangeRate>?
 
     suspend fun calculateBTCIncome(
         hashrate: Double,

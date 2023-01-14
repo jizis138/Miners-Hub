@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_usd">Доллар</string>
+    <string name="currency_eur">Евро</string>
+    <string name="currency_rub">Рубль</string>
+</resources>

@@ -2,4 +2,5 @@
 <resources>
     <string name="version_description">Версия %1$s от %2$s</string>
     <string name="language">Язык</string>
+    <string name="currency">Валюта</string>
 </resources>

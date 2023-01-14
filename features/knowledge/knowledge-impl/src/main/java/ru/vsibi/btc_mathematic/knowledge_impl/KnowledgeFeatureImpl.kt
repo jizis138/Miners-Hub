@@ -27,7 +27,8 @@ class KnowledgeFeatureImpl(
 
     override val totalCalculationLauncher = TotalNavigationContract
 
-    override suspend fun getExchangeRateBTCtoRouble() = calculationInteractor.fetchBTCtoRoubleRate()
+    override suspend fun getExchangeRateBTCtoCurrency(vararg currency: String) =
+        calculationInteractor.fetchBTCtoCurrencyRate(*currency)
 
     override suspend fun calculateBTCIncome(
         hashrate: Double,
@@ -42,7 +43,8 @@ class KnowledgeFeatureImpl(
                     power,
                     electricityPrice,
                     miners,
-                    false
+                    false,
+                    manualExchangeRate = null
                 ).onEach {
                     when (it) {
                         is CalculationState.Error -> {

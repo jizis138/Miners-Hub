@@ -11,6 +11,8 @@ data class ExchangeRateViewItem(
 )
 
 data class ExchangeRate(
-    val toRouble: PrintableText
+    val toRouble: PrintableText,
+    val toUSD : PrintableText,
+    val toEUR : PrintableText
 )
 

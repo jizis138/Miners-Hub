@@ -2,10 +2,14 @@ package ru.vsibi.btc_mathematic.knowledge_impl.domain.logic
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import ru.vsibi.btc_mathematic.core.exceptions.NothingToFoundResponseException
 import ru.vsibi.btc_mathematic.knowledge_api.model.*
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.DifficultyRepository
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.ExchangeRateRepository
+import ru.vsibi.btc_mathematic.util.CallResult
+import ru.vsibi.btc_mathematic.util.callForResult
 import ru.vsibi.btc_mathematic.util.getOrNull
+import ru.vsibi.btc_mathematic.util.getOrThrow
 import kotlin.math.roundToInt
 
 class CalculationInteractor(
@@ -24,24 +28,31 @@ class CalculationInteractor(
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
-        miners : List<Miner>,
+        miners: List<Miner>,
         withDelay: Boolean = true
     ) = flow<CalculationState> {
         if (withDelay) {
             delay(100)
         }
         emit(CalculationState.FetchingDifficulty())
-        val difficulty = fetchBTCDifficulty() ?: run {
-            emit(CalculationState.Error())
-            return@flow
+
+        val difficulty = callForResult { fetchBTCDifficulty() }.run {
+            when (this) {
+                is CallResult.Error -> {
+                    emit(CalculationState.Error(this.error))
+                    return@flow
+                }
+                is CallResult.Success -> this.data
+            }
         }
+
 
         if (withDelay) {
             delay(100)
         }
         emit(CalculationState.FetchingExchangeRate())
         val exchangeRate = fetchBTCtoRoubleRate() ?: run {
-            emit(CalculationState.Error())
+            emit(CalculationState.Error(NothingToFoundResponseException()))
             return@flow
         }
 
@@ -82,9 +93,9 @@ class CalculationInteractor(
 
     }
 
-    private suspend fun fetchBTCDifficulty(): Difficulty? {
-        val response = difficultyRepository.fetchDifficulties().getOrNull()
-        return response?.find { it.coin == COIN_BTC }
+    private suspend fun fetchBTCDifficulty(): Difficulty {
+        val response = difficultyRepository.fetchDifficulties().getOrThrow()
+        return response.find { it.coin == COIN_BTC } ?: throw NothingToFoundResponseException()
     }
 
     suspend fun fetchBTCtoRoubleRate(): ExchangeRate? {

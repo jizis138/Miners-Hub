@@ -27,7 +27,7 @@ class CreateUniversalMinerFragment :
         list.adapter = adapter
 
         ready.onClick {
-            vm.onReadyClicked(adapter.items.last())
+            vm.onReadyClicked(requireContext(), adapter.items.last())
         }
     }
 

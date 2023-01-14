@@ -3,6 +3,7 @@
  */
 package ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -10,6 +11,7 @@ import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_api.model.CalculationState
 import ru.vsibi.btc_mathematic.knowledge_api.model.Miner
 import ru.vsibi.btc_mathematic.knowledge_api.model.Price
+import ru.vsibi.btc_mathematic.knowledge_impl.R
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.logic.CalculationInteractor
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.logic.CalculationInteractor.Companion.TH
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.model.DetailViewItem
@@ -21,6 +23,8 @@ import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.presentation.base.navigation.ShareTextNavigationContract
 import ru.vsibi.btc_mathematic.util.PrintableText
 import ru.vsibi.btc_mathematic.util.getPrintableRawText
+import ru.vsibi.btc_mathematic.util.getPrintableText
+import ru.vsibi.btc_mathematic.util.kotlin.switchJob
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
@@ -35,11 +39,13 @@ class TotalViewModel(
     router, requestParams
 ) {
 
+    private val shareNavigationContract = launcher(ShareTextNavigationContract)
+
+    private var calculateJob by switchJob()
+
     init {
         startCalculation()
     }
-
-    private val shareNavigationContract = launcher(ShareTextNavigationContract)
 
     override fun firstState(): TotalState {
         return TotalState(
@@ -75,7 +81,7 @@ class TotalViewModel(
                 }
                 electricityPrice = Price(params.electricityPrice, "RUB")
 
-                viewModelScope.launch {
+                calculateJob = viewModelScope.launch {
                     calculationInteractor
                         .calculateBTCIncome(
                             hashrate = totalHashrate,
@@ -88,35 +94,35 @@ class TotalViewModel(
                                 is CalculationState.Start -> {
                                     updateState { state ->
                                         state.copy(
-                                            calculationText = PrintableText.Raw("Начали расчет")
+                                            calculationText = PrintableText.StringResource(R.string.calc_state_start)
                                         )
                                     }
                                 }
                                 is CalculationState.Calculation -> {
                                     updateState { state ->
                                         state.copy(
-                                            calculationText = PrintableText.Raw("Рассчитываем доходность")
+                                            calculationText = PrintableText.StringResource(R.string.calc_state_calc)
                                         )
                                     }
                                 }
                                 is CalculationState.Error -> {
                                     updateState { state ->
                                         state.copy(
-                                            calculationText = PrintableText.Raw("Ошибка")
+                                            calculationText = PrintableText.StringResource(R.string.calc_state_error)
                                         )
                                     }
                                 }
                                 is CalculationState.FetchingDifficulty -> {
                                     updateState { state ->
                                         state.copy(
-                                            calculationText = PrintableText.Raw("Получаем сложность блока")
+                                            calculationText = PrintableText.StringResource(R.string.calc_state_complexity_block)
                                         )
                                     }
                                 }
                                 is CalculationState.FetchingExchangeRate -> {
                                     updateState { state ->
                                         state.copy(
-                                            calculationText = PrintableText.Raw("Получаем курс валют")
+                                            calculationText = PrintableText.StringResource(R.string.calc_state_rate)
                                         )
                                     }
                                 }
@@ -201,65 +207,65 @@ class TotalViewModel(
             TotalViewItem.Results(
                 items = listOf(
                     ResultViewItem(
-                        title = PrintableText.Raw("Общая мощность фермы"),
+                        title = PrintableText.StringResource(ru.vsibi.btc_mathematic.core.R.string.farm_power),
                         totalValue = PrintableText.Raw(
                             "$totalHashrate TH"
                         )
                     ),
                     ResultViewItem(
-                        title = PrintableText.Raw("Средний доход в день"),
-                        totalValue = PrintableText.Raw("${perDay} ₽")
+                        title = PrintableText.StringResource(ru.vsibi.btc_mathematic.core.R.string.farm_income_per_day),
+                        totalValue = PrintableText.Raw("$perDay ₽")
                     ),
                     ResultViewItem(
-                        title = PrintableText.Raw("Средний доход в месяц"),
-                        totalValue = PrintableText.Raw("${perMonth} ₽")
+                        title = PrintableText.StringResource(ru.vsibi.btc_mathematic.core.R.string.farm_income_per_month),
+                        totalValue = PrintableText.Raw("$perMonth ₽")
                     ),
                 )
             ),
             TotalViewItem.Details(
                 items = listOf(
                     DetailViewItem(
-                        title = PrintableText.Raw("Стоимость электричества"),
+                        title = PrintableText.StringResource(R.string.electricity_host),
                         description = PrintableText.Raw("${electricityPrice.value} ${electricityPrice.currency}")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Суммарное потребление"),
-                        description = PrintableText.Raw("$totalPower Вт")
+                        title = PrintableText.StringResource(R.string.total_consumption),
+                        description = PrintableText.StringResource(R.string.wt, "$totalPower")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Грязный доход за месяц"),
+                        title = PrintableText.StringResource(R.string.gross_income),
                         description = PrintableText.Raw("${incomePerMonth} ₽")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Потребление электричества за месяц"),
-                        description = PrintableText.Raw("${powerPerMonth} кВт")
+                        title = PrintableText.StringResource(R.string.electricity_consumption_per_month),
+                        description = PrintableText.StringResource(R.string.kwt, "$powerPerMonth")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Стоимость электричества за месяц"),
+                        title = PrintableText.StringResource(R.string.electricity_cost_per_month),
                         description = PrintableText.Raw("${pricePowerPerMonth} ₽")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Стоимость 1 BTC"),
+                        title = PrintableText.StringResource(R.string.btc_cost),
                         description = PrintableText.Raw("${exchangeRate} ₽")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Награда за блок"),
+                        title = PrintableText.StringResource(R.string.block_reward),
                         description = PrintableText.Raw("${blockIncome} BTC")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Сложность сети"),
+                        title = PrintableText.StringResource(R.string.network_complexity),
                         description = PrintableText.Raw("${difficulty}")
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Погрешность расчета"),
-                        description = PrintableText.Raw("До 5%")
+                        title = PrintableText.StringResource(R.string.calc_innacuracy),
+                        description = PrintableText.StringResource(R.string.up_to_five_percent)
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Актуальность"),
-                        description = PrintableText.Raw("До ${getDateTomorrow()} 00:00")
+                        title = PrintableText.StringResource(R.string.relewante),
+                        description = PrintableText.StringResource(R.string.until_date, getDateTomorrow())
                     ),
                     DetailViewItem(
-                        title = PrintableText.Raw("Состав фермы"),
+                        title = PrintableText.StringResource(R.string.farm_composition),
                         description = PrintableText.Raw("$miners")
                     ),
 
@@ -273,17 +279,17 @@ class TotalViewModel(
         sendEvent(TotalEvent.ExpandClicked)
     }
 
-    fun shareClicked() {
+    fun shareClicked(context : Context) {
         val sharedText = StringBuilder()
         val details = currentViewState.items.filterIsInstance<TotalViewItem.Details>().last()
         val results = currentViewState.items.filterIsInstance<TotalViewItem.Results>().last()
 
-        sharedText.append("Расчет доходности фермы от ${getDateToday()}\n\n")
+        sharedText.append(context.getString(R.string.calculation_from_date, getDateToday()))
 
         results.items.forEach { resultViewItem ->
             sharedText.append(
-                "${getPrintableRawText(resultViewItem.title)} : ${
-                    getPrintableRawText(
+                "${context.getPrintableText(resultViewItem.title)} : ${
+                    context.getPrintableText(
                         resultViewItem.totalValue
                     )
                 } \n\n"
@@ -292,8 +298,8 @@ class TotalViewModel(
 
         details.items.forEach { detailViewItem ->
             sharedText.append(
-                "${getPrintableRawText(detailViewItem.title)} : ${
-                    getPrintableRawText(
+                "${context.getPrintableText(detailViewItem.title)} : ${
+                    context.getPrintableText(
                         detailViewItem.description
                     )
                 } \n\n"
@@ -309,6 +315,10 @@ class TotalViewModel(
 
     fun doneClicked() {
         router.backTo(null)
+    }
+
+    fun onStop() {
+        calculateJob = null
     }
 }
 

@@ -71,7 +71,7 @@ class IncomePropertiesFragment :
             requireActivity().onBackPressed()
         }
         calculation.onClick {
-            vm.onCalculationClicked()
+            vm.onCalculationClicked(getString(R.string.default_farm_name))
         }
     }
 

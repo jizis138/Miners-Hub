@@ -3,6 +3,7 @@
  */
 package ru.vsibi.btc_mathematic.knowledge_impl.di
 
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import ru.vsibi.btc_mathematic.data.di.qualifier.StorageQualifier
@@ -74,6 +75,6 @@ object KnowledgeModule {
         viewModel(::TotalViewModel)
         viewModel(::CreateUniversalMinerViewModel)
         factory(::MinerMapper)
-        factory(::MinerSelectionMapper)
+        factory { MinerSelectionMapper(androidContext()) }
     }
 }

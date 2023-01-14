@@ -3,6 +3,7 @@
  */
 package ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model
 
+import ru.vsibi.btc_mathematic.knowledge_impl.R
 import ru.vsibi.btc_mathematic.util.PrintableText
 
 data class MinerViewItem(
@@ -19,5 +20,5 @@ data class UniversalMinerViewItem(
     var count = 1
     var power = 1000
     var hashrate = 100
-    var name = "Универсальный майнер"
+    var name : PrintableText = PrintableText.StringResource(R.string.custom_miner)
 }

@@ -14,6 +14,8 @@ import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_pr
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.TotalNavigationContract
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.main.KnowledgeNavigationContract
 import ru.vsibi.btc_mathematic.util.CallResult
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class KnowledgeFeatureImpl(
     private val calculationInteractor: CalculationInteractor
@@ -33,7 +35,7 @@ class KnowledgeFeatureImpl(
         electricityPrice: Price,
         miners: List<Miner>
     ): CallResult<CalculationState.ReadyResult> = withTimeoutOrNull(5000) {
-        suspendCancellableCoroutine<CallResult<CalculationState.ReadyResult>> { continuation ->
+        suspendCoroutine<CallResult<CalculationState.ReadyResult>> { continuation ->
             CoroutineScope(Dispatchers.IO).launch {
                 calculationInteractor.calculateBTCIncome(
                     hashrate,
@@ -44,10 +46,10 @@ class KnowledgeFeatureImpl(
                 ).onEach {
                     when (it) {
                         is CalculationState.Error -> {
-                            continuation.resumeWith(Result.failure(Throwable()))
+                            continuation.resume(CallResult.Error(it.throwable))
                         }
                         is CalculationState.ReadyResult -> {
-                            continuation.resumeWith(Result.success(CallResult.Success(it)))
+                            continuation.resume(CallResult.Success(it))
                         }
                     }
                 }.launchIn(this)

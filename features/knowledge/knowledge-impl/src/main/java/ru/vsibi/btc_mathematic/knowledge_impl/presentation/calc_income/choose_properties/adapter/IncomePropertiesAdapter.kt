@@ -151,7 +151,7 @@ fun createUniversalMinerDelegate(
             onRemoveClicked(item)
         }
         bindWithBinding {
-            minerTitle.text = item.name
+            minerTitle.setPrintableText(item.name)
 
             plus.onClick {
                 item.count += 1

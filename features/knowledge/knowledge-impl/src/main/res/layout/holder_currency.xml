@@ -19,32 +19,24 @@
             style="@style/Text.White.16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            tools:text="Стоимость электричества" />
+            android:text="@string/select_currency"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/count"
-                style="@style/Text.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="0"
-                android:textColorHint="@color/grey"
-                android:inputType="numberDecimal"
-                android:maxLength="6"
-                android:paddingHorizontal="16dp"
-                android:textSize="18sp" />
             <TextView
-                android:id="@+id/currency_kilowat"
-                style="@style/Text.White.16sp"
+                android:id="@+id/select_currency"
+                style="@style/Text.Blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="@string/currency_per_kilowat"/>
+                android:layout_marginTop="16dp"
+                android:drawablePadding="12dp"
+                android:text="@string/currency_usd"
+                android:textSize="16sp" />
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

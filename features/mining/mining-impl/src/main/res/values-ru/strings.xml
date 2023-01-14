@@ -7,4 +7,5 @@
     <string name="create_farm">Создать ферму</string>
     <string name="edit">Редактировать</string>
     <string name="remove">Удалить</string>
+    <string name="error">Ошибка</string>
 </resources>

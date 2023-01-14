@@ -128,7 +128,8 @@ class MiningViewModel(
                         mode = KnowledgeFeature.TotalCalculationMode.ParamsForCalculation(
                             electricityPrice = farm?.electricityPrice?.value ?: 0.0,
                             currency = farm?.electricityPrice?.currency ?: "RUB",
-                            miners = farm?.miners ?: listOf()
+                            miners = farm?.miners ?: listOf(),
+                            exchangeRate = null
                         )
                     )
                 )

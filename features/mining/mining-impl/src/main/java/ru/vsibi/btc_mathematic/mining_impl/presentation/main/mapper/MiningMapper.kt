@@ -4,9 +4,11 @@ import ru.vsibi.btc_mathematic.core.exceptions.NothingToFoundResponseException
 import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_api.model.CalculationState
 import ru.vsibi.btc_mathematic.knowledge_api.model.Farm
+import ru.vsibi.btc_mathematic.mining_impl.R
 import ru.vsibi.btc_mathematic.mining_impl.presentation.main.model.FarmViewItem
 import ru.vsibi.btc_mathematic.util.CallResult
 import ru.vsibi.btc_mathematic.util.PrintableText
+import ru.vsibi.btc_mathematic.util.getCurrencySymbol
 import kotlin.math.roundToInt
 
 class MiningMapper(
@@ -35,8 +37,8 @@ class MiningMapper(
                         id = farm.id,
                         title = PrintableText.Raw(farm.title),
                         totalPower = PrintableText.Raw("${totalHashrate.div(TH)} TH"),
-                        incomePerDay = PrintableText.Raw("Ошибка"),
-                        incomePerMonth = PrintableText.Raw("Ошибка"),
+                        incomePerDay = PrintableText.StringResource(R.string.error),
+                        incomePerMonth = PrintableText.StringResource(R.string.error),
                         calculationState = CalculationState.Error(NothingToFoundResponseException())
                     )
                 }
@@ -45,8 +47,8 @@ class MiningMapper(
                         id = farm.id,
                         title = PrintableText.Raw(farm.title),
                         totalPower = PrintableText.Raw("${totalHashrate.div(TH)} TH"),
-                        incomePerDay = PrintableText.Raw("${result.data.perDay.roundToInt()} ₽"),
-                        incomePerMonth = PrintableText.Raw("${result.data.perMonth.roundToInt()} ₽"),
+                        incomePerDay = PrintableText.Raw("${result.data.perDay.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
+                        incomePerMonth = PrintableText.Raw("${result.data.perMonth.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
                         calculationState = result.data
                     )
                 }

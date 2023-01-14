@@ -43,6 +43,7 @@ class SettingsFragment : BaseFragment<SettingsState, SettingsEvent>(R.layout.fra
                 12.dp,
             )
         })
+        list.itemAnimator = null
     }
 
     override fun onUpdateState(state: SettingsState) {

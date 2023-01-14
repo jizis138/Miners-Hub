@@ -26,4 +26,14 @@ class LocaleManagerImpl(
 
     override suspend fun getSavedLocale(): String = localeStorage.getLocale() ?: "en"
 
+    override suspend fun changeCurrency(currency: String) = localeStorage.setCurrency(currency)
+
+    override suspend fun getSavedCurrency(): String = localeStorage.getCurrency() ?: run {
+        if (getSavedLocale() == "en") {
+            "USD"
+        } else {
+            "RUB"
+        }
+    }
+
 }

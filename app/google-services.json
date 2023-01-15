@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "530253740966",
+    "project_id": "miners-hub-fa90c",
+    "storage_bucket": "miners-hub-fa90c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530253740966:android:45e1d9cbd29a691fc62d67",
+        "android_client_info": {
+          "package_name": "ru.vsibi.btc_mathematic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530253740966-0beuf481unkuiqm6b3655mun79jmuclv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.vsibi.btc_mathematic",
+            "certificate_hash": "83d2de0b38117cd0ffdde595ff432d61c8b114ab"
+          }
+        },
+        {
+          "client_id": "530253740966-5u08tec6l69768141ihg7l0ti4cvbn77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwmNeokw_P509TIJFgCdgrMMrS3OWQ8g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530253740966-5u08tec6l69768141ihg7l0ti4cvbn77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val obfuscationEnabled = getBooleanProperty("obfuscationEnabled", false)
@@ -100,6 +102,9 @@ dependencies {
     implementation(Deps.AndroidX.legacy)
 
     implementation(Deps.Android.material)
+
+    implementation(Deps.Firebase.crashlitycs)
+    implementation(Deps.Firebase.analitycs)
 
     implementation(Deps.adapterDelegates)
 

@@ -11,20 +11,17 @@ import ru.vsibi.btc_mathematic.presentation.base.util.fragmentViewBinding
 import ru.vsibi.btc_mathematic.presentation.base.util.noEventsExpected
 import ru.vsibi.btc_mathematic.presentation.base.util.viewModel
 import ru.vsibi.btc_mathematic.settings_impl.R
-import ru.vsibi.btc_mathematic.settings_impl.databinding.FragmentLanguageBinding
+import ru.vsibi.btc_mathematic.settings_impl.databinding.FragmentCurrencyBinding
 import ru.vsibi.btc_mathematic.settings_impl.presentation.currency.adapter.CurrencyAdapter
 import ru.vsibi.btc_mathematic.uikit.SpacingItemDecoration
-import ru.vsibi.btc_mathematic.uikit.animation.AddableItemAnimator
-import ru.vsibi.btc_mathematic.uikit.animation.CommonItemAnimator
-import ru.vsibi.btc_mathematic.uikit.animation.SimpleCommonAnimator
-import ru.vsibi.btc_mathematic.uikit.animation.SlideInDownAnimator
 import ru.vsibi.btc_mathematic.util.dp
+import ru.vsibi.btc_mathematic.util.onClick
 
-class CurrencyFragment : BaseFragment<CurrencyState, Nothing>(R.layout.fragment_language) {
+class CurrencyFragment : BaseFragment<CurrencyState, Nothing>(R.layout.fragment_currency) {
 
     override val vm: CurrencyViewModel by viewModel()
 
-    private val binding by fragmentViewBinding(FragmentLanguageBinding::bind)
+    private val binding by fragmentViewBinding(FragmentCurrencyBinding::bind)
 
     private val adapter = CurrencyAdapter(
         onItemClicked = {
@@ -49,6 +46,9 @@ class CurrencyFragment : BaseFragment<CurrencyState, Nothing>(R.layout.fragment_
             )
         })
         list.adapter = adapter
+        cancel.onClick {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onUpdateState(state: CurrencyState) {

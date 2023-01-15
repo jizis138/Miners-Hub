@@ -52,4 +52,8 @@
     <string name="select_currency">Select currency</string>
     <string name="custom_btc_rate">Cost of 1 BTC</string>
     <string name="btc_income_per_month">Coin mined per month</string>
+    <string name="calc_is_empty_title">No calculations</string>
+    <string name="calc_is_empty_desc">This screen will display the history of your calculations.</string>
+    <string name="make_calc">Make a calculation</string>
+    <string name="accept_delete_all_history">This action deletes the entire calculation history. Are you sure you want to continue?</string>
 </resources>

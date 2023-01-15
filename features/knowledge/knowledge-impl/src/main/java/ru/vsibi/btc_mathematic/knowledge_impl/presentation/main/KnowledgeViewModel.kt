@@ -31,7 +31,7 @@ class KnowledgeViewModel(
                     },
                     isLocked = false
                 ),
-                KnowledgeViewItem(
+                /*KnowledgeViewItem(
                     iconRes = R.drawable.ic_baseline_help_24,
                     titleText = PrintableText.StringResource(R.string.study),
                     onClicked = {
@@ -40,7 +40,7 @@ class KnowledgeViewModel(
                         ))
                     },
                     isLocked = true
-                ),
+                ),*/
             )
         )
     }

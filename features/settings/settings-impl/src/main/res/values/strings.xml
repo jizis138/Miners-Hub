@@ -5,4 +5,15 @@
     <string name="lang_en" translatable="false">English</string>
     <string name="lang_ru" translatable="false">Русский</string>
     <string name="currency">Currency</string>
+    <string name="about_developer">About the developer</string>
+    <string name="about_developer_text">Being a native of the Russian capital of mining - Irkutsk,
+         it was impossible not to notice the mining hype that swept the city in 2021,
+         let alone try it yourself.\n\nSince then, the idea and even lack of such a tool as a profitability calculator started up.
+         Therefore, I present to you the application of my development.\n\nLeaving a bad or good review in the Play Market
+         you motivate me to keep developing this app,
+         and also send your ideas and suggestions by mail,
+         you have a great chance to contribute to the development of this project.
+    </string>
+    <string name="send_email">Send an email</string>
+    <string name="subject_email">BTC Mathematic support</string>
 </resources>

@@ -6,7 +6,7 @@ import ru.vsibi.btc_mathematic.core.ui.dialog.BottomSheetDialogBuilder
 import ru.vsibi.btc_mathematic.mining_impl.databinding.DialogFarmMenuBinding
 import ru.vsibi.btc_mathematic.util.onClick
 
-object MiningBottomDialog {
+object FarmDialog {
 
     fun create(
         fragment: Fragment,

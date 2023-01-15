@@ -34,7 +34,8 @@ class KnowledgeFeatureImpl(
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
-        miners: List<Miner>
+        miners: List<Miner>,
+        needSaveToHistory : Boolean
     ): CallResult<CalculationState.ReadyResult> = withTimeoutOrNull(5000) {
         suspendCoroutine<CallResult<CalculationState.ReadyResult>> { continuation ->
             CoroutineScope(Dispatchers.IO).launch {
@@ -44,7 +45,8 @@ class KnowledgeFeatureImpl(
                     electricityPrice,
                     miners,
                     false,
-                    manualExchangeRate = null
+                    manualExchangeRate = null,
+                    needSaveToHistory = needSaveToHistory
                 ).onEach {
                     when (it) {
                         is CalculationState.Error -> {

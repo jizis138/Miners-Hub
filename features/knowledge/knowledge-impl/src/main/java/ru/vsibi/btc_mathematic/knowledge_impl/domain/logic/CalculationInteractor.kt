@@ -7,15 +7,19 @@ import ru.vsibi.btc_mathematic.core.exceptions.NothingToFoundResponseException
 import ru.vsibi.btc_mathematic.knowledge_api.model.*
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.DifficultyRepository
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.ExchangeRateRepository
+import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.HistoryRepository
 import ru.vsibi.btc_mathematic.util.CallResult
 import ru.vsibi.btc_mathematic.util.callForResult
 import ru.vsibi.btc_mathematic.util.getOrNull
 import ru.vsibi.btc_mathematic.util.getOrThrow
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
 class CalculationInteractor(
     private val difficultyRepository: DifficultyRepository,
-    private val exchangeRateRepository: ExchangeRateRepository
+    private val exchangeRateRepository: ExchangeRateRepository,
+    private val historyRepository: HistoryRepository
 ) {
 
     companion object {
@@ -32,6 +36,7 @@ class CalculationInteractor(
         electricityPrice: Price,
         miners: List<Miner>,
         withDelay: Boolean = true,
+        needSaveToHistory: Boolean,
         manualExchangeRate: ExchangeRate?
     ) = flow<CalculationState> {
         if (withDelay) {
@@ -101,8 +106,9 @@ class CalculationInteractor(
         if (withDelay) {
             delay(100)
         }
-        emit(
+        val result =
             CalculationState.ReadyResult(
+                id = -1,
                 hashrate = hashrate,
                 power = power,
                 electricityPrice = electricityPrice,
@@ -114,10 +120,13 @@ class CalculationInteractor(
                 powerPerMonth = powerPerMonth,
                 pricePowerPerMonth = priceElectricityPerMonth.roundToInt(),
                 incomePerMonth = incomePerMonth.roundToInt(),
-                btcIncomePerMonth = incomeBTCPerMonth
+                btcIncomePerMonth = incomeBTCPerMonth,
+                fromDate = LocalDateTime.now()
             )
-        )
-
+        if (needSaveToHistory) {
+            historyRepository.saveCalculation(result)
+        }
+        emit(result)
     }
 
     private suspend fun fetchBTCDifficulty(): Difficulty {

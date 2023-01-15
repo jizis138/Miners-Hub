@@ -13,6 +13,7 @@ import ru.vsibi.btc_mathematic.settings_api.SettingsFeature
 import ru.vsibi.btc_mathematic.settings_impl.SettingsFeatureImpl
 import ru.vsibi.btc_mathematic.settings_impl.data.storage.LocaleStorage
 import ru.vsibi.btc_mathematic.settings_impl.domain.logic.LocaleManager
+import ru.vsibi.btc_mathematic.settings_impl.presentation.about_developer.AboutDeveloperViewModel
 import ru.vsibi.btc_mathematic.settings_impl.presentation.currency.CurrencyViewModel
 import ru.vsibi.btc_mathematic.settings_impl.presentation.language.LanguageViewModel
 import ru.vsibi.btc_mathematic.settings_impl.presentation.settings.LocaleManagerImpl
@@ -41,6 +42,7 @@ object SettingsModule {
         viewModel(::SettingsViewModel)
         viewModel(::CurrencyViewModel)
         viewModel(::LanguageViewModel)
+        viewModel(::AboutDeveloperViewModel)
 
         single { LocaleManagerImpl(get()) } bindSafe LocaleManager::class
     }

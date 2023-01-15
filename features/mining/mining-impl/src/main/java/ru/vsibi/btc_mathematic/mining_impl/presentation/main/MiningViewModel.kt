@@ -14,6 +14,7 @@ import ru.vsibi.btc_mathematic.mvi.BaseViewModel
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.uikit.LoadingState
+import ru.vsibi.btc_mathematic.uikit.dataOrNull
 import ru.vsibi.btc_mathematic.util.CallResult
 import ru.vsibi.btc_mathematic.util.ErrorInfo
 
@@ -37,7 +38,14 @@ class MiningViewModel(
         launcher(knowledgeFeature.createFarmNavigationContract) { result ->
             when (result) {
                 KnowledgeFeature.IncomePropertiesResult.EmptyResult -> Unit
-                is KnowledgeFeature.IncomePropertiesResult.FarmResult -> {
+                is KnowledgeFeature.IncomePropertiesResult.FarmEditResult -> {
+                    viewModelScope.launch {
+                        miningInteractor.editFarm(result.farm).withErrorHandled {
+                            refreshFarms()
+                        }
+                    }
+                }
+                is KnowledgeFeature.IncomePropertiesResult.FarmCreateResult -> {
                     viewModelScope.launch {
                         miningInteractor.createFarm(result.farm).withErrorHandled {
                             refreshFarms()
@@ -176,8 +184,13 @@ class MiningViewModel(
 
     fun deleteFarm(farmViewItem: FarmViewItem) {
         viewModelScope.launch {
-            miningInteractor.deleteFarm(farmViewItem.id).withErrorHandled {
-                refreshFarms()
+            miningInteractor.deleteFarm(farmViewItem.id)
+            updateState { state ->
+                state.copy(
+                    loadingState = LoadingState.Success(
+                        data = currentViewState.loadingState.dataOrNull?.filter { it.id != farmViewItem.id } ?: listOf()
+                    )
+                )
             }
         }
     }

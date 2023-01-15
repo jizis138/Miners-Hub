@@ -54,4 +54,5 @@
     <string name="calc_is_empty_desc">Вы ещё не делали расчётов доходности, на этом экране будет отображена история всех ваших расчётов.</string>
     <string name="make_calc">Сделать расчет</string>
     <string name="accept_delete_all_history">Это действие удаляет всю историю расчётов. Вы уверены что хотите продолжить?</string>
+    <string name="farm_name">Название фермы</string>
 </resources>

@@ -41,6 +41,10 @@ sealed class IncomePropertiesViewItem {
             get() = getCurrencySymbol(currency)
     }
 
+    class FarmNameSelection : IncomePropertiesViewItem() {
+        var farmName = ""
+    }
+
     data class CurrencySelection(
         val title: PrintableText,
         val iconRes: Int,

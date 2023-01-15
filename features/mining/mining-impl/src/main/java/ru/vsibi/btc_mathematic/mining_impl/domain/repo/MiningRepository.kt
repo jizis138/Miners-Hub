@@ -15,4 +15,6 @@ interface MiningRepository {
 
     suspend fun deleteFarms()
 
+    suspend fun editFarm(farm: Farm)
+
 }

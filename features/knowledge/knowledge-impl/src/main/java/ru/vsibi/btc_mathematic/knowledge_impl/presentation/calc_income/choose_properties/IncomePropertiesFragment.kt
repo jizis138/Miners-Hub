@@ -52,6 +52,9 @@ class IncomePropertiesFragment :
         },
         onRefreshClicked = {
             vm.onExchangeRefreshClicked(it)
+        },
+        onFarmNameChanged = {
+            vm.onFarmNameChanged(it)
         }
     )
 

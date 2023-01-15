@@ -11,4 +11,5 @@
     <string name="farm_power">Total Farm Capacity</string>
     <string name="farm_income_per_day">Average income per day</string>
     <string name="farm_income_per_month">Average monthly income</string>
+    <string name="remove">Remove</string>
 </resources>

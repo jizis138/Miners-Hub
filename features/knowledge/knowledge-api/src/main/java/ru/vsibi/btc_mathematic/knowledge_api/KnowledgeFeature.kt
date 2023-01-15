@@ -46,7 +46,8 @@ interface KnowledgeFeature {
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
-        miners : List<Miner>
+        miners : List<Miner>,
+        needSaveToHistory : Boolean
     ): CallResult<CalculationState.ReadyResult>
 
     @Parcelize

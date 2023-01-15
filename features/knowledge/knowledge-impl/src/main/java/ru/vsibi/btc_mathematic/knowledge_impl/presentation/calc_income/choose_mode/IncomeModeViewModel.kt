@@ -7,6 +7,7 @@ import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_impl.R
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_mode.model.IncomeModeViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesNavigationContract
+import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.history.HistoryNavigationContract
 import ru.vsibi.btc_mathematic.mvi.BaseViewModel
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
@@ -20,6 +21,8 @@ class IncomeModeViewModel(
 ) {
 
     private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract){}
+
+    private val historyLauncher = launcher(HistoryNavigationContract)
 
     override fun firstState(): IncomeModeState {
         return IncomeModeState(
@@ -38,11 +41,9 @@ class IncomeModeViewModel(
                     title = PrintableText.StringResource(R.string.calc_history),
                     description = null,
                     onClicked = {
-                        showPopup(PrintableText.StringResource(
-                            R.string.locked
-                        ))
+                        historyLauncher.launch()
                     },
-                    isLocked = true
+                    isLocked = false
                 ),
             )
         )

@@ -14,7 +14,6 @@ import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_pr
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.MinerViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.UniversalMinerViewItem
 import ru.vsibi.btc_mathematic.util.*
-import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 
@@ -22,7 +21,7 @@ class IncomePropertiesAdapter(
     minersAdapter: MinersAdapter,
     onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit,
     onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
-    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency : String?) -> Unit) -> Unit
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit
 ) :
     AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
@@ -109,7 +108,7 @@ fun createCurrencyDelegate() =
 
 fun createExchangeRateDelegate(
     onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
-    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency : String?) -> Unit) -> Unit
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit
 ) =
     adapterDelegateViewBinding<IncomePropertiesViewItem.ExchangeRateSelection,
             HolderExchangeRateBinding>(
@@ -121,11 +120,13 @@ fun createExchangeRateDelegate(
             currency.text = item.currencySymbol
             count.setText(item.exchangeRate.toString())
 
-            if(item.exchangeRate == 0L){
-                item.refreshClicked({
-                    onExchangeRateChanged(item)
-                    onRefreshClicked(it)
-                }, refresh, count, currency)
+            if (item.exchangeRate == 0L) {
+                root.post {
+                    item.refreshClicked({
+                        onExchangeRateChanged(item)
+                        onRefreshClicked(it)
+                    }, refresh, count, currency)
+                }
             }
 
             refresh.increaseHitArea(16.dp)

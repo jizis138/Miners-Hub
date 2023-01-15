@@ -6,6 +6,6 @@
     <string name="farms_is_empty_desc">Add a list of your active miners to track their profitability in the app</string>
     <string name="create_farm">Create a farm</string>
     <string name="edit">Edit</string>
-    <string name="remove">Remove</string>
     <string name="error">Error</string>
+    <string name="accept_delete_farm_description">Are you sure you want to delete the farm?</string>
 </resources>

@@ -88,7 +88,8 @@ class TotalViewModel(
                             power = totalPower,
                             electricityPrice = electricityPrice,
                             miners = miners,
-                            manualExchangeRate = params.exchangeRate
+                            manualExchangeRate = params.exchangeRate,
+                            needSaveToHistory = true
                         )
                         .collectLatest { calculationState ->
                             when (calculationState) {

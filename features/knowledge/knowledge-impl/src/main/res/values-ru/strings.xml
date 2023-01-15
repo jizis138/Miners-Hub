@@ -50,4 +50,8 @@
     <string name="select_currency">Выберите валюту</string>
     <string name="custom_btc_rate">Стоимость 1 BTC</string>
     <string name="btc_income_per_month">Добыто монет за месяц</string>
+    <string name="calc_is_empty_title">Расчётов нет</string>
+    <string name="calc_is_empty_desc">Вы ещё не делали расчётов доходности, на этом экране будет отображена история всех ваших расчётов.</string>
+    <string name="make_calc">Сделать расчет</string>
+    <string name="accept_delete_all_history">Это действие удаляет всю историю расчётов. Вы уверены что хотите продолжить?</string>
 </resources>

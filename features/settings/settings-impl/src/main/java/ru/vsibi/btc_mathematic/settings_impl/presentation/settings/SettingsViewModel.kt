@@ -13,6 +13,7 @@ import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.settings_api.SettingsFeature
 import ru.vsibi.btc_mathematic.settings_impl.R
 import ru.vsibi.btc_mathematic.settings_impl.domain.logic.LocaleManager
+import ru.vsibi.btc_mathematic.settings_impl.presentation.about_developer.AboutDeveloperNavigationContract
 import ru.vsibi.btc_mathematic.settings_impl.presentation.currency.CurrencyNavigationContract
 import ru.vsibi.btc_mathematic.settings_impl.presentation.language.LanguageNavigationContract
 import ru.vsibi.btc_mathematic.settings_impl.presentation.settings.model.SettingsViewItem
@@ -55,6 +56,8 @@ class SettingsViewModel(
         }
     }
 
+    private val aboutDeveloperLauncher = launcher(AboutDeveloperNavigationContract)
+
     override fun firstState(): SettingsState = SettingsState(
         appVersion = PrintableText.StringResource(R.string.version_description, environment.appVersion, getDateToday()),
         items = createSettingsList(runBlocking { localeManager.getSavedCurrency() })
@@ -74,6 +77,14 @@ class SettingsViewModel(
             title = PrintableText.StringResource(R.string.currency),
             onItemClicked = {
                 currencyLauncher.launch()
+            },
+            isLocked = false
+        ),
+        SettingsViewItem(
+            icon = R.drawable.ic_baseline_android_24,
+            title = PrintableText.StringResource(R.string.about_developer),
+            onItemClicked = {
+                aboutDeveloperLauncher.launch()
             },
             isLocked = false
         )

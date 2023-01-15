@@ -6,6 +6,7 @@ package ru.vsibi.btc_mathematic.settings_impl.presentation.language
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import ru.vsibi.btc_mathematic.mvi.BaseViewEvent
 import ru.vsibi.btc_mathematic.mvi.ViewModelInterface
 import ru.vsibi.btc_mathematic.presentation.base.ui.BaseFragment
@@ -17,6 +18,7 @@ import ru.vsibi.btc_mathematic.settings_impl.databinding.FragmentLanguageBinding
 import ru.vsibi.btc_mathematic.settings_impl.presentation.language.adapter.LanguageAdapter
 import ru.vsibi.btc_mathematic.uikit.SpacingItemDecoration
 import ru.vsibi.btc_mathematic.util.dp
+import ru.vsibi.btc_mathematic.util.onClick
 
 class LanguageFragment : BaseFragment<LanguageState, Nothing>(R.layout.fragment_language) {
 
@@ -47,6 +49,9 @@ class LanguageFragment : BaseFragment<LanguageState, Nothing>(R.layout.fragment_
                 12.dp,
             )
         })
+        cancel.onClick{
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onUpdateState(state: LanguageState) {

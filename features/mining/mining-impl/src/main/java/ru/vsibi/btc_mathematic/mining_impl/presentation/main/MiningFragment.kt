@@ -69,13 +69,13 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
             is MiningEvent.ShowAcceptDialog ->
                 AcceptDialog.create(
                     this,
-                    title = PrintableText.Raw("Вы уверены что хотите удалить ферму?"),
+                    title = PrintableText.StringResource(R.string.accept_delete_farm_description),
                     onAcceptClicked = {
                         vm.deleteFarm(event.farmViewItem)
                     }
                 ).show()
 
-            is MiningEvent.ShowMenuDialog -> MiningBottomDialog.create(
+            is MiningEvent.ShowMenuDialog -> FarmDialog.create(
                 this,
                 onEditClicked = {
                     vm.editFarmClicked(event.farmViewItem)

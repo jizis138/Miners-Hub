@@ -30,13 +30,14 @@ class MiningMapper(
                 hashrate = totalHashrate,
                 power = totalPower,
                 electricityPrice = farm.electricityPrice,
-                miners = farm.miners
+                miners = farm.miners,
+                needSaveToHistory = false
             )) {
                 is CallResult.Error -> {
                     return@mapNotNull FarmViewItem(
                         id = farm.id,
                         title = PrintableText.Raw(farm.title),
-                        totalPower = PrintableText.Raw("${totalHashrate.div(TH)} TH"),
+                        totalPower = PrintableText.Raw("${totalHashrate.div(TH).roundToInt()} TH"),
                         incomePerDay = PrintableText.StringResource(R.string.error),
                         incomePerMonth = PrintableText.StringResource(R.string.error),
                         calculationState = CalculationState.Error(NothingToFoundResponseException())
@@ -46,7 +47,7 @@ class MiningMapper(
                     return@mapNotNull FarmViewItem(
                         id = farm.id,
                         title = PrintableText.Raw(farm.title),
-                        totalPower = PrintableText.Raw("${totalHashrate.div(TH)} TH"),
+                        totalPower = PrintableText.Raw("${totalHashrate.div(TH).roundToInt()} TH"),
                         incomePerDay = PrintableText.Raw("${result.data.perDay.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
                         incomePerMonth = PrintableText.Raw("${result.data.perMonth.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
                         calculationState = result.data

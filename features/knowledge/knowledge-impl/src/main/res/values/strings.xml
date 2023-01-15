@@ -56,4 +56,5 @@
     <string name="calc_is_empty_desc">This screen will display the history of your calculations.</string>
     <string name="make_calc">Make a calculation</string>
     <string name="accept_delete_all_history">This action deletes the entire calculation history. Are you sure you want to continue?</string>
+    <string name="farm_name">Farm name</string>
 </resources>

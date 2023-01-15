@@ -57,7 +57,12 @@ interface KnowledgeFeature {
 
     sealed class IncomePropertiesResult : Parcelable {
         @Parcelize
-        data class FarmResult(
+        data class FarmEditResult(
+            val farm: Farm
+        ) : IncomePropertiesResult(), Parcelable
+
+        @Parcelize
+        data class FarmCreateResult(
             val farm: Farm
         ) : IncomePropertiesResult(), Parcelable
 

@@ -24,11 +24,16 @@ class MiningRepositoryImpl(private val miningStorage: MiningStorage) : MiningRep
     override suspend fun refreshFarms() = miningStorage.getFarms()
 
     override suspend fun deleteFarm(id: Long) {
-        miningStorage.deleteFarms()
+        miningStorage.deleteFarm(id)
     }
 
     override suspend fun deleteFarms() {
         miningStorage.deleteFarms()
+    }
+
+    override suspend fun editFarm(farm: Farm) {
+        miningStorage.deleteFarm(farm.id)
+        miningStorage.addFarm(farm)
     }
 
 }

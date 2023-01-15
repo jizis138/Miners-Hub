@@ -23,7 +23,7 @@ fun createMiningDelegate(
     adapterDelegateViewBinding<FarmViewItem, HolderFarmBinding>(
         HolderFarmBinding::inflate
     ) {
-        binding.details.onClick {
+        binding.root.onClick {
             onDetailClicked(item)
         }
         binding.menu.onClick {

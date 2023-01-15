@@ -14,17 +14,17 @@ class SlideInDownAnimator(private val onAnimationFinished: () -> Unit) : CommonI
     }
 
     override fun preAnimateAdd(holder: RecyclerView.ViewHolder) {
-        holder.itemView.translationY = -holder.itemView.height.toFloat()
-        holder.itemView.alpha = 0f
+//        holder.itemView.translationY = -holder.itemView.height.toFloat()
+//        holder.itemView.alpha = 0f
     }
 
     override fun animateAdd(holder: RecyclerView.ViewHolder) {
-        holder.itemView.animate()
-            .translationY(0f)
-            .alpha(1f)
-            .withEndAction {
-                onAnimationFinished()
-            }
-            .start()
+//        holder.itemView.animate()
+//            .translationY(0f)
+//            .alpha(1f)
+//            .withEndAction {
+//                onAnimationFinished()
+//            }
+//            .start()
     }
 }

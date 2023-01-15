@@ -19,7 +19,6 @@ import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_mi
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.mapper.MinerMapper
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.IncomePropertiesViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.MinerViewItem
-import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.UniversalMinerViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.create_universal_miner.CreateUniversalNavigationContract
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.TotalNavigationContract
 import ru.vsibi.btc_mathematic.mvi.BaseViewModel
@@ -125,7 +124,7 @@ class IncomePropertiesViewModel(
             currency = currency
         )
 
-        val items = listOf(
+        val items = listOfNotNull(
             IncomePropertiesViewItem.MinerSelection(
                 title = PrintableText.StringResource(R.string.select_miner),
                 onClicked = {
@@ -143,6 +142,15 @@ class IncomePropertiesViewModel(
             ),
             exchangeRateSelection,
             electricitySelection,
+            if (params.mode is KnowledgeFeature.Mode.Normal) {
+                null
+            } else {
+                IncomePropertiesViewItem.FarmNameSelection().also {
+                    if (params.mode is KnowledgeFeature.Mode.EditFarm) {
+                        it.farmName = (params.mode as KnowledgeFeature.Mode.EditFarm).farm.title
+                    }
+                }
+            }
         )
         return IncomePropertiesState(
             items = items,
@@ -179,7 +187,7 @@ class IncomePropertiesViewModel(
         }
     }
 
-    fun onCalculationClicked(farmTitle: String) {
+    fun onCalculationClicked(defaultTitle: String) {
         val electricitySelection =
             currentViewState.items.filterIsInstance<IncomePropertiesViewItem.ElectricitySelection>()
 
@@ -188,16 +196,27 @@ class IncomePropertiesViewModel(
         val exchangeRateSelection =
             currentViewState.items.filterIsInstance<IncomePropertiesViewItem.ExchangeRateSelection>()
 
+        val farmNameSelection =
+            currentViewState.items.filterIsInstance<IncomePropertiesViewItem.FarmNameSelection>()
+
         val electricityPrice = electricitySelection.last().electricityPrice
         val currency = currencySelection.last().currencyName
 
         val exchangeRate = exchangeRateSelection.last().exchangeRate
 
+        val farmTitle = farmNameSelection.lastOrNull()?.farmName.let {
+            if (it?.trim().isNullOrEmpty()) {
+                defaultTitle
+            } else {
+                it?.trim() ?: ""
+            }
+        }
+
         when (params.mode) {
             KnowledgeFeature.Mode.CreateFarm -> {
                 exitWithResult(
                     IncomePropertiesNavigationContract.createResult(
-                        KnowledgeFeature.IncomePropertiesResult.FarmResult(
+                        KnowledgeFeature.IncomePropertiesResult.FarmCreateResult(
                             farm = Farm(
                                 id = System.currentTimeMillis(),
                                 title = farmTitle,
@@ -214,7 +233,7 @@ class IncomePropertiesViewModel(
             is KnowledgeFeature.Mode.EditFarm -> {
                 exitWithResult(
                     IncomePropertiesNavigationContract.createResult(
-                        KnowledgeFeature.IncomePropertiesResult.FarmResult(
+                        KnowledgeFeature.IncomePropertiesResult.FarmEditResult(
                             farm = editingFarm?.copy(
                                 title = farmTitle,
                                 miners = addedMiners.plus(addedUniversalMiners),
@@ -245,28 +264,6 @@ class IncomePropertiesViewModel(
                 )
             }
         }
-    }
-
-    fun onRemoveUniversalItemClicked(universalMinerViewItem: UniversalMinerViewItem) {
-        updateState { state ->
-            val universalSelection =
-                state.items.filterIsInstance<IncomePropertiesViewItem.UniversalSelection>()
-
-            val oldItems = universalSelection.last().items
-            state.copy(
-                items = state.items.map { incomePropertiesViewItem ->
-                    if (incomePropertiesViewItem is IncomePropertiesViewItem.UniversalSelection) {
-                        return@map incomePropertiesViewItem.copy(
-                            items = oldItems.filter {
-                                it.id != universalMinerViewItem.id
-                            }
-                        )
-                    }
-                    incomePropertiesViewItem
-                }
-            )
-        }
-
     }
 
     fun selectMinerClicked() {
@@ -371,6 +368,20 @@ class IncomePropertiesViewModel(
             currentViewState.items.filterIsInstance<IncomePropertiesViewItem.CurrencySelection>().last().currencyName
         val rate = runBlocking { calculationInteractor.fetchBTCtoCurrencyRate(currency) }?.lastOrNull()?.value
         onRefreshLoading.invoke(rate, false, currency)
+    }
+
+    fun onFarmNameChanged(farmNameSelection: IncomePropertiesViewItem.FarmNameSelection) {
+        updateState { state ->
+            state.copy(
+                items = state.items.map { incomePropertiesViewItem ->
+                    if (incomePropertiesViewItem is IncomePropertiesViewItem.FarmNameSelection) {
+                        return@map farmNameSelection
+                    }
+                    incomePropertiesViewItem
+                },
+                needUpdateList = false
+            )
+        }
     }
 
     @Parcelize

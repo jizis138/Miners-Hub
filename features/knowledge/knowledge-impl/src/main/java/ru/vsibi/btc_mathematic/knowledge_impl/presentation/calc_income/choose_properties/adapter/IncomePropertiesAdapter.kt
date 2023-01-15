@@ -21,7 +21,8 @@ class IncomePropertiesAdapter(
     minersAdapter: MinersAdapter,
     onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit,
     onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
-    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit,
+    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit
 ) :
     AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
@@ -29,7 +30,8 @@ class IncomePropertiesAdapter(
             createChooseMinerDelegate(minersAdapter),
             createElectricityDelegate(onElectricityPriceChanged),
             createCurrencyDelegate(),
-            createExchangeRateDelegate(onExchangeRateChanged, onRefreshClicked)
+            createExchangeRateDelegate(onExchangeRateChanged, onRefreshClicked),
+            createFarmNameSelectionDelegate(onFarmNameChanged)
         )
     )
 
@@ -146,6 +148,27 @@ fun createExchangeRateDelegate(
             }
         }
     }
+
+fun createFarmNameSelectionDelegate(
+    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit,
+) = adapterDelegateViewBinding<IncomePropertiesViewItem.FarmNameSelection,
+        HolderFarmNameBinding>(
+    HolderFarmNameBinding::inflate,
+) {
+
+
+    bindWithBinding {
+        inputName.setText(item.farmName)
+        inputName.doAfterTextChanged {
+            if (!it.isNullOrEmpty()) {
+                item.farmName = it.toString()
+            } else {
+                item.farmName = ""
+            }
+            onFarmNameChanged(item)
+        }
+    }
+}
 
 fun IncomePropertiesViewItem.ExchangeRateSelection.refreshClicked(
     onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit,

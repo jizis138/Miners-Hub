@@ -1,3 +1,6 @@
+import java.util.Date
+import java.text.SimpleDateFormat
+
 plugins {
     kotlin("android")
     id("com.android.application")
@@ -31,6 +34,7 @@ android {
 
             stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
             stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
+            stringBuildConfigField("BUILD_DATE", getDate())
 
             isMinifyEnabled = obfuscationEnabled
             isShrinkResources = obfuscationEnabled
@@ -40,6 +44,8 @@ android {
 
             stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
             stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
+            stringBuildConfigField("BUILD_DATE", getDate())
+
             isDebuggable = true
             isMinifyEnabled = obfuscationEnabled
             isShrinkResources = obfuscationEnabled
@@ -117,4 +123,8 @@ dependencies {
     androidTestImplementation(Deps.Tests.junit)
 
     coreLibraryDesugaring(Deps.Tools.desugar)
+}
+
+fun getDate(): String {
+    return SimpleDateFormat("dd.MM.yyyy").format(Date())
 }

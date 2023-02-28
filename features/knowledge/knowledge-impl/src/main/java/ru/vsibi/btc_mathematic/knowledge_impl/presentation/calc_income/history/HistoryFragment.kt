@@ -67,6 +67,9 @@ class HistoryFragment : BaseFragment<HistoryState, HistoryEvent>(R.layout.fragme
         removeAll.onClick {
             vm.removeAllClicked()
         }
+        cancel.onClick{
+            requireActivity().onBackPressed()
+        }
 
         vm.fetchHistory()
     }

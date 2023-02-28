@@ -59,7 +59,7 @@ class SettingsViewModel(
     private val aboutDeveloperLauncher = launcher(AboutDeveloperNavigationContract)
 
     override fun firstState(): SettingsState = SettingsState(
-        appVersion = PrintableText.StringResource(R.string.version_description, environment.appVersion, getDateToday()),
+        appVersion = PrintableText.StringResource(R.string.version_description, environment.appVersion, environment.buildDate),
         items = createSettingsList(runBlocking { localeManager.getSavedCurrency() })
     )
 

@@ -11,6 +11,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("script-runtime"))
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
     implementation("com.android.tools.build:gradle:7.0.4")
 }

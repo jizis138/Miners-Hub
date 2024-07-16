@@ -1,5 +1,6 @@
 package ru.vsibi.btc_mathematic.mining_impl.presentation.main
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import ru.vsibi.btc_mathematic.core.ui.dialog.AcceptDialog
@@ -9,9 +10,14 @@ import ru.vsibi.btc_mathematic.mining_impl.presentation.main.adapter.MiningAdapt
 import ru.vsibi.btc_mathematic.presentation.base.ui.BaseFragment
 import ru.vsibi.btc_mathematic.presentation.base.util.fragmentViewBinding
 import ru.vsibi.btc_mathematic.presentation.base.util.viewModel
+import ru.vsibi.btc_mathematic.uikit.SpacingItemDecoration
+import ru.vsibi.btc_mathematic.uikit.animation.AddableItemAnimator
+import ru.vsibi.btc_mathematic.uikit.animation.SimpleCommonAnimator
+import ru.vsibi.btc_mathematic.uikit.animation.SlideInDownAnimator
 import ru.vsibi.btc_mathematic.uikit.isLoading
 import ru.vsibi.btc_mathematic.uikit.renderLoadingState
 import ru.vsibi.btc_mathematic.util.PrintableText
+import ru.vsibi.btc_mathematic.util.dp
 import ru.vsibi.btc_mathematic.util.onClick
 
 class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_mining) {
@@ -32,7 +38,6 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
         list.adapter = adapter
-
         with(emptyContainer) {
             errorTitle.setText(R.string.farms_is_empty)
             errorDescription.setText(R.string.farms_is_empty_desc)
@@ -43,16 +48,26 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
         }
 
         swipeRefresher.setOnRefreshListener {
+            binding.swipeRefresher.isRefreshing = true
             vm.refreshFarms()
+        }
+//        errorContainer.retry.onClick {
+//            vm.refreshFarms()
+//        }
+
+        addFarm.onClick {
+            vm.createFarm()
         }
     }
 
     override fun onUpdateState(state: MiningState) {
-        binding.swipeRefresher.isRefreshing = state.loadingState.isLoading
+        if(!state.loadingState.isLoading) {
+            binding.swipeRefresher.isRefreshing = false
+        }
         renderLoadingState(
             loadingState = state.loadingState,
             progressContainer = binding.progressContainer,
-            errorContainer = binding.errorContainer.errorView,
+            errorContainer = binding.errorContainer,
             contentContainer = binding.list,
             emptyContainer = binding.emptyContainer,
             renderData = {
@@ -69,13 +84,13 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
             is MiningEvent.ShowAcceptDialog ->
                 AcceptDialog.create(
                     this,
-                    title = PrintableText.Raw("Вы уверены что хотите удалить ферму?"),
+                    title = PrintableText.StringResource(R.string.accept_delete_farm_description),
                     onAcceptClicked = {
                         vm.deleteFarm(event.farmViewItem)
                     }
                 ).show()
 
-            is MiningEvent.ShowMenuDialog -> MiningBottomDialog.create(
+            is MiningEvent.ShowMenuDialog -> FarmDialog.create(
                 this,
                 onEditClicked = {
                     vm.editFarmClicked(event.farmViewItem)

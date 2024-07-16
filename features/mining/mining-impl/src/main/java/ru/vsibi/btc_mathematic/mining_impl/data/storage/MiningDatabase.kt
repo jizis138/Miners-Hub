@@ -13,7 +13,7 @@ import ru.vsibi.btc_mathematic.mining_impl.data.storage.model.FarmTable
     entities = [
         FarmTable::class
     ],
-    version = 2,
+    version = 3,
 )
 @TypeConverters(
     LocalDateConverter::class,

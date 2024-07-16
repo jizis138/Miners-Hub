@@ -1,7 +1,7 @@
 package ru.vsibi.btc_mathematic.exchange_rate_impl.presentation.adapter
 
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import ru.vsibi.btc_mathematic.exchange_rate_impl.databinding.HolderExchangeRateBinding
+import ru.vsibi.btc_mathematic.exchange_rate_impl.databinding.HolderRateBinding
 import ru.vsibi.btc_mathematic.exchange_rate_impl.presentation.model.ExchangeRateViewItem
 import ru.vsibi.btc_mathematic.util.AdapterUtil
 import ru.vsibi.btc_mathematic.util.adapterDelegateViewBinding
@@ -18,13 +18,15 @@ class ExchangeRateAdapter() :
 
 fun createExchangeRateDelegate() =
     adapterDelegateViewBinding<ExchangeRateViewItem,
-            HolderExchangeRateBinding>(
-        HolderExchangeRateBinding::inflate,
+            HolderRateBinding>(
+        HolderRateBinding::inflate,
     ) {
         bindWithBinding {
             icon.setImageResource(item.iconRes)
-            abbreviation.setPrintableText(item.abbreviation)
-            fullCoinName.setPrintableText(item.fullCoinName)
+            sampleName.setPrintableText(item.abbreviation)
+            fullName.setPrintableText(item.fullCoinName)
             toRouble.setPrintableText(item.exchangeRates.toRouble)
+            toEur.setPrintableText(item.exchangeRates.toEUR)
+            toUsd.setPrintableText(item.exchangeRates.toUSD)
         }
     }

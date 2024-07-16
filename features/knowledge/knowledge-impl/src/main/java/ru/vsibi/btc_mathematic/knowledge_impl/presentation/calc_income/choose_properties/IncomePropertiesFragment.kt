@@ -46,6 +46,18 @@ class IncomePropertiesFragment :
         minersAdapter,
         onElectricityPriceChanged = {
             vm.onElectricityPriceChanged(it)
+        },
+        onExchangeRateChanged = {
+            vm.onExchangeRateChanged(it)
+        },
+        onRefreshClicked = {
+            vm.onExchangeRefreshClicked(it)
+        },
+        onFarmNameChanged = {
+            vm.onFarmNameChanged(it)
+        },
+        onSwitchVia = { checked->
+            vm.onViaSwitched(checked)
         }
     )
 
@@ -71,7 +83,7 @@ class IncomePropertiesFragment :
             requireActivity().onBackPressed()
         }
         calculation.onClick {
-            vm.onCalculationClicked()
+            vm.onCalculationClicked(getString(R.string.default_farm_name))
         }
     }
 

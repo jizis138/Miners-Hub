@@ -8,6 +8,7 @@ class FarmTable(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val title: String,
+    val usingViaBtc : Boolean,
     val miners : List<MinerDB>,
     val electricityPrice : PriceDB
 )

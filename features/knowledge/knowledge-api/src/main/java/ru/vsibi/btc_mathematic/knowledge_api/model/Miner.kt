@@ -5,8 +5,10 @@ package ru.vsibi.btc_mathematic.knowledge_api.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class Miner(
     val id : Long,
     val name: String,
@@ -16,6 +18,7 @@ data class Miner(
 ) : Parcelable
 
 @Parcelize
+@Serializable
 data class Schema(
     val algorithmName : String = "SHA-256",
     val hashrate: Long,

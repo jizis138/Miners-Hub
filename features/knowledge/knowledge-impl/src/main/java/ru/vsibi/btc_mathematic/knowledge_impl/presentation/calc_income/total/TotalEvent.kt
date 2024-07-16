@@ -4,4 +4,7 @@ sealed interface TotalEvent {
 
     object ExpandClicked : TotalEvent
 
+    object ShareClicked : TotalEvent
+
+    object SaveFarm : TotalEvent
 }

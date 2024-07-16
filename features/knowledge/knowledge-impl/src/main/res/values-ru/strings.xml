@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="knowledge">Знания</string>
+    <string name="calc_income">Расчет доходности</string>
+    <string name="calc_income_farm">Расчет доходности фермы</string>
+    <string name="calc_income_farm_via">Расчет доходности с помощью ViaBTC (Бета)</string>
+    <string name="add_miner">Добавить позицию</string>
+    <string name="search">Поиск</string>
+    <string name="select_miner">Выберите майнер</string>
+    <string name="ready">Готово</string>
+    <string name="piece">шт.</string>
+    <string name="currency_per_kilowat">%1$s за 1 кВт * час</string>
+    <string name="calculation">Рассчитать</string>
+    <string name="total">Результаты</string>
+    <string name="calc_income_details">Подробности расчёта</string>
+    <string name="count">Количество</string>
+    <string name="power_th">Мощность TH</string>
+    <string name="power_kwt">Потребление кВт</string>
+    <string name="share_calculation">Поделиться результатами</string>
+    <string name="add_normal_miner">Добавить стандартный майнер</string>
+    <string name="add_universal_miner">Добавить майнер с универсальными параметрами</string>
+    <string name="create_farm">Создание фермы</string>
+    <string name="edit_farm">Редактирование фермы</string>
+    <string name="locked">Раздел пока не доступен. Следите за обновлениями</string>
+    <string name="study">Обучение</string>
+    <string name="calc_income_desc">с учетом хэшрейта фермы, стоимости электричества, текущего курса, сложности сети и награды за блок</string>
+    <string name="calc_history">История расчетов</string>
+    <string name="electricity_host">Стоимость электричества</string>
+    <string name="default_farm_name">Моя ферма</string>
+    <string name="custom_miner">Универсальный майнер</string>
+    <string name="calc_state_start">Начали расчет</string>
+    <string name="calc_state_calc">Рассчитываем доходность</string>
+    <string name="calc_state_error">Ошибка</string>
+    <string name="calc_state_complexity_block">Получаем сложность блока</string>
+    <string name="calc_state_rate">Получаем курс валют</string>
+    <string name="total_consumption">Суммарное потребление</string>
+    <string name="wt">%1$s Вт</string>
+    <string name="kwt">%1$s кВт</string>
+    <string name="until_date">До %1$s 00:00</string>
+    <string name="calculation_from_date">Расчет доходности фермы от %1$s \n\n</string>
+    <string name="gross_income">Грязный доход за месяц</string>
+    <string name="electricity_consumption_per_month">Потребление электричества за месяц</string>
+    <string name="electricity_cost_per_month">Стоимость электричества за месяц</string>
+    <string name="btc_cost">Стоимость 1 BTC</string>
+    <string name="block_reward">Награда за блок</string>
+    <string name="network_complexity">Сложность сети</string>
+    <string name="calc_innacuracy">Погрешность расчёта</string>
+    <string name="relewante">Актуальность</string>
+    <string name="up_to_five_percent">До 5\%%</string>
+    <string name="farm_composition">Состав фермы</string>
+    <string name="select_currency">Выберите валюту</string>
+    <string name="custom_btc_rate">Стоимость 1 BTC</string>
+    <string name="btc_income_per_month">Добыто монет за месяц</string>
+    <string name="btc_income_per_day">Добыто монет за день</string>
+    <string name="calc_is_empty_title">Расчётов нет</string>
+    <string name="calc_is_empty_desc">Вы ещё не делали расчётов доходности, на этом экране будет отображена история всех ваших расчётов.</string>
+    <string name="make_calc">Сделать расчет</string>
+    <string name="accept_delete_all_history">Это действие удаляет всю историю расчётов. Вы уверены что хотите продолжить?</string>
+    <string name="farm_name">Название фермы</string>
+    <string name="calculation_share_description">Рассчёт произведён при помощи ViaBTC в приложении "BTC Расчёты" https://play.google.com/store/apps/details?id=ru.vsibi.btc_mathematic</string>
+    <string name="save_farm">Сохранить как ферму</string>
+    <string name="use_via_btc">Использовать ViaBTC</string>
+
+</resources>

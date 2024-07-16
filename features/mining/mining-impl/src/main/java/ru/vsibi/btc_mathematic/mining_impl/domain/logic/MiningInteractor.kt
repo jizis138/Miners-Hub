@@ -15,12 +15,15 @@ class MiningInteractor(
     }
 
     suspend fun createFarm(farm: Farm) = callForResult {
-        miningRepository.deleteFarms()
         miningRepository.addFarm(farm)
     }
 
-    suspend fun deleteFarm(id: Long) = callForResult{
+    suspend fun deleteFarm(id: Long) = callForResult {
         miningRepository.deleteFarm(id)
+    }
+
+    suspend fun editFarm(farm: Farm) = callForResult {
+        miningRepository.editFarm(farm)
     }
 
 

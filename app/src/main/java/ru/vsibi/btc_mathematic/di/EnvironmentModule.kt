@@ -19,7 +19,8 @@ object EnvironmentModule {
                     refreshTokenUrl = refreshTokenUrl,
                 ),
                 isDebug = BuildConfig.IS_DEBUG,
-                appVersion = BuildConfig.VERSION_NAME
+                appVersion = BuildConfig.VERSION_NAME,
+                buildDate = BuildConfig.BUILD_DATE
             )
         }
     }

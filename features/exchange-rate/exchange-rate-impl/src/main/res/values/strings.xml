@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="exchange_rate">Курс</string>
+    <string name="exchange_rate">Exchange Rate</string>
 </resources>

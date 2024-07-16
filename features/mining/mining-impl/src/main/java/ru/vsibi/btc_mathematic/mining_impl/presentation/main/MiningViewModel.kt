@@ -1,6 +1,8 @@
 package ru.vsibi.btc_mathematic.mining_impl.presentation.main
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -14,6 +16,7 @@ import ru.vsibi.btc_mathematic.mvi.BaseViewModel
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.uikit.LoadingState
+import ru.vsibi.btc_mathematic.uikit.dataOrNull
 import ru.vsibi.btc_mathematic.util.CallResult
 import ru.vsibi.btc_mathematic.util.ErrorInfo
 
@@ -37,11 +40,25 @@ class MiningViewModel(
         launcher(knowledgeFeature.createFarmNavigationContract) { result ->
             when (result) {
                 KnowledgeFeature.IncomePropertiesResult.EmptyResult -> Unit
-                is KnowledgeFeature.IncomePropertiesResult.FarmResult -> {
+                is KnowledgeFeature.IncomePropertiesResult.FarmEditResult -> {
                     viewModelScope.launch {
-                        miningInteractor.createFarm(result.farm).withErrorHandled {
-                            refreshFarms()
+                        updateState { state ->
+                            state.copy(
+                                loadingState = LoadingState.Loading
+                            )
                         }
+                        miningInteractor.editFarm(result.farm)
+                    }
+                }
+
+                is KnowledgeFeature.IncomePropertiesResult.FarmCreateResult -> {
+                    viewModelScope.launch {
+                        updateState { state ->
+                            state.copy(
+                                loadingState = LoadingState.Loading
+                            )
+                        }
+                        miningInteractor.createFarm(result.farm)
                     }
                 }
             }
@@ -60,9 +77,7 @@ class MiningViewModel(
             )
         }
         viewModelScope.launch {
-            withTimeoutOrNull(5000) {
-                val farms = miningInteractor.observeFarms().first()
-
+            miningInteractor.observeFarms().distinctUntilChanged().collectLatest { farms ->
                 this@MiningViewModel.farms =
                     farms?.filterNotNull()?.toMutableList() ?: mutableListOf()
 
@@ -74,10 +89,6 @@ class MiningViewModel(
                         )
                     )
                 }
-            } ?: updateState { state ->
-                state.copy(
-                    loadingState = LoadingState.Error(ErrorInfo.createEmpty())
-                )
             }
         }
     }
@@ -101,6 +112,7 @@ class MiningViewModel(
                         )
                     }
                 }
+
                 is CallResult.Success -> {
                     this@MiningViewModel.farms =
                         result.data?.toMutableList() ?: mutableListOf()
@@ -126,29 +138,38 @@ class MiningViewModel(
                 totalCalculationLauncher.launch(
                     KnowledgeFeature.TotalCalculationParams(
                         mode = KnowledgeFeature.TotalCalculationMode.ParamsForCalculation(
+                            usingViaBtc = farm?.usingViaBtc ?: false,
                             electricityPrice = farm?.electricityPrice?.value ?: 0.0,
                             currency = farm?.electricityPrice?.currency ?: "RUB",
-                            miners = farm?.miners ?: listOf()
+                            miners = farm?.miners ?: listOf(),
+                            exchangeRate = null
                         )
                     )
                 )
             }
+
             is CalculationState.ReadyResult -> {
                 totalCalculationLauncher.launch(
                     KnowledgeFeature.TotalCalculationParams(
                         mode = KnowledgeFeature.TotalCalculationMode.WithReadyCalculation(
+                            usingViaBtc = miningViewItem.usingViaBtc,
                             calculationResult = miningViewItem.calculationState
                         )
                     )
                 )
             }
+
+            is CalculationState.Calculation -> {}
+            is CalculationState.FetchingDifficulty -> {}
+            is CalculationState.FetchingExchangeRate -> {}
+            is CalculationState.Start -> {}
         }
     }
 
     fun createFarm() {
         createFarmLauncher.launch(
             KnowledgeFeature.IncomePropertiesParams(
-                mode = KnowledgeFeature.Mode.CreateFarm
+                mode = KnowledgeFeature.Mode.CreateFarm(usingViaBtc = true)
             )
         )
     }
@@ -163,6 +184,7 @@ class MiningViewModel(
         createFarmLauncher.launch(
             KnowledgeFeature.IncomePropertiesParams(
                 mode = KnowledgeFeature.Mode.EditFarm(
+                    usingViaBtc = farmViewItem.usingViaBtc,
                     farm ?: return
                 )
             )
@@ -175,8 +197,13 @@ class MiningViewModel(
 
     fun deleteFarm(farmViewItem: FarmViewItem) {
         viewModelScope.launch {
-            miningInteractor.deleteFarm(farmViewItem.id).withErrorHandled {
-                refreshFarms()
+            miningInteractor.deleteFarm(farmViewItem.id)
+            updateState { state ->
+                state.copy(
+                    loadingState = LoadingState.Success(
+                        data = currentViewState.loadingState.dataOrNull?.filter { it.id != farmViewItem.id } ?: listOf()
+                    )
+                )
             }
         }
     }

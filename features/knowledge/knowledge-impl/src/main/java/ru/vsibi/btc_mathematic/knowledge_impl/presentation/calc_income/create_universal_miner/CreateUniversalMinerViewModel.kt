@@ -1,5 +1,6 @@
 package ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.create_universal_miner
 
+import android.content.Context
 import ru.vsibi.btc_mathematic.knowledge_api.model.Miner
 import ru.vsibi.btc_mathematic.knowledge_api.model.Schema
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.logic.CalculationInteractor
@@ -7,6 +8,7 @@ import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_pr
 import ru.vsibi.btc_mathematic.mvi.BaseViewModel
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
+import ru.vsibi.btc_mathematic.util.getPrintableText
 
 class CreateUniversalMinerViewModel(
     rootRouter: RootRouter,
@@ -25,13 +27,13 @@ class CreateUniversalMinerViewModel(
         )
     }
 
-    fun onReadyClicked(universalMinerViewItem: UniversalMinerViewItem) {
+    fun onReadyClicked(context: Context, universalMinerViewItem: UniversalMinerViewItem) {
         exitWithResult(
             CreateUniversalNavigationContract.createResult(
                 CreateUniversalNavigationContract.Result(
                     miner = Miner(
                         id = universalMinerViewItem.id,
-                        name = universalMinerViewItem.name,
+                        name = context.getPrintableText(universalMinerViewItem.name),
                         schemas = listOf(
                             Schema(
                                 hashrate = universalMinerViewItem.hashrate * CalculationInteractor.TH,

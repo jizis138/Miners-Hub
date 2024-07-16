@@ -3,27 +3,37 @@
  */
 package ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.adapter
 
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import ru.vsibi.btc_mathematic.knowledge_impl.databinding.HolderElectricityBinding
-import ru.vsibi.btc_mathematic.knowledge_impl.databinding.HolderMinerPropertyBinding
-import ru.vsibi.btc_mathematic.knowledge_impl.databinding.HolderMinerUniversalPropertyBinding
-import ru.vsibi.btc_mathematic.knowledge_impl.databinding.HolderPropertiesChooseMinerBinding
+import ru.vsibi.btc_mathematic.knowledge_impl.databinding.*
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.IncomePropertiesViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.MinerViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.model.UniversalMinerViewItem
 import ru.vsibi.btc_mathematic.util.*
+import kotlin.math.roundToLong
 
 
 class IncomePropertiesAdapter(
     minersAdapter: MinersAdapter,
-    onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit
+    onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit,
+    onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit,
+    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit,
+    onSwitchVia : (Boolean) -> Unit
 ) :
     AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
         AdapterUtil.adapterDelegatesManager(
             createChooseMinerDelegate(minersAdapter),
-            createElectricityDelegate(onElectricityPriceChanged)
+            createElectricityDelegate(onElectricityPriceChanged),
+            createCurrencyDelegate(),
+            createExchangeRateDelegate(onExchangeRateChanged, onRefreshClicked),
+            createFarmNameSelectionDelegate(onFarmNameChanged),
+            usingViaBtcDelegate(onSwitchVia)
         )
     )
 
@@ -40,6 +50,20 @@ fun createChooseMinerDelegate(minersAdapter: MinersAdapter) =
             }
             minersList.adapter = minersAdapter
             minersAdapter.items = item.items
+        }
+    }
+
+fun usingViaBtcDelegate(onSwitchVia: (Boolean) -> Unit) =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.UsingViaBTCSelection,
+            HolderUsingViaBinding>(
+        HolderUsingViaBinding::inflate,
+    ) {
+        bindWithBinding {
+            useViaBtcSwitcher.isChecked = item.isSelected
+
+            useViaBtcSwitcher.setOnCheckedChangeListener { buttonView, isChecked ->
+                onSwitchVia(isChecked)
+            }
         }
     }
 
@@ -69,6 +93,7 @@ fun createElectricityDelegate(onElectricityPriceChanged: (IncomePropertiesViewIt
     ) {
         bindWithBinding {
             title.setPrintableText(item.title)
+            currencyKilowat.setPrintableText(item.currencyText)
 
             if (item.electricityPrice != 0.0) {
                 count.setText(item.electricityPrice.toString())
@@ -83,6 +108,112 @@ fun createElectricityDelegate(onElectricityPriceChanged: (IncomePropertiesViewIt
             }
         }
     }
+
+fun createCurrencyDelegate() =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.CurrencySelection,
+            HolderCurrencyBinding>(
+        HolderCurrencyBinding::inflate,
+    ) {
+        bindWithBinding {
+            selectCurrency.setPrintableText(item.title)
+            selectCurrency.setCompoundDrawablesWithIntrinsicBounds(item.iconRes, 0, 0, 0)
+
+            root.onClick {
+                item.onClicked()
+            }
+        }
+    }
+
+fun createExchangeRateDelegate(
+    onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit
+) =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.ExchangeRateSelection,
+            HolderExchangeRateBinding>(
+        HolderExchangeRateBinding::inflate,
+    ) {
+
+        bindWithBinding {
+            title.setPrintableText(item.title)
+            currency.text = item.currencySymbol
+            count.setText(item.exchangeRate.toString())
+
+            if (item.exchangeRate == 0L) {
+                root.post {
+                    item.refreshClicked({
+                        onExchangeRateChanged(item)
+                        onRefreshClicked(it)
+                    }, refresh, count, currency)
+                }
+            }
+
+            refresh.increaseHitArea(16.dp)
+            refresh.onClick {
+                item.refreshClicked({
+                    onExchangeRateChanged(item)
+                    onRefreshClicked(it)
+                }, refresh, count, currency)
+            }
+            count.doAfterTextChanged {
+                if (!it.isNullOrEmpty()) {
+                    item.exchangeRate = it.toString().toLong()
+                } else {
+                    item.exchangeRate = 0
+                }
+                onExchangeRateChanged(item)
+            }
+        }
+    }
+
+fun createFarmNameSelectionDelegate(
+    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit,
+) = adapterDelegateViewBinding<IncomePropertiesViewItem.FarmNameSelection,
+        HolderFarmNameBinding>(
+    HolderFarmNameBinding::inflate,
+) {
+
+
+    bindWithBinding {
+        inputName.setText(item.farmName)
+        inputName.doAfterTextChanged {
+            if (!it.isNullOrEmpty()) {
+                item.farmName = it.toString()
+            } else {
+                item.farmName = ""
+            }
+            onFarmNameChanged(item)
+        }
+    }
+}
+
+fun IncomePropertiesViewItem.ExchangeRateSelection.refreshClicked(
+    onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit,
+    refresh: View,
+    count: EditText,
+    currencyView: TextView
+) {
+    val animation =
+        AnimationUtils.loadAnimation(
+            refresh.context,
+            ru.vsibi.btc_mathematic.knowledge_impl.R.anim.rotate_right
+        )
+
+    onRefreshClicked { exchangeRateValue, isLoading, currency ->
+        if (isLoading) {
+            refresh.startAnimation(animation)
+        } else {
+            count.setText((exchangeRateValue?.roundToLong() ?: "").toString())
+            currencyView.text = getCurrencySymbol(currency)
+
+            exchangeRateValue?.let {
+                this.exchangeRate = it.roundToLong()
+            }
+            refresh.postDelayed({
+                refresh.clearAnimation()
+            }, 700)
+        }
+    }
+}
 
 class MinersAdapter(
     onRemoveViewClicked: (MinerViewItem) -> Unit,
@@ -151,7 +282,7 @@ fun createUniversalMinerDelegate(
             onRemoveClicked(item)
         }
         bindWithBinding {
-            minerTitle.text = item.name
+            minerTitle.setPrintableText(item.name)
 
             plus.onClick {
                 item.count += 1

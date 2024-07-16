@@ -21,7 +21,6 @@ import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.navigation.model.createParams
 import ru.vsibi.btc_mathematic.navigation.model.requestParams
-import ru.vsibi.btc_mathematic.notes_api.NotesFeature
 import ru.vsibi.btc_mathematic.settings_api.SettingsFeature
 import java.util.*
 
@@ -35,7 +34,6 @@ class MainViewModel(
 ) : BaseViewModel<MainState, MainEvent>(router, requestParams) {
 
     class Features(
-        val notesFeature: NotesFeature,
         val settingsFeature: SettingsFeature,
         val knowledgeFeature: KnowledgeFeature,
         val exchangeRateFeature: ExchangeRateFeature,

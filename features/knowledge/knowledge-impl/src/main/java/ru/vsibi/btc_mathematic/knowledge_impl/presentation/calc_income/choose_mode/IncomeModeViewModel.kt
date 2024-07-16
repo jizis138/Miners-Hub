@@ -7,6 +7,7 @@ import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_impl.R
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_mode.model.IncomeModeViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesNavigationContract
+import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.history.HistoryNavigationContract
 import ru.vsibi.btc_mathematic.mvi.BaseViewModel
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
@@ -14,35 +15,38 @@ import ru.vsibi.btc_mathematic.util.PrintableText
 
 class IncomeModeViewModel(
     router: RootRouter,
-    requestParams: RequestParams
+    requestParams: RequestParams,
+    private val params: IncomeModeNavigationContract.Params
 ) : BaseViewModel<IncomeModeState, IncomeModeEvent>(
     router, requestParams
 ) {
 
-    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract){}
+    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract) {}
+
+    private val historyLauncher = launcher(HistoryNavigationContract)
 
     override fun firstState(): IncomeModeState {
         return IncomeModeState(
             items = listOf(
                 IncomeModeViewItem(
-                    title = PrintableText.Raw("Расчет доходности"),
-                    description = PrintableText.Raw("с учетом хэшрейта фермы, стоимости электричества, текущего курса, сложности сети и награды за блок"),
+                    title = PrintableText.StringResource(R.string.calc_income),
+                    description = PrintableText.StringResource(R.string.calc_income_desc),
                     onClicked = {
-                        incomePropertiesLauncher.launch(KnowledgeFeature.IncomePropertiesParams(
-                            mode = KnowledgeFeature.Mode.Normal
-                        ))
+                        incomePropertiesLauncher.launch(
+                            KnowledgeFeature.IncomePropertiesParams(
+                                mode = KnowledgeFeature.Mode.Normal(usingViaBtc = params.usingViaBtc)
+                            )
+                        )
                     },
                     isLocked = false
                 ),
                 IncomeModeViewItem(
-                    title = PrintableText.Raw("История расчетов"),
+                    title = PrintableText.StringResource(R.string.calc_history),
                     description = null,
                     onClicked = {
-                        showPopup(PrintableText.StringResource(
-                            R.string.locked
-                        ))
+                        historyLauncher.launch(HistoryNavigationContract.Params(params.usingViaBtc))
                     },
-                    isLocked = true
+                    isLocked = false
                 ),
             )
         )

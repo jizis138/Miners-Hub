@@ -35,16 +35,16 @@
                 android:hint="0"
                 android:textColorHint="@color/grey"
                 android:inputType="numberDecimal"
-                android:maxLength="4"
+                android:maxLength="6"
                 android:paddingHorizontal="16dp"
                 android:textSize="18sp" />
             <TextView
+                android:id="@+id/currency_kilowat"
                 style="@style/Text.White.16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="@string/rouble_kilowat"
-                tools:text="Стоимость электричества" />
+                android:text="@string/currency_per_kilowat"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

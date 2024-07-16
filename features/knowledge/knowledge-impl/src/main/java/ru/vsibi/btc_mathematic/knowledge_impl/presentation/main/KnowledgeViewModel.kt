@@ -25,26 +25,22 @@ class KnowledgeViewModel(
             items = listOf(
                 KnowledgeViewItem(
                     iconRes = R.drawable.ic_money,
-                    titleText = PrintableText.Raw(
-                        "Расчет доходности фермы"
-                    ),
+                    titleText = PrintableText.StringResource(R.string.calc_income_farm),
                     onClicked = {
-                        incomeCalculationLauncher.launch()
+                        incomeCalculationLauncher.launch(IncomeModeNavigationContract.Params(usingViaBtc = false))
                     },
                     isLocked = false
                 ),
-                KnowledgeViewItem(
+                /*KnowledgeViewItem(
                     iconRes = R.drawable.ic_baseline_help_24,
-                    titleText = PrintableText.Raw(
-                        "Обучение"
-                    ),
+                    titleText = PrintableText.StringResource(R.string.study),
                     onClicked = {
                         showPopup(PrintableText.StringResource(
                             R.string.locked
                         ))
                     },
                     isLocked = true
-                ),
+                ),*/
             )
         )
     }

@@ -6,6 +6,7 @@ package ru.vsibi.btc_mathematic.main_impl.presentation.main
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commitNow
+import ru.vsibi.btc_mathematic.main_api.MainFeature
 import ru.vsibi.btc_mathematic.main_impl.R
 import ru.vsibi.btc_mathematic.main_impl.databinding.FragmentMain2Binding
 import ru.vsibi.btc_mathematic.presentation.base.ui.BaseFragment
@@ -31,6 +32,16 @@ class MainFragment : BaseFragment<MainState, MainEvent>(R.layout.fragment_main_2
 
     override fun onUpdateState(state: MainState) {
         val tabToOpen = state.currentTab
+        val tabIdToOpen = when(tabToOpen){
+            MainFeature.TabType.Rates -> R.id.rates
+            MainFeature.TabType.Mining -> R.id.mining
+            MainFeature.TabType.Settings -> R.id.settings
+            MainFeature.TabType.Knowledge -> R.id.knowledge
+        }
+
+        if(binding.bottomNavigationView.selectedItemId != tabIdToOpen){
+            binding.bottomNavigationView.selectedItemId = tabIdToOpen
+        }
 
         childFragmentManager.commitNow {
             childFragmentManager.fragments

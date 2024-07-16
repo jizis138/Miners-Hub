@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mining">Добыча</string>
-    <string name="detail">Подробности</string>
-    <string name="farms_is_empty">Ферма пуста</string>
-    <string name="farms_is_empty_desc">Добавьте список своих активных майнеров для отслеживания их доходности в приложении</string>
-    <string name="create_farm">Создать ферму</string>
-    <string name="farm_power">Общая мощность фермы</string>
-    <string name="farm_income_per_day">Средний доход за день</string>
-    <string name="farm_income_per_month">Средний доход за месяц</string>
-    <string name="edit">Редактировать</string>
-    <string name="remove">Удалить</string>
+    <string name="mining">Farm</string>
+    <string name="detail">Details</string>
+    <string name="farms_is_empty">The farm is empty</string>
+    <string name="farms_is_empty_desc">Add a list of your active miners to track their profitability in the app</string>
+    <string name="create_farm">Create a farm</string>
+    <string name="edit">Edit</string>
+    <string name="error">Error</string>
+    <string name="accept_delete_farm_description">Are you sure you want to delete the farm?</string>
+    <string name="farm_loading">Farm calculations are being updated, please wait</string>
 </resources>

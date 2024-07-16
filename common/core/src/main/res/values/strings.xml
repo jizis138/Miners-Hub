@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="notes" tools:ignore="ExtraTranslation">Заметки</string>
-    <string name="settings" tools:ignore="ExtraTranslation">Настройки</string>
-    <string name="create" tools:ignore="ExtraTranslation">Создать</string>
-    <string name="common_create" tools:ignore="ExtraTranslation">Создать</string>
+    <string name="settings" tools:ignore="ExtraTranslation">Settings</string>
+    <string name="create" tools:ignore="ExtraTranslation">Create</string>
+    <string name="common_create" tools:ignore="ExtraTranslation">Create</string>
     <string name="app_name">BTC Mathematic</string>
-    <string name="accept">Подтвердить</string>
-    <string name="cancel">Отмена</string>
-    <string name="sure">Уверен</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="sure">Sure</string>
+    <string name="farm_power">Total Farm Capacity</string>
+    <string name="farm_income_per_day">Average income per day</string>
+    <string name="farm_income_per_month">Average monthly income</string>
+    <string name="remove">Remove</string>
 </resources>

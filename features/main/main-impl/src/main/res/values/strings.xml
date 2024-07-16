@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feed">Новости</string>
-    <string name="exchange_rates">Курс валют</string>
-    <string name="rates">Курс</string>
-    <string name="chats">Чаты</string>
-    <string name="knowledge">Знания</string>
-    <string name="mining">Добыча</string>
+    <string name="feed">Feed</string>
+    <string name="exchange_rates">Exchange Rate</string>
+    <string name="rates">Rate</string>
+    <string name="chats">Chats</string>
+    <string name="knowledge">Knowledge</string>
+    <string name="mining">Farm</string>
 </resources>

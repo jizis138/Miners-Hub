@@ -1,9 +1,14 @@
+import java.util.Date
+import java.text.SimpleDateFormat
+
 plugins {
     kotlin("android")
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val obfuscationEnabled = getBooleanProperty("obfuscationEnabled", false)
@@ -29,6 +34,7 @@ android {
 
             stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
             stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
+            stringBuildConfigField("BUILD_DATE", getDate())
 
             isMinifyEnabled = obfuscationEnabled
             isShrinkResources = obfuscationEnabled
@@ -38,6 +44,8 @@ android {
 
             stringBuildConfigField("MAIN_API_BASE_URL_DEV", "https://api.minerstat.com/")
             stringBuildConfigField("REFRESH_TOKEN_URL_DEV", "http://176.99.12.176/")
+            stringBuildConfigField("BUILD_DATE", getDate())
+
             isDebuggable = true
             isMinifyEnabled = obfuscationEnabled
             isShrinkResources = obfuscationEnabled
@@ -73,9 +81,6 @@ dependencies {
     implementation(project(Modules.Feature.main.api))
     implementation(project(Modules.Feature.main.impl))
 
-    implementation(project(Modules.Feature.notes.api))
-    implementation(project(Modules.Feature.notes.impl))
-
     implementation(project(Modules.Feature.settings.api))
     implementation(project(Modules.Feature.settings.impl))
 
@@ -101,6 +106,9 @@ dependencies {
 
     implementation(Deps.Android.material)
 
+    implementation(Deps.Firebase.crashlitycs)
+    implementation(Deps.Firebase.analitycs)
+
     implementation(Deps.adapterDelegates)
 
     implementation(Deps.Koin.core)
@@ -112,4 +120,8 @@ dependencies {
     androidTestImplementation(Deps.Tests.junit)
 
     coreLibraryDesugaring(Deps.Tools.desugar)
+}
+
+fun getDate(): String {
+    return SimpleDateFormat("dd.MM.yyyy").format(Date())
 }

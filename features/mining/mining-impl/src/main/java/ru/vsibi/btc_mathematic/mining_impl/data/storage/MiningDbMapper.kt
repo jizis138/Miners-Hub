@@ -29,6 +29,7 @@ object MiningDbMapper {
                     tag = it.tag
                 )
             },
+            usingViaBtc = farmTable.usingViaBtc,
             electricityPrice = Price(
                 value = farmTable.electricityPrice.value,
                 currency = farmTable.electricityPrice.currency
@@ -51,6 +52,7 @@ object MiningDbMapper {
                     tag = it.tag
                 )
             },
+            usingViaBtc = farm.usingViaBtc,
             electricityPrice = PriceDB(
                 value = farm.electricityPrice.value,
                 currency = farm.electricityPrice.currency

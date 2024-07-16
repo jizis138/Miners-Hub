@@ -3,12 +3,26 @@
  */
 package ru.vsibi.btc_mathematic.settings_impl
 
+import kotlinx.coroutines.flow.Flow
 import ru.vsibi.btc_mathematic.navigation.contract.NavigationContractApi
 import ru.vsibi.btc_mathematic.navigation.model.NoParams
 import ru.vsibi.btc_mathematic.navigation.model.NoResult
 import ru.vsibi.btc_mathematic.settings_api.SettingsFeature
+import ru.vsibi.btc_mathematic.settings_impl.domain.logic.LocaleManager
+import ru.vsibi.btc_mathematic.settings_impl.presentation.currency.CurrencyNavigationContract
 import ru.vsibi.btc_mathematic.settings_impl.presentation.settings.SettingsNavigationContract
 
-class SettingsFeatureImpl : SettingsFeature {
+class SettingsFeatureImpl(
+    private val localeManager: LocaleManager
+) : SettingsFeature {
+    override val currencyNavigationContract: NavigationContractApi<NoParams, SettingsFeature.CurrencyResult> =
+        CurrencyNavigationContract
+
     override val navigationContract: NavigationContractApi<NoParams, NoResult> = SettingsNavigationContract
+
+    override val localeFlow: Flow<SettingsFeature.LocaleEvent> = localeManager.observeLocale()
+
+    override suspend fun getSavedLocale(): String = localeManager.getSavedLocale()
+
+    override suspend fun getSavedCurrency(): String = localeManager.getSavedCurrency()
 }

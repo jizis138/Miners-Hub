@@ -15,12 +15,13 @@ import ru.vsibi.btc_mathematic.util.PrintableText
 
 class IncomeModeViewModel(
     router: RootRouter,
-    requestParams: RequestParams
+    requestParams: RequestParams,
+    private val params: IncomeModeNavigationContract.Params
 ) : BaseViewModel<IncomeModeState, IncomeModeEvent>(
     router, requestParams
 ) {
 
-    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract){}
+    private val incomePropertiesLauncher = launcher(IncomePropertiesNavigationContract) {}
 
     private val historyLauncher = launcher(HistoryNavigationContract)
 
@@ -31,9 +32,11 @@ class IncomeModeViewModel(
                     title = PrintableText.StringResource(R.string.calc_income),
                     description = PrintableText.StringResource(R.string.calc_income_desc),
                     onClicked = {
-                        incomePropertiesLauncher.launch(KnowledgeFeature.IncomePropertiesParams(
-                            mode = KnowledgeFeature.Mode.Normal
-                        ))
+                        incomePropertiesLauncher.launch(
+                            KnowledgeFeature.IncomePropertiesParams(
+                                mode = KnowledgeFeature.Mode.Normal(usingViaBtc = params.usingViaBtc)
+                            )
+                        )
                     },
                     isLocked = false
                 ),
@@ -41,7 +44,7 @@ class IncomeModeViewModel(
                     title = PrintableText.StringResource(R.string.calc_history),
                     description = null,
                     onClicked = {
-                        historyLauncher.launch()
+                        historyLauncher.launch(HistoryNavigationContract.Params(params.usingViaBtc))
                     },
                     isLocked = false
                 ),

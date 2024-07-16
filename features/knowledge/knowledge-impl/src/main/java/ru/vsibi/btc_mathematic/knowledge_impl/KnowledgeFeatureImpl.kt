@@ -31,6 +31,7 @@ class KnowledgeFeatureImpl(
         calculationInteractor.fetchBTCtoCurrencyRate(*currency)
 
     override suspend fun calculateBTCIncome(
+        usingViaBtc : Boolean,
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
@@ -40,6 +41,7 @@ class KnowledgeFeatureImpl(
         suspendCoroutine<CallResult<CalculationState.ReadyResult>> { continuation ->
             CoroutineScope(Dispatchers.IO).launch {
                 calculationInteractor.calculateBTCIncome(
+                    usingViaBtc = usingViaBtc,
                     hashrate,
                     power,
                     electricityPrice,
@@ -55,6 +57,11 @@ class KnowledgeFeatureImpl(
                         is CalculationState.ReadyResult -> {
                             continuation.resume(CallResult.Success(it))
                         }
+
+                        is CalculationState.Calculation -> {}
+                        is CalculationState.FetchingDifficulty -> {}
+                        is CalculationState.FetchingExchangeRate -> {}
+                        is CalculationState.Start -> {}
                     }
                 }.launchIn(this)
             }

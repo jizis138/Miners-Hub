@@ -12,4 +12,5 @@ data class HistoryViewItem(
     val incomePerMonth : PrintableText,
     val composition : PrintableText,
     val originalItem : CalculationState.ReadyResult,
+    val usingViaBtc : Boolean
 )

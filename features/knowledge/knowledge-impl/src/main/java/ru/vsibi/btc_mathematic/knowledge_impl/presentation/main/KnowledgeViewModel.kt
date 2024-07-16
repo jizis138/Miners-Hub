@@ -27,7 +27,7 @@ class KnowledgeViewModel(
                     iconRes = R.drawable.ic_money,
                     titleText = PrintableText.StringResource(R.string.calc_income_farm),
                     onClicked = {
-                        incomeCalculationLauncher.launch()
+                        incomeCalculationLauncher.launch(IncomeModeNavigationContract.Params(usingViaBtc = false))
                     },
                     isLocked = false
                 ),

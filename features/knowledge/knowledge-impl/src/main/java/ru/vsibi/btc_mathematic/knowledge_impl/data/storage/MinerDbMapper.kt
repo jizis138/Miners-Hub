@@ -56,10 +56,12 @@ object MinerDbMapper {
             difficulty = it.difficulty,
             blockIncome = it.blockIncome,
             powerPerMonth = it.powerPerMonth,
+            btcIncomePerDay = it.btcIncomePerDay,
             btcIncomePerMonth = it.btcIncomePerMonth,
             incomePerMonth = it.incomePerMonth,
             pricePowerPerMonth = it.pricePowerPerMonth,
-            fromDate = it.date
+            fromDate = it.date,
+            usingViaBtc = it.usingViaBtc
         )
     }
 
@@ -77,8 +79,10 @@ object MinerDbMapper {
             difficulty = calculationResult.difficulty,
             blockIncome = calculationResult.blockIncome,
             powerPerMonth = calculationResult.powerPerMonth,
+            btcIncomePerDay = calculationResult.btcIncomePerDay,
             btcIncomePerMonth = calculationResult.btcIncomePerMonth,
             incomePerMonth = calculationResult.incomePerMonth,
-            pricePowerPerMonth = calculationResult.pricePowerPerMonth
+            pricePowerPerMonth = calculationResult.pricePowerPerMonth,
+            usingViaBtc = calculationResult.usingViaBtc
         )
 }

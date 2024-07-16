@@ -19,12 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/icon_via"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_viabtc"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/title"
                 style="@style/Text.White.18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@+id/icon_via"
                 android:textStyle="bold"
                 tools:text="Название" />
 
@@ -32,9 +41,8 @@
                 android:id="@+id/menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_more_vert_24"
                 android:layout_alignParentEnd="true"
-                />
+                android:src="@drawable/ic_baseline_more_vert_24" />
         </RelativeLayout>
 
         <TextView
@@ -42,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/farm_power"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/power"

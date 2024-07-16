@@ -23,7 +23,9 @@ class HistoryTable(
     val difficulty: Difficulty,
     val blockIncome: Double = BLOCK_INCOME,
     val powerPerMonth: Double,
+    val btcIncomePerDay : Double,
     val btcIncomePerMonth : Double,
     val incomePerMonth: Int,
-    val pricePowerPerMonth: Int
+    val pricePowerPerMonth: Int,
+    val usingViaBtc : Boolean
 )

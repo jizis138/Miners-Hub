@@ -16,7 +16,7 @@ import ru.vsibi.btc_mathematic.knowledge_impl.data.storage.model.MinerTable
         MinerTable::class,
         HistoryTable::class
     ],
-    version = 5
+    version = 7
 )
 @TypeConverters(
     LocalDateConverter::class,

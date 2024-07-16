@@ -15,13 +15,13 @@ import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.mod
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.model.TotalViewItem
 import ru.vsibi.btc_mathematic.util.*
 
-class TotalAdapter(onExpandClicked: () -> Unit, onShareClicked: () -> Unit) :
+class TotalAdapter(onExpandClicked: () -> Unit) :
     AsyncListDifferDelegationAdapter<TotalViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
         AdapterUtil.adapterDelegatesManager(
             createResultsDelegate(),
             createDetailsDelegate(onExpandClicked),
-            createShareDelegate(onShareClicked)
+            createShareDelegate()
         )
     )
 
@@ -58,13 +58,17 @@ fun createDetailsDelegate(onExpandClicked: () -> Unit) =
         }
     }
 
-fun createShareDelegate(onShareClicked: () -> Unit) =
+fun createShareDelegate() =
     adapterDelegateViewBinding<TotalViewItem.ShareCalculation,
             HolderShareCalculationBinding>(
         HolderShareCalculationBinding::inflate,
     ) {
-        binding.root.onClick {
-            onShareClicked()
+        bindWithBinding {
+            root.onClick {
+                item.onClick()
+            }
+            icon.setImageResource(item.icon)
+            title.setPrintableText(item.title)
         }
     }
 

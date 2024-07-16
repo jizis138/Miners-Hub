@@ -1,6 +1,8 @@
 package ru.vsibi.btc_mathematic.mining_impl.presentation.main
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -40,16 +42,23 @@ class MiningViewModel(
                 KnowledgeFeature.IncomePropertiesResult.EmptyResult -> Unit
                 is KnowledgeFeature.IncomePropertiesResult.FarmEditResult -> {
                     viewModelScope.launch {
-                        miningInteractor.editFarm(result.farm).withErrorHandled {
-                            refreshFarms()
+                        updateState { state ->
+                            state.copy(
+                                loadingState = LoadingState.Loading
+                            )
                         }
+                        miningInteractor.editFarm(result.farm)
                     }
                 }
+
                 is KnowledgeFeature.IncomePropertiesResult.FarmCreateResult -> {
                     viewModelScope.launch {
-                        miningInteractor.createFarm(result.farm).withErrorHandled {
-                            refreshFarms()
+                        updateState { state ->
+                            state.copy(
+                                loadingState = LoadingState.Loading
+                            )
                         }
+                        miningInteractor.createFarm(result.farm)
                     }
                 }
             }
@@ -68,9 +77,7 @@ class MiningViewModel(
             )
         }
         viewModelScope.launch {
-            withTimeoutOrNull(5000) {
-                val farms = miningInteractor.observeFarms().first()
-
+            miningInteractor.observeFarms().distinctUntilChanged().collectLatest { farms ->
                 this@MiningViewModel.farms =
                     farms?.filterNotNull()?.toMutableList() ?: mutableListOf()
 
@@ -82,10 +89,6 @@ class MiningViewModel(
                         )
                     )
                 }
-            } ?: updateState { state ->
-                state.copy(
-                    loadingState = LoadingState.Error(ErrorInfo.createEmpty())
-                )
             }
         }
     }
@@ -109,6 +112,7 @@ class MiningViewModel(
                         )
                     }
                 }
+
                 is CallResult.Success -> {
                     this@MiningViewModel.farms =
                         result.data?.toMutableList() ?: mutableListOf()
@@ -134,6 +138,7 @@ class MiningViewModel(
                 totalCalculationLauncher.launch(
                     KnowledgeFeature.TotalCalculationParams(
                         mode = KnowledgeFeature.TotalCalculationMode.ParamsForCalculation(
+                            usingViaBtc = farm?.usingViaBtc ?: false,
                             electricityPrice = farm?.electricityPrice?.value ?: 0.0,
                             currency = farm?.electricityPrice?.currency ?: "RUB",
                             miners = farm?.miners ?: listOf(),
@@ -142,22 +147,29 @@ class MiningViewModel(
                     )
                 )
             }
+
             is CalculationState.ReadyResult -> {
                 totalCalculationLauncher.launch(
                     KnowledgeFeature.TotalCalculationParams(
                         mode = KnowledgeFeature.TotalCalculationMode.WithReadyCalculation(
+                            usingViaBtc = miningViewItem.usingViaBtc,
                             calculationResult = miningViewItem.calculationState
                         )
                     )
                 )
             }
+
+            is CalculationState.Calculation -> {}
+            is CalculationState.FetchingDifficulty -> {}
+            is CalculationState.FetchingExchangeRate -> {}
+            is CalculationState.Start -> {}
         }
     }
 
     fun createFarm() {
         createFarmLauncher.launch(
             KnowledgeFeature.IncomePropertiesParams(
-                mode = KnowledgeFeature.Mode.CreateFarm
+                mode = KnowledgeFeature.Mode.CreateFarm(usingViaBtc = true)
             )
         )
     }
@@ -172,6 +184,7 @@ class MiningViewModel(
         createFarmLauncher.launch(
             KnowledgeFeature.IncomePropertiesParams(
                 mode = KnowledgeFeature.Mode.EditFarm(
+                    usingViaBtc = farmViewItem.usingViaBtc,
                     farm ?: return
                 )
             )

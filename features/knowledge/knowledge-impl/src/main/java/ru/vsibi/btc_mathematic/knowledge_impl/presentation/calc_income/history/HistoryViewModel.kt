@@ -21,7 +21,8 @@ import ru.vsibi.btc_mathematic.util.ErrorInfo
 
 class HistoryViewModel(
     rootRouter: RootRouter, requestParams: RequestParams,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val params: HistoryNavigationContract.Params
 ) : BaseViewModel<HistoryState, HistoryEvent>(rootRouter, requestParams) {
 
     private val totalLauncher = launcher(TotalNavigationContract)
@@ -65,6 +66,7 @@ class HistoryViewModel(
         totalLauncher.launch(
             KnowledgeFeature.TotalCalculationParams(
                 mode = KnowledgeFeature.TotalCalculationMode.WithReadyCalculation(
+                    usingViaBtc = params.usingViaBTC,
                     calculationResult = historyViewItem.originalItem
                 )
             )
@@ -90,7 +92,7 @@ class HistoryViewModel(
     fun createCalculation() {
         incomePropertiesLauncher.launch(
             KnowledgeFeature.IncomePropertiesParams(
-                mode = KnowledgeFeature.Mode.Normal
+                mode = KnowledgeFeature.Mode.Normal(usingViaBtc = params.usingViaBTC)
             )
         )
     }

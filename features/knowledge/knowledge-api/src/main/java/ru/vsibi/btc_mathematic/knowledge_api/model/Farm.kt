@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Farm(
     val id : Long,
     val title : String,
+    val usingViaBtc : Boolean,
     val miners : List<Miner>,
     val electricityPrice : Price
 ) : Parcelable

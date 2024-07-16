@@ -25,7 +25,11 @@ sealed class TotalViewItem {
                 }
     }
 
-    object ShareCalculation : TotalViewItem()
+    data class ShareCalculation(
+        val icon: Int,
+        val title: PrintableText,
+        val onClick: () -> Unit
+    ) : TotalViewItem()
 
 }
 

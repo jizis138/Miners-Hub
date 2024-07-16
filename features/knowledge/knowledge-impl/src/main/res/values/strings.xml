@@ -3,6 +3,7 @@
     <string name="knowledge">Knowledge</string>
     <string name="calc_income">Profitability calculation</string>
     <string name="calc_income_farm">Calculation of farm profitability</string>
+    <string name="calc_income_farm_via">Calculation using ViaBTC (Beta)</string>
     <string name="add_miner">Add one more</string>
     <string name="search">Search</string>
     <string name="select_miner">Choose a miner</string>
@@ -52,9 +53,14 @@
     <string name="select_currency">Select currency</string>
     <string name="custom_btc_rate">Cost of 1 BTC</string>
     <string name="btc_income_per_month">Coin mined per month</string>
+    <string name="btc_income_per_day">Coin mined per day</string>
     <string name="calc_is_empty_title">No calculations</string>
     <string name="calc_is_empty_desc">This screen will display the history of your calculations.</string>
     <string name="make_calc">Make a calculation</string>
     <string name="accept_delete_all_history">This action deletes the entire calculation history. Are you sure you want to continue?</string>
     <string name="farm_name">Farm name</string>
+    <string name="calculation_share_description">The calculation was made using ViaBTC in the "BTC Mathematic" application https://play.google.com/store/apps/details?id=ru.vsibi.btc_mathematic</string>
+    <string name="save_farm">Save as farm</string>
+    <string name="use_via_btc">Use ViaBTC</string>
+
 </resources>

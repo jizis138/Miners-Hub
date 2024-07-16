@@ -1,7 +1,7 @@
 object Versions {
 
     object JetBrains {
-        const val kotlin = "1.6.0"
+        const val kotlin = "1.7.10"
     }
 
     object AndroidX {

@@ -23,21 +23,23 @@ sealed class CalculationState : Parcelable {
      */
     @Parcelize
     data class ReadyResult(
-        val id : Long,
+        val id: Long,
         val hashrate: Double,
         val power: Double,
         val electricityPrice: Price,
-        val miners : List<Miner>,
+        val miners: List<Miner>,
         val perDay: Double,
         val perMonth: Double,
         val exchangeRate: ExchangeRate,
         val difficulty: Difficulty,
         val blockIncome: Double = BLOCK_INCOME,
         val powerPerMonth: Double,
-        val btcIncomePerMonth : Double,
+        val btcIncomePerDay: Double,
+        val btcIncomePerMonth: Double,
         val incomePerMonth: Int,
         val pricePowerPerMonth: Int,
-        val fromDate : LocalDateTime,
+        val fromDate: LocalDateTime,
+        val usingViaBtc: Boolean
     ) : CalculationState(), Parcelable
 
     @Parcelize

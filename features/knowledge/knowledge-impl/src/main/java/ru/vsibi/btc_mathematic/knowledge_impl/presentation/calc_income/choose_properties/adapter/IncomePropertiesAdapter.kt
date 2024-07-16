@@ -22,7 +22,8 @@ class IncomePropertiesAdapter(
     onElectricityPriceChanged: (IncomePropertiesViewItem.ElectricitySelection) -> Unit,
     onExchangeRateChanged: (IncomePropertiesViewItem.ExchangeRateSelection) -> Unit,
     onRefreshClicked: ((exchangeRate: Double?, isLoading: Boolean, currency: String?) -> Unit) -> Unit,
-    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit
+    onFarmNameChanged: (IncomePropertiesViewItem.FarmNameSelection) -> Unit,
+    onSwitchVia : (Boolean) -> Unit
 ) :
     AsyncListDifferDelegationAdapter<IncomePropertiesViewItem>(
         AdapterUtil.diffUtilItemCallbackEquals(),
@@ -31,7 +32,8 @@ class IncomePropertiesAdapter(
             createElectricityDelegate(onElectricityPriceChanged),
             createCurrencyDelegate(),
             createExchangeRateDelegate(onExchangeRateChanged, onRefreshClicked),
-            createFarmNameSelectionDelegate(onFarmNameChanged)
+            createFarmNameSelectionDelegate(onFarmNameChanged),
+            usingViaBtcDelegate(onSwitchVia)
         )
     )
 
@@ -48,6 +50,20 @@ fun createChooseMinerDelegate(minersAdapter: MinersAdapter) =
             }
             minersList.adapter = minersAdapter
             minersAdapter.items = item.items
+        }
+    }
+
+fun usingViaBtcDelegate(onSwitchVia: (Boolean) -> Unit) =
+    adapterDelegateViewBinding<IncomePropertiesViewItem.UsingViaBTCSelection,
+            HolderUsingViaBinding>(
+        HolderUsingViaBinding::inflate,
+    ) {
+        bindWithBinding {
+            useViaBtcSwitcher.isChecked = item.isSelected
+
+            useViaBtcSwitcher.setOnCheckedChangeListener { buttonView, isChecked ->
+                onSwitchVia(isChecked)
+            }
         }
     }
 

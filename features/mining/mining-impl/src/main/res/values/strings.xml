@@ -8,4 +8,5 @@
     <string name="edit">Edit</string>
     <string name="error">Error</string>
     <string name="accept_delete_farm_description">Are you sure you want to delete the farm?</string>
+    <string name="farm_loading">Farm calculations are being updated, please wait</string>
 </resources>

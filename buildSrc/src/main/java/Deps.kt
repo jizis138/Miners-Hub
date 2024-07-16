@@ -75,9 +75,9 @@ object Deps {
     }
 
     object Room {
-        const val runtime = "androidx.room:room-runtime:2.4.1"
-        const val compiler = "androidx.room:room-compiler:2.4.1"
-        const val ktx = "androidx.room:room-ktx:2.4.1"
+        const val runtime = "androidx.room:room-runtime:2.4.3"
+        const val compiler = "androidx.room:room-compiler:2.4.3"
+        const val ktx = "androidx.room:room-ktx:2.4.3"
     }
 
     object Tests {

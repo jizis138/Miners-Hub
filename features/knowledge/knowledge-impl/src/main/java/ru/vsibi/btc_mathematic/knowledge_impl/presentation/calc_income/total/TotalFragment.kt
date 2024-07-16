@@ -27,9 +27,6 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
         onExpandClicked = {
             vm.expandClicked()
         },
-        onShareClicked = {
-            vm.shareClicked(requireContext())
-        }
     )
 
     private val binding by fragmentViewBinding(FragmentTotalBinding::bind)
@@ -71,6 +68,13 @@ class TotalFragment : BaseFragment<TotalState, TotalEvent>(R.layout.fragment_tot
             is TotalEvent.ExpandClicked -> {
                 adapter.notifyDataSetChanged()
             }
+
+            TotalEvent.ShareClicked ->
+                vm.shareClicked(requireContext())
+
+            TotalEvent.SaveFarm -> CreateFarmDialog.create(this@TotalFragment, onSaveClicked = {
+                vm.saveFarm(it)
+            }).show()
         }
     }
 

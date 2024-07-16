@@ -32,7 +32,8 @@ object HistoryMapper {
                             }
                         )
                     }
-                }.toString())
+                }.toString()),
+                usingViaBtc = it.usingViaBtc
             )
         }
     }

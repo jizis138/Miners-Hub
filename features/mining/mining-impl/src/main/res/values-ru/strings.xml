@@ -9,4 +9,5 @@
     <string name="remove">Удалить</string>
     <string name="error">Ошибка</string>
     <string name="accept_delete_farm_description">Вы уверены что хотите удалить ферму?</string>
+    <string name="farm_loading">Обновляются расчеты по фермам, пожалуйста подождите</string>
 </resources>

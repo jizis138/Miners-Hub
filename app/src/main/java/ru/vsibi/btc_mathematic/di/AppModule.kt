@@ -7,7 +7,6 @@ import ru.vsibi.btc_mathematic.knowledge_impl.di.KnowledgeModule
 import ru.vsibi.btc_mathematic.main_impl.di.MainModule
 import ru.vsibi.btc_mathematic.mining_impl.di.MiningModule
 import ru.vsibi.btc_mathematic.network.di.NetworkModule
-import ru.vsibi.btc_mathematic.notes_impl.di.NotesModule
 import ru.vsibi.btc_mathematic.settings_impl.di.SettingsModule
 
 
@@ -24,7 +23,6 @@ object AppModule {
 
     private fun createFeatureModules(): List<Module> = listOf(
         MainModule(),
-        NotesModule(),
         SettingsModule(),
         KnowledgeModule(),
         MiningModule(),

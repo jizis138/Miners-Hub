@@ -51,4 +51,8 @@ sealed class IncomePropertiesViewItem {
         val currencyName: String,
         val onClicked: () -> Unit
     ) : IncomePropertiesViewItem()
+
+    data class UsingViaBTCSelection(
+        val isSelected : Boolean
+    ) : IncomePropertiesViewItem()
 }

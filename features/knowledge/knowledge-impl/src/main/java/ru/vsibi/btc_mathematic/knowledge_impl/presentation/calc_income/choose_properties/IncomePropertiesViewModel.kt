@@ -150,14 +150,15 @@ class IncomePropertiesViewModel(
                         it.farmName = (params.mode as KnowledgeFeature.Mode.EditFarm).farm.title
                     }
                 }
-            }
+            },
+            IncomePropertiesViewItem.UsingViaBTCSelection(isSelected = params.mode.usingViaBtc)
         )
         return IncomePropertiesState(
             items = items,
             toolbarTitle = when (params.mode) {
-                KnowledgeFeature.Mode.CreateFarm -> PrintableText.StringResource(R.string.create_farm)
+                is KnowledgeFeature.Mode.CreateFarm -> PrintableText.StringResource(R.string.create_farm)
                 is KnowledgeFeature.Mode.EditFarm -> PrintableText.StringResource(R.string.edit_farm)
-                KnowledgeFeature.Mode.Normal -> PrintableText.StringResource(R.string.calc_income)
+                is KnowledgeFeature.Mode.Normal -> PrintableText.StringResource(R.string.calc_income)
             },
             needUpdateList = true
         )
@@ -199,6 +200,8 @@ class IncomePropertiesViewModel(
         val farmNameSelection =
             currentViewState.items.filterIsInstance<IncomePropertiesViewItem.FarmNameSelection>()
 
+        val usingViaBtc = currentViewState.items.filterIsInstance<IncomePropertiesViewItem.UsingViaBTCSelection>()
+            .lastOrNull()?.isSelected ?: false
         val electricityPrice = electricitySelection.last().electricityPrice
         val currency = currencySelection.last().currencyName
 
@@ -213,7 +216,7 @@ class IncomePropertiesViewModel(
         }
 
         when (params.mode) {
-            KnowledgeFeature.Mode.CreateFarm -> {
+            is KnowledgeFeature.Mode.CreateFarm -> {
                 exitWithResult(
                     IncomePropertiesNavigationContract.createResult(
                         KnowledgeFeature.IncomePropertiesResult.FarmCreateResult(
@@ -221,6 +224,7 @@ class IncomePropertiesViewModel(
                                 id = System.currentTimeMillis(),
                                 title = farmTitle,
                                 miners = addedMiners.plus(addedUniversalMiners),
+                                usingViaBtc = usingViaBtc,
                                 electricityPrice = Price(
                                     value = electricityPrice,
                                     currency = currency
@@ -230,6 +234,7 @@ class IncomePropertiesViewModel(
                     )
                 )
             }
+
             is KnowledgeFeature.Mode.EditFarm -> {
                 exitWithResult(
                     IncomePropertiesNavigationContract.createResult(
@@ -240,16 +245,19 @@ class IncomePropertiesViewModel(
                                 electricityPrice = Price(
                                     value = electricityPrice,
                                     currency = currency
-                                )
+                                ),
+                                usingViaBtc = usingViaBtc
                             ) ?: return
                         )
                     )
                 )
             }
-            KnowledgeFeature.Mode.Normal -> {
+
+            is KnowledgeFeature.Mode.Normal -> {
                 totalLauncher.launch(
                     KnowledgeFeature.TotalCalculationParams(
                         mode = KnowledgeFeature.TotalCalculationMode.ParamsForCalculation(
+                            usingViaBtc = usingViaBtc,
                             electricityPrice = electricityPrice,
                             currency = currency,
                             miners = addedMiners.plus(addedUniversalMiners),
@@ -376,6 +384,20 @@ class IncomePropertiesViewModel(
                 items = state.items.map { incomePropertiesViewItem ->
                     if (incomePropertiesViewItem is IncomePropertiesViewItem.FarmNameSelection) {
                         return@map farmNameSelection
+                    }
+                    incomePropertiesViewItem
+                },
+                needUpdateList = false
+            )
+        }
+    }
+
+    fun onViaSwitched(checked: Boolean) {
+        updateState { state ->
+            state.copy(
+                items = state.items.map { incomePropertiesViewItem ->
+                    if (incomePropertiesViewItem is IncomePropertiesViewItem.UsingViaBTCSelection) {
+                        return@map incomePropertiesViewItem.copy(isSelected = checked)
                     }
                     incomePropertiesViewItem
                 },

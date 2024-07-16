@@ -27,6 +27,7 @@ class MiningMapper(
             }.toDouble()
 
             when (val result = knowledgeFeature.calculateBTCIncome(
+                usingViaBtc = farm.usingViaBtc,
                 hashrate = totalHashrate,
                 power = totalPower,
                 electricityPrice = farm.electricityPrice,
@@ -40,7 +41,8 @@ class MiningMapper(
                         totalPower = PrintableText.Raw("${totalHashrate.div(TH).roundToInt()} TH"),
                         incomePerDay = PrintableText.StringResource(R.string.error),
                         incomePerMonth = PrintableText.StringResource(R.string.error),
-                        calculationState = CalculationState.Error(NothingToFoundResponseException())
+                        calculationState = CalculationState.Error(NothingToFoundResponseException()),
+                        usingViaBtc = farm.usingViaBtc
                     )
                 }
                 is CallResult.Success -> {
@@ -50,7 +52,8 @@ class MiningMapper(
                         totalPower = PrintableText.Raw("${totalHashrate.div(TH).roundToInt()} TH"),
                         incomePerDay = PrintableText.Raw("${result.data.perDay.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
                         incomePerMonth = PrintableText.Raw("${result.data.perMonth.roundToInt()} ${getCurrencySymbol(farm.electricityPrice.currency)}"),
-                        calculationState = result.data
+                        calculationState = result.data,
+                        usingViaBtc = farm.usingViaBtc
                     )
                 }
             }

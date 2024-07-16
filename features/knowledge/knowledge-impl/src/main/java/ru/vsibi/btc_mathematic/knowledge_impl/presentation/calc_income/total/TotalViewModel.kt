@@ -9,15 +9,20 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.vsibi.btc_mathematic.knowledge_api.KnowledgeFeature
 import ru.vsibi.btc_mathematic.knowledge_api.model.CalculationState
+import ru.vsibi.btc_mathematic.knowledge_api.model.Farm
 import ru.vsibi.btc_mathematic.knowledge_api.model.Miner
 import ru.vsibi.btc_mathematic.knowledge_api.model.Price
 import ru.vsibi.btc_mathematic.knowledge_impl.R
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.logic.CalculationInteractor
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.logic.CalculationInteractor.Companion.TH
+import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.choose_properties.IncomePropertiesNavigationContract
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.model.DetailViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.model.ResultViewItem
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.total.model.TotalViewItem
+import ru.vsibi.btc_mathematic.main_api.MainFeature
+import ru.vsibi.btc_mathematic.mining_api.MiningFeature
 import ru.vsibi.btc_mathematic.mvi.BaseViewModel
+import ru.vsibi.btc_mathematic.mvi.Message
 import ru.vsibi.btc_mathematic.navigation.RootRouter
 import ru.vsibi.btc_mathematic.navigation.model.RequestParams
 import ru.vsibi.btc_mathematic.presentation.base.navigation.ShareTextNavigationContract
@@ -34,7 +39,9 @@ class TotalViewModel(
     router: RootRouter,
     requestParams: RequestParams,
     private val params: KnowledgeFeature.TotalCalculationParams,
-    private val calculationInteractor: CalculationInteractor
+    private val calculationInteractor: CalculationInteractor,
+    private val miningFeature: MiningFeature,
+    private val mainFeature: MainFeature
 ) : BaseViewModel<TotalState, TotalEvent>(
     router, requestParams
 ) {
@@ -84,6 +91,7 @@ class TotalViewModel(
                 calculateJob = viewModelScope.launch {
                     calculationInteractor
                         .calculateBTCIncome(
+                            usingViaBtc = params.usingViaBtc,
                             hashrate = totalHashrate,
                             power = totalPower,
                             electricityPrice = electricityPrice,
@@ -100,6 +108,7 @@ class TotalViewModel(
                                         )
                                     }
                                 }
+
                                 is CalculationState.Calculation -> {
                                     updateState { state ->
                                         state.copy(
@@ -107,6 +116,7 @@ class TotalViewModel(
                                         )
                                     }
                                 }
+
                                 is CalculationState.Error -> {
                                     updateState { state ->
                                         state.copy(
@@ -114,6 +124,7 @@ class TotalViewModel(
                                         )
                                     }
                                 }
+
                                 is CalculationState.FetchingDifficulty -> {
                                     updateState { state ->
                                         state.copy(
@@ -121,6 +132,7 @@ class TotalViewModel(
                                         )
                                     }
                                 }
+
                                 is CalculationState.FetchingExchangeRate -> {
                                     updateState { state ->
                                         state.copy(
@@ -128,6 +140,7 @@ class TotalViewModel(
                                         )
                                     }
                                 }
+
                                 is CalculationState.ReadyResult -> {
                                     updateState { state ->
                                         state.copy(
@@ -138,6 +151,7 @@ class TotalViewModel(
                                                 calculationState.perMonth.roundToInt(),
                                                 electricityPrice,
                                                 totalPower,
+                                                btcIncomePerDay = calculationState.btcIncomePerDay,
                                                 btcIncomePerMonth = calculationState.btcIncomePerMonth,
                                                 calculationState.incomePerMonth,
                                                 calculationState.powerPerMonth,
@@ -154,6 +168,7 @@ class TotalViewModel(
                         }
                 }
             }
+
             is KnowledgeFeature.TotalCalculationMode.WithReadyCalculation -> {
                 val params =
                     params.mode as KnowledgeFeature.TotalCalculationMode.WithReadyCalculation
@@ -178,6 +193,7 @@ class TotalViewModel(
                             params.calculationResult.perMonth.roundToInt(),
                             electricityPrice,
                             totalPower,
+                            btcIncomePerDay = params.calculationResult.btcIncomePerDay,
                             btcIncomePerMonth = params.calculationResult.btcIncomePerMonth,
                             params.calculationResult.incomePerMonth,
                             params.calculationResult.powerPerMonth,
@@ -199,6 +215,7 @@ class TotalViewModel(
         perMonth: Int,
         electricityPrice: Price,
         totalPower: Any,
+        btcIncomePerDay: Double,
         btcIncomePerMonth: Double,
         incomePerMonth: Int,
         powerPerMonth: Double,
@@ -242,8 +259,20 @@ class TotalViewModel(
                         description = PrintableText.Raw("${incomePerMonth} ${getCurrencySymbol(electricityPrice.currency)}")
                     ),
                     DetailViewItem(
+                        title = PrintableText.StringResource(R.string.btc_income_per_day),
+                        description = PrintableText.Raw(
+                            "${
+                                String.format("%.6f", btcIncomePerDay).replace(",", ".")
+                            } BTC"
+                        )
+                    ),
+                    DetailViewItem(
                         title = PrintableText.StringResource(R.string.btc_income_per_month),
-                        description = PrintableText.Raw("$btcIncomePerMonth BTC")
+                        description = PrintableText.Raw(
+                            "${
+                                String.format("%.6f", btcIncomePerMonth).replace(",", ".")
+                            } BTC"
+                        )
                     ),
                     DetailViewItem(
                         title = PrintableText.StringResource(R.string.electricity_consumption_per_month),
@@ -279,7 +308,20 @@ class TotalViewModel(
                     ),
                 )
             ),
-            TotalViewItem.ShareCalculation
+            TotalViewItem.ShareCalculation(
+                icon = R.drawable.ic_baseline_ios_share_24,
+                title = PrintableText.StringResource(R.string.share_calculation),
+                onClick = {
+                    sendEvent(TotalEvent.ShareClicked)
+                }
+            ),
+            TotalViewItem.ShareCalculation(
+                icon = R.drawable.ic_baseline_add_circle_outline_24,
+                title = PrintableText.StringResource(R.string.save_farm),
+                onClick = {
+                    sendEvent(TotalEvent.SaveFarm)
+                }
+            ),
         )
     }
 
@@ -313,6 +355,11 @@ class TotalViewModel(
                 } \n\n"
             )
         }
+        if (params.mode.usingViaBtc) {
+            sharedText.append(
+                "${context.getString(R.string.calculation_share_description)} \n\n"
+            )
+        }
 
         shareNavigationContract.launch(
             ShareTextNavigationContract.Params(
@@ -327,6 +374,44 @@ class TotalViewModel(
 
     fun onStop() {
         calculateJob = null
+    }
+
+    fun saveFarm(farmName: String) {
+        val miners: List<Miner>
+        val electricityPrice: Double
+        val currency: String
+        when (params.mode) {
+            is KnowledgeFeature.TotalCalculationMode.ParamsForCalculation -> {
+                miners = (params.mode as KnowledgeFeature.TotalCalculationMode.ParamsForCalculation).miners
+                electricityPrice =
+                    (params.mode as KnowledgeFeature.TotalCalculationMode.ParamsForCalculation).electricityPrice
+                currency = (params.mode as KnowledgeFeature.TotalCalculationMode.ParamsForCalculation).currency
+            }
+
+            is KnowledgeFeature.TotalCalculationMode.WithReadyCalculation -> {
+                miners =
+                    (params.mode as KnowledgeFeature.TotalCalculationMode.WithReadyCalculation).calculationResult.miners
+                electricityPrice =
+                    (params.mode as KnowledgeFeature.TotalCalculationMode.WithReadyCalculation).calculationResult.electricityPrice.value
+                currency =
+                    (params.mode as KnowledgeFeature.TotalCalculationMode.WithReadyCalculation).calculationResult.electricityPrice.currency
+            }
+        }
+        viewModelScope.launch {
+            miningFeature.saveFarm(
+                Farm(
+                    id = System.currentTimeMillis(),
+                    title = farmName,
+                    miners = miners,
+                    usingViaBtc = params.mode.usingViaBtc,
+                    electricityPrice = Price(
+                        value = electricityPrice,
+                        currency = currency
+                    )
+                )
+            )
+            mainFeature.returnToMainScreenAndOpenTab(MainFeature.TabType.Mining)
+        }
     }
 }
 

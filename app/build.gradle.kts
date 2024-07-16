@@ -81,9 +81,6 @@ dependencies {
     implementation(project(Modules.Feature.main.api))
     implementation(project(Modules.Feature.main.impl))
 
-    implementation(project(Modules.Feature.notes.api))
-    implementation(project(Modules.Feature.notes.impl))
-
     implementation(project(Modules.Feature.settings.api))
     implementation(project(Modules.Feature.settings.impl))
 

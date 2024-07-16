@@ -3,6 +3,7 @@
  */
 package ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.history.adapter
 
+import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import ru.vsibi.btc_mathematic.knowledge_impl.databinding.HolderHistoryBinding
 import ru.vsibi.btc_mathematic.knowledge_impl.presentation.calc_income.history.model.HistoryViewItem
@@ -31,6 +32,7 @@ fun createHistoryDelegate(
             power.setPrintableText(item.totalPower)
             incomePerMonth.setPrintableText(item.incomePerMonth)
             composition.setPrintableText(item.composition)
+            iconVia.isVisible = item.usingViaBtc
 
             menu.increaseHitArea(16.dp)
             menu.onClick {

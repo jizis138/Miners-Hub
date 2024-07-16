@@ -29,7 +29,7 @@ class ExchangeRateFragment :
         renderLoadingState(
             loadingState = state.loadingState,
             progressContainer = binding.progressContainer,
-            errorContainer = binding.errorContainer.errorView,
+            errorContainer = binding.errorContainer,
             contentContainer = binding.list,
             emptyContainer = null,
             renderData = {

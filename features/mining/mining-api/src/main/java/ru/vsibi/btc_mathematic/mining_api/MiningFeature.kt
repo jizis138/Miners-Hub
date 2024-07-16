@@ -3,6 +3,7 @@
  */
 package ru.vsibi.btc_mathematic.mining_api
 
+import ru.vsibi.btc_mathematic.knowledge_api.model.Farm
 import ru.vsibi.btc_mathematic.navigation.contract.NavigationContractApi
 import ru.vsibi.btc_mathematic.navigation.model.NoParams
 import ru.vsibi.btc_mathematic.navigation.model.NoResult
@@ -10,5 +11,7 @@ import ru.vsibi.btc_mathematic.navigation.model.NoResult
 interface MiningFeature {
 
     val navigationContract : NavigationContractApi<NoParams, NoResult>
+
+    suspend fun saveFarm(farm : Farm)
 
 }

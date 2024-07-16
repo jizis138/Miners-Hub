@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.isVisible
 import ru.vsibi.btc_mathematic.uikit.databinding.IncludeEmptyViewBinding
+import ru.vsibi.btc_mathematic.uikit.databinding.IncludeErrorViewBinding
 import ru.vsibi.btc_mathematic.util.ErrorInfo
 import ru.vsibi.btc_mathematic.util.onClick
 import ru.vsibi.btc_mathematic.util.setPrintableTextOrGone
@@ -52,17 +53,17 @@ fun <E> List<LoadingState<E, *>>.commonStateWithError(): LoadingState<E, Unit> {
 inline fun <T> renderLoadingState(
     loadingState: LoadingState<ErrorInfo, T>,
     progressContainer: View?,
-    errorContainer: View?,
+    errorContainer: IncludeErrorViewBinding?,
     contentContainer: View?,
     emptyContainer: IncludeEmptyViewBinding?,
     renderData: (T) -> Unit = {},
     noinline onRetryClicked: () -> Unit,
 ) {
     progressContainer?.isVisible = loadingState.isLoading
-    errorContainer?.isVisible = loadingState is LoadingState.Error
+    errorContainer?.root?.isVisible = loadingState is LoadingState.Error
     contentContainer?.isVisible = loadingState.isSuccess
     if (loadingState is LoadingState.Error) {
-        errorContainer.renderError(loadingState.error, onRetryClicked)
+        errorContainer?.renderError(loadingState.error, onRetryClicked)
     }
 
     loadingState.dataOrNull?.apply(renderData)
@@ -71,13 +72,11 @@ inline fun <T> renderLoadingState(
     emptyContainer?.emptyView?.isVisible = isEmpty
 }
 
-fun View?.renderError(error: ErrorInfo, onRetryClicked: () -> Unit) {
-    this?.findViewById<TextView>(R.id.error_title)?.setPrintableTextOrGone(error.title)
-    this?.findViewById<TextView>(R.id.error_description)?.setPrintableTextOrGone(error.description)
-    this?.findViewById<Button>(R.id.retry)?.let {
-        it.onClick {
-            onRetryClicked()
-        }
+fun IncludeErrorViewBinding.renderError(error: ErrorInfo, onRetryClicked: () -> Unit) {
+    errorTitle.setPrintableTextOrGone(error.title)
+    errorDescription.setPrintableTextOrGone(error.description)
+    retry.onClick {
+        onRetryClicked()
     }
 }
 

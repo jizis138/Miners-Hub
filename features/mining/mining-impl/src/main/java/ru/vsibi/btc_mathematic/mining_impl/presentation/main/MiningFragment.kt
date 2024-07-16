@@ -48,8 +48,12 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
         }
 
         swipeRefresher.setOnRefreshListener {
+            binding.swipeRefresher.isRefreshing = true
             vm.refreshFarms()
         }
+//        errorContainer.retry.onClick {
+//            vm.refreshFarms()
+//        }
 
         addFarm.onClick {
             vm.createFarm()
@@ -57,11 +61,13 @@ class MiningFragment : BaseFragment<MiningState, MiningEvent>(R.layout.fragment_
     }
 
     override fun onUpdateState(state: MiningState) {
-        binding.swipeRefresher.isRefreshing = state.loadingState.isLoading
+        if(!state.loadingState.isLoading) {
+            binding.swipeRefresher.isRefreshing = false
+        }
         renderLoadingState(
             loadingState = state.loadingState,
             progressContainer = binding.progressContainer,
-            errorContainer = binding.errorContainer.errorView,
+            errorContainer = binding.errorContainer,
             contentContainer = binding.list,
             emptyContainer = binding.emptyContainer,
             renderData = {

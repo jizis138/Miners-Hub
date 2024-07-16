@@ -19,7 +19,7 @@ import ru.vsibi.btc_mathematic.util.onClick
 
 class IncomeModeFragment: BaseFragment<IncomeModeState, IncomeModeEvent>(R.layout.fragment_income_mode) {
 
-    override val vm : IncomeModeViewModel by viewModel()
+    override val vm : IncomeModeViewModel by viewModel(getParamsInterface = IncomeModeNavigationContract.getParams)
 
     private val binding by fragmentViewBinding (FragmentIncomeModeBinding::bind)
 

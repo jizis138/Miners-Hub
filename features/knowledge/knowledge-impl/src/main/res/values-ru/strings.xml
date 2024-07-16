@@ -3,6 +3,7 @@
     <string name="knowledge">Знания</string>
     <string name="calc_income">Расчет доходности</string>
     <string name="calc_income_farm">Расчет доходности фермы</string>
+    <string name="calc_income_farm_via">Расчет доходности с помощью ViaBTC (Бета)</string>
     <string name="add_miner">Добавить позицию</string>
     <string name="search">Поиск</string>
     <string name="select_miner">Выберите майнер</string>
@@ -50,9 +51,14 @@
     <string name="select_currency">Выберите валюту</string>
     <string name="custom_btc_rate">Стоимость 1 BTC</string>
     <string name="btc_income_per_month">Добыто монет за месяц</string>
+    <string name="btc_income_per_day">Добыто монет за день</string>
     <string name="calc_is_empty_title">Расчётов нет</string>
     <string name="calc_is_empty_desc">Вы ещё не делали расчётов доходности, на этом экране будет отображена история всех ваших расчётов.</string>
     <string name="make_calc">Сделать расчет</string>
     <string name="accept_delete_all_history">Это действие удаляет всю историю расчётов. Вы уверены что хотите продолжить?</string>
     <string name="farm_name">Название фермы</string>
+    <string name="calculation_share_description">Рассчёт произведён при помощи ViaBTC в приложении "BTC Расчёты" https://play.google.com/store/apps/details?id=ru.vsibi.btc_mathematic</string>
+    <string name="save_farm">Сохранить как ферму</string>
+    <string name="use_via_btc">Использовать ViaBTC</string>
+
 </resources>

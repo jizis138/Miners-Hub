@@ -23,7 +23,7 @@ import ru.vsibi.btc_mathematic.util.onClick
 
 class HistoryFragment : BaseFragment<HistoryState, HistoryEvent>(R.layout.fragment_history) {
 
-    override val vm : HistoryViewModel by viewModel()
+    override val vm : HistoryViewModel by viewModel(getParamsInterface = HistoryNavigationContract.getParams)
 
     private val binding by fragmentViewBinding (FragmentHistoryBinding::bind)
 
@@ -78,7 +78,7 @@ class HistoryFragment : BaseFragment<HistoryState, HistoryEvent>(R.layout.fragme
         renderLoadingState(
             loadingState = state.loadingState,
             progressContainer = binding.progressContainer,
-            errorContainer = binding.errorContainer.errorView,
+            errorContainer = binding.errorContainer,
             contentContainer = binding.list,
             emptyContainer = binding.emptyContainer,
             onRetryClicked = {},

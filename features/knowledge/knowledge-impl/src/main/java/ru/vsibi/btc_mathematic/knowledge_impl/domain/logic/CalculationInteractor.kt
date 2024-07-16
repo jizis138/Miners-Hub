@@ -8,18 +8,19 @@ import ru.vsibi.btc_mathematic.knowledge_api.model.*
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.DifficultyRepository
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.ExchangeRateRepository
 import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.HistoryRepository
+import ru.vsibi.btc_mathematic.knowledge_impl.domain.repo.ViaRepository
 import ru.vsibi.btc_mathematic.util.CallResult
 import ru.vsibi.btc_mathematic.util.callForResult
 import ru.vsibi.btc_mathematic.util.getOrNull
 import ru.vsibi.btc_mathematic.util.getOrThrow
-import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
 class CalculationInteractor(
     private val difficultyRepository: DifficultyRepository,
     private val exchangeRateRepository: ExchangeRateRepository,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val viaRepository: ViaRepository
 ) {
 
     companion object {
@@ -31,6 +32,7 @@ class CalculationInteractor(
     }
 
     suspend fun calculateBTCIncome(
+        usingViaBtc: Boolean,
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
@@ -50,6 +52,7 @@ class CalculationInteractor(
                     emit(CalculationState.Error(this.error))
                     return@flow
                 }
+
                 is CallResult.Success -> this.data
             }
         }
@@ -69,8 +72,31 @@ class CalculationInteractor(
         if (withDelay) {
             delay(100)
         }
+
         emit(CalculationState.Calculation())
 
+        val incomeBTCPerDay = if (usingViaBtc) {
+            callForResult { fetchViaIncomePerDay(
+                coin = "BTC",
+                coinPrice = fetchBTCtoCurrencyRate(electricityPrice.currency)?.lastOrNull()?.value?.toString() ?: run {
+                    emit(CalculationState.Error(NothingToFoundResponseException()))
+                    return@flow
+                },
+                difficulty = difficulty.value.toString(),
+                hashrate = hashrate.div(TH).roundToInt().toString()
+            ) }.run {
+                when (this) {
+                    is CallResult.Error -> {
+                        emit(CalculationState.Error(this.error))
+                        return@flow
+                    }
+
+                    is CallResult.Success -> this.data
+                }
+            }
+        } else {
+            (DAY * BLOCK_INCOME * hashrate) / (difficulty.value * k)
+        }
         val powerPerDay = power * 24 / 1000
         Log.d(TAG, "calculateBTCIncome: powerPerDay $powerPerDay")
 
@@ -86,8 +112,6 @@ class CalculationInteractor(
         val priceElectricityPerMonth = powerPerMonth * electricityPrice.value
         Log.d(TAG, "calculateBTCIncome: priceElectricityPerMonth $powerPerMonth")
 
-
-        val incomeBTCPerDay = (DAY * BLOCK_INCOME * hashrate) / (difficulty.value * k)
         Log.d(TAG, "calculateBTCIncome: incomeBTC $powerPerMonth")
         val incomeBTCPerMonth = incomeBTCPerDay * 30
 
@@ -120,13 +144,25 @@ class CalculationInteractor(
                 powerPerMonth = powerPerMonth,
                 pricePowerPerMonth = priceElectricityPerMonth.roundToInt(),
                 incomePerMonth = incomePerMonth.roundToInt(),
+                btcIncomePerDay = incomeBTCPerDay,
                 btcIncomePerMonth = incomeBTCPerMonth,
-                fromDate = LocalDateTime.now()
+                fromDate = LocalDateTime.now(),
+                usingViaBtc = usingViaBtc
             )
         if (needSaveToHistory) {
             historyRepository.saveCalculation(result)
         }
         emit(result)
+    }
+
+    private suspend fun fetchViaIncomePerDay(
+        coin: String,
+        coinPrice: String,
+        difficulty: String,
+        hashrate: String
+    ): Double {
+        return viaRepository.fetchIncomePerDay(
+            coin, coinPrice, difficulty, hashrate)
     }
 
     private suspend fun fetchBTCDifficulty(): Difficulty {

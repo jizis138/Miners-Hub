@@ -55,6 +55,9 @@ class IncomePropertiesFragment :
         },
         onFarmNameChanged = {
             vm.onFarmNameChanged(it)
+        },
+        onSwitchVia = { checked->
+            vm.onViaSwitched(checked)
         }
     )
 

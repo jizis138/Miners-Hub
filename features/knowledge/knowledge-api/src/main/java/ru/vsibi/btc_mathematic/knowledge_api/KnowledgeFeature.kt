@@ -26,13 +26,18 @@ interface KnowledgeFeature {
 
 
     sealed class TotalCalculationMode : Parcelable {
+
+        abstract val usingViaBtc : Boolean
+
         @Parcelize
         data class WithReadyCalculation(
+            override val usingViaBtc: Boolean,
             val calculationResult: CalculationState.ReadyResult
         ) : TotalCalculationMode(), Parcelable
 
         @Parcelize
         data class ParamsForCalculation(
+            override val usingViaBtc: Boolean,
             val electricityPrice: Double,
             val currency: String,
             val miners: List<Miner>,
@@ -43,6 +48,7 @@ interface KnowledgeFeature {
     suspend fun getExchangeRateBTCtoCurrency(vararg currency : String): List<ExchangeRate>?
 
     suspend fun calculateBTCIncome(
+        usingViaBtc : Boolean,
         hashrate: Double,
         power: Double,
         electricityPrice: Price,
@@ -71,14 +77,17 @@ interface KnowledgeFeature {
     }
 
     sealed class Mode : Parcelable {
-        @Parcelize
-        object Normal : Mode(), Parcelable
+
+        abstract val usingViaBtc : Boolean
 
         @Parcelize
-        class EditFarm(val farm: Farm) : Mode(), Parcelable
+        class Normal(override val usingViaBtc: Boolean) : Mode(), Parcelable
 
         @Parcelize
-        object CreateFarm : Mode(), Parcelable
+        class EditFarm(override val usingViaBtc: Boolean, val farm: Farm) : Mode(), Parcelable
+
+        @Parcelize
+        class CreateFarm(override val usingViaBtc: Boolean) : Mode(), Parcelable
     }
 
 }
